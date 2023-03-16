@@ -1,0 +1,74 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html, .flex-wrap { 
+    background-color: #61876ed9;
+    height: 100%;
+    overflow: hidden;
+ }
+
+ h1 {
+    font-weight: bolder !important;
+ }
+
+.navbar {
+    background-color: #BDD2B6 !important;
+}
+
+ .submission-body {
+    background-color: #F8EDE3 !important;
+}
+
+.page-title {
+    width: 100%;
+    margin-bottom: 3%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: #BDD2B6 !important;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.vstack {
+    width: 50%;
+}
+
+.application-headers {
+    display:flex;
+    justify-content: space-around;
+}
+
+.back-to-grants {
+    background-color: #BDD2B6 !important;
+    border: none !important;
+    color: black !important;
+    padding: 15px 32px !important;
+    text-align: center !important;
+    font-size: 20px !important;
+    cursor: pointer !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.col {
+    display: flex;
+    justify-content:flex-end;
+    margin-right: 2%;
+}
+
+
+.main-card {
+    height: 30rem;
+    max-height: 40rem;
+}
+
+.applications {
+    background-color: #BDD2B6 !important;
+    color: black !important;
+    border-color: #BDD2B6 !important; 
+}
