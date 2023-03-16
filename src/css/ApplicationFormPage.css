@@ -1,0 +1,95 @@
+.navbar {
+    color:black;
+    background-color:#BDD2B6;
+    font: sans-serif;
+    font-size:28px;
+    margin-top:1%;
+    margin-bottom:1%;
+    margin-left:1%;
+    margin-right:1%;
+    padding:1%;
+}
+.wrapper {
+    background-color:#61876ed9;
+}
+.grantTitle {
+    text-align:center;
+    margin:auto;
+    width:50%;
+    padding:1%;
+    color:black;
+}
+.title {
+    font-size:40px;
+    background:#F8EDE3;
+    padding:1%;
+    margin:1%;
+    border-radius: 4px;
+}
+.questionSection {
+    margin:auto;
+    width:50%;
+    background:#F8EDE3;
+    padding:1%;
+    color:black;
+    border-radius: 4px;
+}
+.q1 {
+    margin:5px;
+    padding:5px;
+}
+.q2 {
+    margin:5px;
+    padding:5px;
+}
+.q3 {
+    margin:5px;
+    padding:5px;
+}
+.q4 {
+    margin:5px;
+    padding:5px;
+}
+.qLast {
+    margin:5px;
+    padding:5px;
+}
+.text-center {
+    margin:1%;
+}
+.buttonWrapper1 {
+    padding-top:4%;
+    margin:auto;
+}
+.button1 {
+    background-color: #BDD2B6;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    width:15%;
+    border-radius: 4px;
+}
+.button2 {
+    background-color: #BDD2B6;
+    border: none;
+    color: black;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+}
+.buttonWrapper2 {
+    position:absolute;
+    top:0;
+    left:0;
+    margin:auto;
+    padding:1%;
+}
+html {
+    background-color:#61876ed9;
+}
