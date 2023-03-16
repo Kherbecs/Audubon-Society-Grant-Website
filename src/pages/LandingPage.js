@@ -1,7 +1,7 @@
 import React from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './LandingPage.css'
+import '../css/LandingPage.css'
 
 import { Col, Row, Container, Image, Button, Carousel } from 'react-bootstrap'
 
@@ -68,26 +68,7 @@ function LandingPage() {
             </div>
           </Col>
         </Row>
-      </Container>  
-    {/*
-      <Container className="px-5 my-4">
-        <Row className="px-4 my-5">
-          <Col sm={7} className="px-4 my-5">
-            <Image src = "https://picsum.photos/900/400"
-            fluid
-            rounded
-            className=""/>
-          </Col>
-          <Col sm={5} className="px-4 my-5" >
-            <h1 class="font-weight-light">Title</h1>
-            <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
-            <div className="my-3 d-grid gap-2">
-            <Button variant="success" size="lg">Sign up</Button>
-            </div>
-          </Col>
-        </Row>
       </Container>
-      */}
     </div>
     
   )
