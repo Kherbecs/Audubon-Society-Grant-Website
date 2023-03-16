@@ -1,0 +1,101 @@
+.GrantSelection {
+  height : auto;
+  text-align: center;
+  background-color: rgba(97, 135, 110, 1);
+  padding-bottom: 20%;
+ 
+}
+
+
+.header {
+  padding:  1% 5% .5% 5%;
+  background-color: #BDD2B6;
+  text-align: center;
+  font-size: 10vh;
+  color: black;
+  outline-color: black;
+
+}
+
+.SubmissionsButton {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1% 1% 1% 1%;
+}
+
+
+
+.card {
+  min-width: 900px;
+  max-width: 1000px;
+  width: 75%;
+  padding: 0px 0px 0px 0px;
+  background-color: #F8EDE3!important; 
+  margin: 0 auto; 
+  float: none; 
+  margin-top:  30px;
+  margin-bottom: 50px;
+
+}
+
+.TopPhoto {
+  width: 100%;
+  height: 200px;
+  align-items: center;
+
+}
+
+.TopPhoto_2 {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: flex-start;
+  align-content: bottom;
+  
+}
+
+img {
+  
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+}
+
+.img_2 {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  object-position: 100% 20%;
+  
+}
+
+
+.card-header {
+  background-color: #F8EDE3;
+  min-width: 800px;
+  max-width: 900px;
+  margin: 0 auto; 
+  text-align: center;
+  justify-content: left;
+
+
+}
+
+.card-body {
+  background-color: #F8EDE3;
+  text-align: left;
+  padding-top: .5%;
+  
+}
+
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+
+
+
+
