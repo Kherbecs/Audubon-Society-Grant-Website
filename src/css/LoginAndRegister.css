@@ -1,0 +1,85 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: rgba(97, 135, 110, 1); 
+}
+
+.form {
+  width: 300px;
+  height: min-content;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #F8EDE3;
+  color: black;
+  margin: 0 auto;
+  max-height: 100%;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 1024px) and (max-height: 600px) {
+  .wrapper {
+    margin-top: -27px; 
+  }
+
+  .form {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    max-height: 90vh;
+  }
+  
+  h2 {
+    font-size: 25px;
+  }
+}
+
+hr {
+  color: #3C6255;
+  background-color: #3C6255;
+  height: 2px;
+}
+
+h2 {
+  text-align: center;
+  font-size: x-large;
+}
+
+a:link,
+a:visited {
+  color: black;
+}
+
+.link1 {
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  font-size: 14px;
+}
+
+.link2 {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-control-lg {
+  font-size: 14px;
+}
+
+.form-text {
+  font-size: 11px;
+  text-align: center;
+}
+
+.form-check-label {
+  font-size: 14px;
+}
