@@ -1,0 +1,37 @@
+import React from 'react'
+import '../css/NavBar.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+/*Navigation Bar that uses React JS, HTML, CSS, and Bootstrap 5*/
+
+export function NavBar() {
+  return (
+    <div class="navbar-div">
+        <nav class="navbar navbar-expand-lg sticky-top" id='navbar-custom'>
+           <a class="navbar-brand" href="index.html">
+             <h3 class="title-header">San Joaquin Audubon Society</h3>
+            </a>
+           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="#navbarCollapse" aria-expanded="false">
+             <span class="navbar-toggler-icon"></span>
+           </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link" href="https://www.sanjoaquinaudubon.org/">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link" href="#">Login</a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link" href="#">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>     
+  )
+}

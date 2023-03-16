@@ -1,0 +1,54 @@
+/* Footer */
+.footer-div
+{
+    background-color: #BDD2B6;
+}
+
+.footer-title
+{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  position: relative;
+}
+
+.footer-description
+{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  position: relative;
+  width: 25%;
+}
+
+.social-links
+{
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.social-link-button
+{
+  color: black;
+  padding-left: 35px;
+  padding-right: 35px;
+  text-decoration: none;
+}
+
+.footer-links
+{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  position: relative;
+}
+
+.footer-link-button
+{
+  color: black;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-decoration: none;
+}

@@ -1,0 +1,32 @@
+/* Navbar */
+
+#navbar-custom
+{
+  align-items: center;
+  background-color: #BDD2B6;
+  display: flex;
+  padding-top: .5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: .5rem;
+
+}
+
+.nav-link
+{
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+.nav-item
+{
+    color: black;
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
+
+.title-header
+{
+    position: relative;
+    color: black;
+}
