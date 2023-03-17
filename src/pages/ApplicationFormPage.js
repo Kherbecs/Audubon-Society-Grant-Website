@@ -1,11 +1,11 @@
 import React from 'react'
 import '../css/ApplicationFormPage.css'
-import '../bootstrap/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export function ApplicationFormPage() {
     return (
-        <div className = "wrapper">
-            <div className = "form">
+        <div className = "wrapper-appform">
+            <div className = "form-appform">
                 <div className = "grantTitle">
                     <label for = "title" class = "title">Generic Grant Title</label>
                 </div>
@@ -43,7 +43,7 @@ export function ApplicationFormPage() {
                 </div>
                 <div className = "buttonWrapper2" >
                     <div class="text-center">
-                        <button class = "button2">Return to Previous Page</button>
+                        <button class = "button2"><a href="/grantselection">Return to Previous Page</a></button>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ export function PastSubmissions() {
     return (
         <div class="flex-wrap">
             <div class="col">
-                <a class="btn btn-nav btn-sm btn-success back-to-grants" href="google.com">Back to Grants</a>
+                <a class="btn btn-nav btn-sm btn-success back-to-grants" href="/grantselection">Back to Grants</a>
             </div>
             
             <div class="mx-auto text-center page-title">

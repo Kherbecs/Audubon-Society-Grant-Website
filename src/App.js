@@ -1,13 +1,52 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { NavBar } from "./pages/NavBar.js";
+import { Footer } from './pages/Footer.js';
+import { LandingPage } from './pages/LandingPage.js';
+import { Login } from './pages/Login.js';
+import { Register } from './pages/Register';
+import { PasswordReset } from './pages/PasswordReset.js';
+import { ResetSuccess } from './pages/ResetSuccess.js';
+import { GrantSelection } from './pages/GrantSelection.js';
+import { AdminPortal } from './pages/AdminPortal.js';
+import { ApplicationFormPage } from './pages/ApplicationFormPage.js';
+import { PastSubmissions } from './pages/PastSubmissions.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Hello, World!</h1>
-      </header>
-    </div>
+    <Router>
+      <NavBar></NavBar>
+      <Switch>
+        <Route exact path="/">
+          <LandingPage></LandingPage>
+        </Route>
+        <Route exact path="/login">
+          <Login></Login>
+        </Route>
+        <Route exact path="/register">
+          <Register></Register>
+        </Route>
+        <Route exact path="/passwordreset">
+          <PasswordReset></PasswordReset>
+        </Route>
+        <Route exact path="/resetsuccess">
+          <ResetSuccess></ResetSuccess>
+        </Route>
+        <Route exact path="/grantselection">
+          <GrantSelection></GrantSelection>
+        </Route>
+        <Route exact path="/adminportal">
+          <AdminPortal></AdminPortal>
+        </Route>
+        <Route exact path="/applicationformpage">
+          <ApplicationFormPage></ApplicationFormPage>
+        </Route>
+        <Route exact path="/pastsubmissions">
+          <PastSubmissions></PastSubmissions>
+        </Route>
+      </Switch>
+      <Footer></Footer>
+    </Router>
   );
 }
 

@@ -2,11 +2,11 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-html, .flex-wrap { 
+/* html, .flex-wrap { 
     background-color: #61876ed9;
     height: 100%;
     overflow: hidden;
- }
+} */
 
  h1 {
     font-weight: bolder !important;

@@ -1,4 +1,4 @@
-.navbar {
+/* .navbar {
     color:black;
     background-color:#BDD2B6;
     font: sans-serif;
@@ -8,8 +8,8 @@
     margin-left:1%;
     margin-right:1%;
     padding:1%;
-}
-.wrapper {
+} */
+.wrapper-appform {
     background-color:#61876ed9;
 }
 .grantTitle {
@@ -85,8 +85,8 @@
 }
 .buttonWrapper2 {
     position:absolute;
-    top:0;
-    left:0;
+    top:10%;
+    left:2.5%;
     margin:auto;
     padding:1%;
 }

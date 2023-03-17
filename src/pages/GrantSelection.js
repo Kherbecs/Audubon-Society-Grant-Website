@@ -10,7 +10,7 @@ export function GrantSelection(){
         <div className="GrantSelection">
             <div className="SubmissionsButton">
                 <button className="Submissions" class="btn btn-dark">
-                    <text>Submissions</text>
+                    <text><a href="/pastsubmissions">Submissions</a></text>
                 </button>
             </div>
 
@@ -35,7 +35,7 @@ export function GrantSelection(){
                         </div>
                         <div class="container">
                             <button className="apply" class="btn btn-success">
-                                <text>Apply</text>
+                                <text><a href="/applicationformpage">Apply</a></text>
                             </button>                       
                         </div>
                     </div>
@@ -63,7 +63,7 @@ export function GrantSelection(){
                     </div>
                         <div class="container">
                             <button className="apply" class="btn btn-success">
-                                <text>Apply</text> 
+                                <text><a href="/applicationformpage">Apply</a></text> 
                             </button> 
                         </div>
 

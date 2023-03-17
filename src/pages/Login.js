@@ -23,12 +23,12 @@ export function Login() {
           </div>
 
           <div className="link1">
-            <a href="">Forgot password?</a>
+            <a href="/passwordreset">Forgot password?</a>
           </div>
 
-          <button type="sign in" className="btn btn-success btn-lg w-100 block mt-2">Sign In</button>
+          <button type="sign in" className="btn btn-success btn-lg w-100 block mt-2"><a href="/grantselection">Sign In</a></button>
           <div className="link2">
-            Need an account? <a href="/register">Sign up</a>
+            <a href="/adminportal">Need</a> an account? <a href="/register">Sign up</a>
           </div>
           
         </div>

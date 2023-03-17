@@ -1,14 +1,15 @@
 import React from 'react'
-
-import 'bootstrap/dist/css/bootstrap.min.css'
 import '../css/LandingPage.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-import { Col, Row, Container, Image, Button, Carousel } from 'react-bootstrap'
+
+import { Col, Row, Container, Button, Carousel } from 'react-bootstrap'
 
 
-function LandingPage() {
+export function LandingPage() {
   return (
-    <div className="wrapper">
+    <div class="wrapper-landingpage">
+      <div class="carousel-div">
         <Carousel>
           <Carousel.Item interval={1000}>
               <img
@@ -46,32 +47,33 @@ function LandingPage() {
               </Carousel.Caption>
             </Carousel.Item>
         </Carousel>
-      <Container className="my-4">
-        <Row className="px-4 my-5">
-          <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
-            <div className="my-3 d-grid">
-              <h1 class="font-weight-light">About</h1>
+      </div>
+      <div class="info-cards">
+        <Container className="my-4">
+          <Row className="px-4 my-5">
+            <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
+              <div className="my-3 d-grid">
+                <h1 class="font-weight-light">About</h1>
+                <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
+                <Button variant="success" size="lg" href="/register">Sign up</Button>
+              </div>
+            </Col>
+            <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
+              <div className="my-3 d-grid">
+              <h1 class="font-weight-light">Grant 1 Info</h1>
               <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
-              <Button variant="success" size="lg">Sign up</Button>
-            </div>
-          </Col>
-          <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
-            <div className="my-3 d-grid">
-            <h1 class="font-weight-light">Grant 1 Info</h1>
-            <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
-            </div>
-          </Col>
-          <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
-            <div className="my-3 d-grid">
-              <h1 class="font-weight-light">Grant 2 Info</h1>
-              <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
-            </div>
-          </Col>
-        </Row>
-      </Container>
+              </div>
+            </Col>
+            <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
+              <div className="my-3 d-grid">
+                <h1 class="font-weight-light">Grant 2 Info</h1>
+                <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+        </div>
     </div>
     
   )
 }
-
-export default LandingPage

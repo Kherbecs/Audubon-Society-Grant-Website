@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 export function AdminPortal() {
     return (
-    <div class="wrapper">
+    <div class="wrapper-admin-portal">
         <button class="logout">Logout</button>
         <p class="fs-1">
             <p class="text-center">Current Applicants</p>
@@ -15,7 +15,7 @@ export function AdminPortal() {
         </p>
         <div class="row g-2">
             <div class="col-md">
-                <div class="form-floating">
+                <div class="form-floating form-floating-custom">
                     <select class="form-select" id="floatingSelect" aria-label="Filter drop down menu">
                         <option selected>Filter by grant, date, read/unread</option>
                         <option value="grant">grant 1</option>
@@ -28,7 +28,7 @@ export function AdminPortal() {
             </div>
         
             <div class="col-md">
-                <div class="mb-3">
+                <div class="mb-3 search-bar">
                     <div class="searchField">
                         <input type="name" class="form-control" id="searchBar" placeholder="Search for applicants"></input> 
                         <button class="search">Search</button>
