@@ -9,15 +9,15 @@
 } */
 
  h1 {
-    font-weight: bolder !important;
+    font-weight: bolder;
  }
 
 .navbar {
-    background-color: #BDD2B6 !important;
+    background-color: #BDD2B6;
 }
 
  .submission-body {
-    background-color: #F8EDE3 !important;
+    background-color: #F8EDE3;
 }
 
 .page-title {
@@ -25,7 +25,7 @@
     margin-bottom: 3%;
     padding-top: 1%;
     padding-bottom: 1%;
-    background-color: #BDD2B6 !important;
+    background-color: #BDD2B6;
 }
 
 .container {
@@ -43,14 +43,14 @@
 }
 
 .back-to-grants {
-    background-color: #BDD2B6 !important;
-    border: none !important;
-    color: black !important;
-    padding: 15px 32px !important;
-    text-align: center !important;
-    font-size: 20px !important;
-    cursor: pointer !important;
-    font-family: Arial, Helvetica, sans-serif !important;
+    background-color: #BDD2B6;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
     margin-top: 1%;
     margin-bottom: 1%;
 }
@@ -68,7 +68,7 @@
 }
 
 .applications {
-    background-color: #BDD2B6 !important;
-    color: black !important;
-    border-color: #BDD2B6 !important; 
+    background-color: #BDD2B6;
+    color: black;
+    border-color: #BDD2B6; 
 }

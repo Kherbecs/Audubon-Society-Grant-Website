@@ -15,9 +15,9 @@ export function ResetSuccess() {
         <p>Password reset link sent</p> 
         <div>
           <div>
-            <button type="button" class="btn btn-secondary btn-lg  col-3" ><a href="/login">Back to Login</a></button>
+            <button class = "button-pr"><a href="/login">Back to Login</a></button>
           </div>
-          <button type="button" class="btn btn-secondary btn-lg col-2" >Resend Link</button>
+            <button class = "button-pr">Resend Link</button>
             
         </div>   
       </div>

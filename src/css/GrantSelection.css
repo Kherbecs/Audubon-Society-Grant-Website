@@ -30,7 +30,7 @@
   max-width: 1000px;
   width: 75%;
   padding: 0px 0px 0px 0px;
-  background-color: #F8EDE3!important; 
+  background-color: #F8EDE3; 
   margin: 0 auto; 
   float: none; 
   margin-top:  30px;
@@ -94,8 +94,3 @@ img {
   display: flex;
   justify-content: center;
 }
-
-
-
-
-
