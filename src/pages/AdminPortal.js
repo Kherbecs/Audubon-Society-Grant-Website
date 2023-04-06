@@ -42,9 +42,9 @@ export function AdminPortal() {
             
         </div>
         <div class="submissions-box">
-                <button class="sub1"><a class="submission-link" href="/submittedappform">Submission</a></button>
-                <button class="sub2"><a class="submission-link" href="/submittedappform">Submission</a></button>
-                <button class="sub3"><a class="submission-link" href="/submittedappform">Submission</a></button>
+                <button class="sub1"><a class="submission-link" href="/adminsubappform">Submission</a></button>
+                <button class="sub2"><a class="submission-link" href="/adminsubappform">Submission</a></button>
+                <button class="sub3"><a class="submission-link" href="/adminsubappform">Submission</a></button>
             </div>
     </div>
     )

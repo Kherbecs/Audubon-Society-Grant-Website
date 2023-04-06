@@ -1,0 +1,199 @@
+.wrapper-appform {
+    background-color:#61876ed9;
+}
+.grantTitle {
+    text-align:center;
+    margin:auto;
+    width:50%;
+    padding:1%;
+    color:black;
+}
+.title {
+    font-size:40px;
+    background:#F8EDE3;
+    padding:1%;
+    margin:1%;
+    border-radius: 4px;
+}
+
+.wrapper-user-information{
+    background-color: lightgrey;
+    border-radius: 4px;
+    margin: auto;
+    text-align: left;
+    width: 20%;
+}
+.user-information-text{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.questionSection {
+    margin:auto;
+    margin-bottom: 1rem;
+    width:50%;
+    background:#F8EDE3;
+    padding:1%;
+    color:black;
+    border-radius: 4px;
+}
+.question {
+    margin:5px;
+    padding:5px;
+}
+
+.wrapper-user-answer{
+    background-color: white;
+    border-radius: 4px;
+    text-align: left;
+}
+
+.user-answer-text{
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.file-div{
+    background-color: #F8EDE3;
+    border-radius: 4px;
+    margin: auto;
+    margin-bottom: 1rem;
+    width: 20%;
+}
+
+.wrapper-admin-feedback{
+    background-color: #F8EDE3;
+    margin: auto;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    width: 60%;
+}
+
+.wrapper-new-comment{
+    display: flex;
+}
+.admin-comments{
+    width: 70%;
+    margin-left: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.wrapper-feedback-buttons{
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width:30%;
+}
+.wrapper-small-feedback-buttons{
+    display: flex;
+}
+
+.wrapper-comment-button{
+    margin-top: 1rem;
+    height: 4rem;
+}
+.wrapper-status-button{
+    margin-top: .5rem; 
+    margin-right: 1rem;
+    height: 3rem;
+    width: 50%;
+}
+
+.wrapper-grade-button{
+    margin-top: .5rem; 
+    height: 3rem;
+    width: 50%;
+}
+
+.wrapper-previous-comments{
+    background-color: #61876ed9;
+    margin: auto;
+    margin-bottom: 1rem;
+    overflow-y: scroll;
+    height: 10rem;
+    width: 95%;
+}
+
+.text-center {
+    margin:1%;
+}
+.buttonWrapper1 {
+    padding-top:4%;
+    margin:auto;
+}
+.button1 {
+    background-color: #BDD2B6;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    width:15%;
+    border-radius: 4px;
+}
+.button2 {
+    background-color: #BDD2B6;
+    border: none;
+    color: black;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 4px;
+}
+.buttonWrapper2 {
+    position:absolute;
+    top:10%;
+    left:2.5%;
+    margin:auto;
+    padding:1%;
+}
+
+.add-comment-button{
+    background-color: #BDD2B6;
+    border: none;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%
+}
+
+.status-button{
+    background-color: #BDD2B6;
+    border: none;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%
+}
+
+.grade-button{
+    background-color: #BDD2B6;
+    border: none;
+    border-radius: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    width: 100%
+}
+
+.back-button{
+    margin-bottom: 1rem;
+    padding:1%;
+    width: 20%;
+}
+
+.prev-page-link{
+    color: black;
+    text-decoration: none;
+}
+
+.prev-page-link:hover{
+    color: black;
+}
+
+html {
+    background-color:#61876ed9;
+}

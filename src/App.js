@@ -11,6 +11,10 @@ import { GrantSelection } from './pages/GrantSelection.js';
 import { AdminPortal } from './pages/AdminPortal.js';
 import { ApplicationFormPage } from './pages/ApplicationFormPage.js';
 import { PastSubmissions } from './pages/PastSubmissions.js';
+import { PasswordChange } from './pages/PasswordChange.js';
+import { PasswordFullReset } from './pages/PasswordFullReset.js';
+import { SubAppForm } from './pages/SubAppForm.js';
+import { AdminSubAppForm } from './pages/AdminSubAppForm.js';
 
 function App() {
   return (
@@ -43,6 +47,18 @@ function App() {
         </Route>
         <Route exact path="/pastsubmissions">
           <PastSubmissions></PastSubmissions>
+        </Route>
+        <Route exact path="/adminsubappform">
+          <AdminSubAppForm></AdminSubAppForm>
+        </Route>
+        <Route exact path="/passwordchange">
+          <PasswordChange></PasswordChange>
+        </Route>
+        <Route exact path="/passwordfullreset">
+          <PasswordFullReset></PasswordFullReset>
+        </Route>
+        <Route exact path="/subappform">
+          <SubAppForm></SubAppForm>
         </Route>
       </Switch>
       <Footer></Footer>
