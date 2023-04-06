@@ -4,8 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 export function AdminPortal() {
     return (
+   
     <div class="wrapper-admin-portal">
-        <button class="logout">Logout</button>
+         
+         <a href="/login"><button class="logout">Logout</button></a>
         <p class="fs-1">
             <p class="text-center">Current Applicants</p>
             <p class="text-end">
@@ -40,9 +42,9 @@ export function AdminPortal() {
             
         </div>
         <div class="submissions-box">
-                <button class="sub1">Submission</button>
-                <button class="sub2">Submission</button>
-                <button class="sub3">Submission</button>
+                <button class="sub1"><a class="submission-link" href="/submittedappform">Submission</a></button>
+                <button class="sub2"><a class="submission-link" href="/submittedappform">Submission</a></button>
+                <button class="sub3"><a class="submission-link" href="/submittedappform">Submission</a></button>
             </div>
     </div>
     )
