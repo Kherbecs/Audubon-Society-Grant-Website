@@ -24,13 +24,14 @@ export function PasswordReset() {
       </div>
 
       <div class="mb-3 mt-3 ">
-        <button class = "button-pr"><a href="/resetsuccess">Submit</a></button>
+          <button type="button" class="btn btn-secondary btn-lg col-2" ><a href="/resetsuccess">Submit</a></button>
       </div>
       
       <div class="form-group w-75" >
-        <button class = "button-pr"><a href="/login">Back</a></button>
+        <button type="button" class="btn btn-secondary btn-lg col-2"><a href="/login">Back</a></button>
       </div> 
          
     </div>
   );
 }
+

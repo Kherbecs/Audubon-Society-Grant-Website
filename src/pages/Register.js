@@ -39,7 +39,6 @@ export function Register() {
               <input type = "checkbox" className = "form-check-input"></input>
               <label htmlFor = "check" className = "form-check-label-lr">Sign Up for Grant Updates</label>
           </div>
-          <button type="sign up" className="btn btn-success btn-lg w-100 block mt-2"><a href="" className="link-lr">Sign Up</a></button>
 
           <a href="" className="link-lr"><button type="sign up" className="btn btn-success btn-lg w-100 block mt-2">Sign Up</button></a>
 
