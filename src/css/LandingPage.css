@@ -1,11 +1,9 @@
 .wrapper-landingpage {
-    /* height: 100vh; */
     background-repeat: repeat-y;
     background-color: rgba(97, 135, 110, 1); 
-    /* overflow-y: scroll; */
 }
 
-.container{
+.info-cards{
   border-radius: 5px;
   background-color: #F8EDE3;
 }

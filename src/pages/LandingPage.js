@@ -11,11 +11,12 @@ export function LandingPage() {
     <div class="wrapper-landingpage">
       <div class="carousel-div">
         <Carousel>
-          <Carousel.Item interval={1000}>
-              <img
+          <Carousel.Item className="carousel-item" interval={1000}>
+              <img  
                 className="d-block w-100"
-                src="https://picsum.photos/1920/966"
+                src="https://picsum.photos/1920/1080"
                 alt="First slide"
+                style={{height: '790px'}}
               />
               <Carousel.Caption>
                 <h3>First slide label</h3>
@@ -25,8 +26,9 @@ export function LandingPage() {
             <Carousel.Item interval={500}>
               <img
                 className="d-block w-100"
-                src="https://picsum.photos/1920/970"
+                src="https://picsum.photos/1920/1080"
                 alt="Second slide"
+                style={{height: '790px'}}
               />
               <Carousel.Caption>
                 <h3>Second slide label</h3>
@@ -36,8 +38,9 @@ export function LandingPage() {
             <Carousel.Item>
               <img
                 className="d-block w-100"
-                src="https://picsum.photos/1920/970"
+                src="https://picsum.photos/1920/1080"
                 alt="Third slide"
+                style={{height: '790px'}}
               />
               <Carousel.Caption>
                 <h3>Third slide label</h3>
@@ -51,20 +54,20 @@ export function LandingPage() {
       <div class="info-cards">
         <Container className="my-4">
           <Row className="px-4 my-5">
-            <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
+            <Col lg={3} md={12} sm={12} className="mx-auto px-4 my-5 square border border-dark border-3" >
               <div className="my-3 d-grid">
                 <h1 class="font-weight-light">About</h1>
                 <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
-                <Button variant="success" size="lg" href="/register">Sign up</Button>
+                <Button variant="success" size="lg" href="/register">Sign Up</Button>
               </div>
             </Col>
-            <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
+            <Col lg={3} md={12} sm={12} className="mx-auto px-4 my-5 square border border-dark border-3" >
               <div className="my-3 d-grid">
               <h1 class="font-weight-light">Grant 1 Info</h1>
               <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
               </div>
             </Col>
-            <Col sm={3} className="mx-auto px-4 my-5 square border border-dark border-3" >
+            <Col lg={3} md={12} sm={12} className="mx-auto px-4 my-5 square border border-dark border-3" >
               <div className="my-3 d-grid">
                 <h1 class="font-weight-light">Grant 2 Info</h1>
                 <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
