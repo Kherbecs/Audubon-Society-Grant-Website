@@ -1,21 +1,21 @@
-.wrapper-appform {
+.wrapper-subappform {
     background-color:#61876ed9;
 }
-.grantTitle-appform {
+.grantTitle-subappform {
     text-align:center;
     margin:auto;
     width:60%;
     padding:1%;
     color:black;
 }
-.title-appform {
+.title-subappform {
     font-size:40px;
     background:#F8EDE3;
     padding:1%;
     margin:1%;
     border-radius: 4px;
 }
-.questionSection-appform {
+.questionSection-subappform {
     margin:auto;
     width:65%;
     background:#F8EDE3;
@@ -23,37 +23,45 @@
     color:black;
     border-radius: 4px;
 }
-.q1-appform {
+.q1-subappform {
     margin:5px;
     padding:5px;
 }
-.q2-appform {
+.q2-subappform {
     margin:5px;
     padding:5px;
 }
-.q3-appform {
+.q3-subappform {
     margin:5px;
     padding:5px;
 }
-.q4-appform {
+.q4-subappform {
     margin:5px;
     padding:5px;
 }
-.qLast-appform {
+.qLast-subappform {
     margin:5px;
     padding:5px;
 }
-.text-center {
+.qanswer-subappform {
+    text-align:left;
+    padding:1%;
+}
+.form-label-subappform {
+    text-decoration:underline;
+}
+.answerarea-subappform {
+    background-color:white;
+    border-radius:4px;
+}
+.text-center-subappform {
     margin:1%;
 }
-.buttonWrapper1-appform {
+.buttonWrapper1-subappform {
     padding:1%;
     margin:auto;
 }
-.form-label-appform {
-    text-decoration:underline;
-}
-.button1-appform {
+.button1-subappform {
     background-color: #BDD2B6;
     border: none;
     color: black;
@@ -62,27 +70,8 @@
     font-size: 20px;
     cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
-    width:20%;
+    max-width:35%;
     border-radius: 4px;
-}
-.button2-appform {
-    background-color: #BDD2B6;
-    border: none;
-    color: black;
-    text-align: center;
-    font-size: 16px;
-    cursor: pointer;
-    font-family: Arial, Helvetica, sans-serif;
-    border-radius: 4px;
-    padding:1%;
-}
-.buttonWrapper2-appform {
-    padding:1%;
-    margin:auto;
-}
-.uploadButtonLetterOfRec-appform {
-    margin:auto;
-    padding:1%;
 }
 html {
     background-color:#61876ed9;
