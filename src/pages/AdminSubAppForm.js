@@ -6,71 +6,91 @@ export function AdminSubAppForm() {
     return (
         <div className = "wrapper-appform">
             <div className = "form-appform">
-                <div className = "grantTitle">
-                    <label for = "title" class = "title">Generic Grant Title</label>
+                <div className = "back-button" >
+                    <a class="prev-page-link" href="/adminportal"><button class = "button2">Return to Previous Page</button></a>
                 </div>
-                <div class="wrapper-user-information">
-                    <div class="user-information-text">
-                        <p><strong>Applicant Name:</strong> John Smith</p>
-                        <p><strong>Email:</strong> johnsmith@gmail.com</p>
-                    </div>
+                <div className = "grantTitle">
+                    <label for = "title" class = "title">Steve Stocking Youth Environmental Scholarship</label>
                 </div>
                 <div className = "questionSection">
-                    <div className = "question">
-                        <label for="question1Text" class="form-label">This is question 1.</label>
-                        <div class="wrapper-user-answer">
-                            <div class="user-answer-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor. 
-                                    Viverra orci sagittis eu volutpat odio facilisis mauris sit amet. 
-                                    Cursus risus at ultrices mi tempus. 
-                                    Ipsum nunc aliquet bibendum enim facilisis gravida neque convallis a. 
-                                    Ac feugiat sed lectus vestibulum mattis.
-                                </p>
+                <div className = "question">
+                        <label for="question4Text" class="question-label">In the text boxes below, please type your name, address, home phone, email, birth date (mm/dd/yy), and your city, state, and ZIP code.</label>
+                        <div className = "q4Wrapper-appform">
+                            <div class = "row g-3 row-appform">
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "fname">First Name</label>
+                                    <input type = "text" value = "John" class = "form-control user-info-field" placeholder = "First Name" aria-label= "First Name" readOnly></input>
+                                </div>
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "lname">Last Name</label>
+                                    <input type = "text" value = "Smith" class = "form-control user-info-field" placeholder = "Last Name" aria-label= "Last Name" readOnly></input>
+                                </div>
                             </div>
-                        </div>                       
+                            <div class = "row g-3 row-appform">
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "birthday">Birth Date (mm/dd/yy)</label>
+                                    <input type = "text" value = "04/19/1993" class = "form-control user-info-field" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)" readOnly></input>
+                                </div>
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "email">Email</label>
+                                    <input type = "text" value = "JohnSmith@gmail.com" class = "form-control user-info-field" placeholder = "Email" aria-label = "Email" readOnly></input>
+                                </div>
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "homephone">Home Phone</label>
+                                    <input type = "text" value = "(916) 501-7088" class = "form-control user-info-field" placeholder = "Home Phone" aria-label = "Home Phone" readOnly></input>
+                                </div>
+                            </div>
+                            <div class = "row g-3 row-appform">
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "address">Address</label>
+                                    <input type = "text" value = "6801 Shiner Street" class = "form-control user-info-field" placeholder = "Address" aria-label = "Address" readOnly></input>
+                                </div>
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "city">City</label>
+                                    <input type = "text" value = "Sacramento" class = "form-control user-info-field" placeholder = "City" aria-label = "City" readOnly></input>
+                                </div>
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "state">State</label>
+                                    <input type = "text" value = "CA" class = "form-control user-info-field" placeholder = "State" aria-label = "State" readOnly></input>
+                                </div>
+                                <div class = "col-md">
+                                    <label class="user-info-label" for = "zip">ZIP Code</label>
+                                    <input type = "text" value = "95828" class = "form-control user-info-field" placeholder = "ZIP Code" aria-label = "ZIP Code" readOnly></input>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className = "question">
-                        <label for="question2Text" class="form-label">This is question 2.</label>
-                        <div class="wrapper-user-answer">
-                            <div class="user-answer-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Ut tellus elementum sagittis vitae et leo duis ut.
-                                </p>
-                            </div>
+                        <label for="question1Text" class="question-label">Are you, or a parent or guardian, a member of the San Joaquin Audubon Society?</label>
+                        <div className = "Q1Selection-appform">
+                            <select className = "q1select-appform" id = "q1select-appform" disabled>
+                                <option value = "Yes">Yes</option>
+                            </select>
+                        </div>                      
+                    </div>
+                    <div className = "question">
+                        <label for="question2Text" class="question-label">Do you live in San Joaquin County?</label>
+                        <div className = "Q2Selection-appform">
+                            <select className = "q2select-appform" id = "q1select-appform" disabled>
+                                <option value = "No">No</option>
+                            </select>
                         </div>                        
                     </div>
                     <div className = "question">
-                        <label for="question3Text" class="form-label">This is question 3.</label>
+                        <label for="question3Text" class="question-label">Which camp or program do you want to attend?</label>
                         <div class="wrapper-user-answer">
-                            <div class="user-answer-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Aliquam eleifend mi in nulla posuere sollicitudin.
-                                </p>
-                            </div>
+                            <textarea class="form-control" id="textAreaExample" rows="4" 
+                                value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam eleifend mi in nulla posuere sollicitudin." readOnly>
+                            </textarea>
                         </div>                         
                     </div>
+                    
                     <div className = "question">
-                        <label for="question4Text" class="form-label">This is question 4.</label>
+                        <label for="qLastText" class="question-label">Do you have any feedback for us?</label>
                         <div class="wrapper-user-answer">
-                            <div class="user-answer-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                </p>
-                            </div>
-                        </div> 
-                    </div>
-                    <div className = "question">
-                        <label for="qLastText" class="form-label">Do you have any feedback for us?</label>
-                        <div class="wrapper-user-answer">
-                            <div class="user-answer-text">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                    Porttitor eget dolor morbi non arcu risus quis. 
-                                    Enim praesent elementum facilisis leo vel. Ultricies leo integer malesuada nunc vel.
-                                </p>
-                            </div>
+                        <textarea class="form-control" id="textAreaExample" rows="4" 
+                            value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Porttitor eget dolor morbi non arcu risus quis. Enim praesent elementum facilisis leo vel. Ultricies leo integer malesuada nunc vel." readOnly>
+                        </textarea>       
                         </div> 
                     </div>
                 </div>
@@ -147,13 +167,8 @@ export function AdminSubAppForm() {
                         </div>
                     </div>
                 </div>
-                <div className = "buttonWrapper2" >
-                    <div class="text-center">
-                        <button class = "button2"><a class="prev-page-link" href="/adminportal">Return to Previous Page</a></button>
-                    </div>
-                </div>
                 <div class="back-button">
-                    <button class = "button2"><a class="prev-page-link" href="/adminportal">Return to Previous Page</a></button>
+                    <a class="prev-page-link" href="/adminportal"><button class = "button2">Return to Previous Page</button></a>
                 </div>
             </div>
         </div>
