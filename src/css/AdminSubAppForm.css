@@ -4,16 +4,17 @@
 .grantTitle {
     text-align:center;
     margin:auto;
-    width:50%;
+    width:60%;
     padding:1%;
     color:black;
 }
 .title {
-    font-size:40px;
+    font-size: 40px;
     background:#F8EDE3;
     padding:1%;
     margin:1%;
     border-radius: 4px;
+    text-align: center;
 }
 
 .wrapper-user-information{
@@ -31,7 +32,7 @@
 .questionSection {
     margin:auto;
     margin-bottom: 1rem;
-    width:50%;
+    width:65%;
     background:#F8EDE3;
     padding:1%;
     color:black;
@@ -40,6 +41,16 @@
 .question {
     margin:5px;
     padding:5px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.question-label{
+    text-decoration: underline;
+}
+
+.user-info-label{
+    font-size: 16px;
 }
 
 .wrapper-user-answer{
@@ -53,11 +64,16 @@
     padding-right: 1rem;
 }
 
+.select-dropdown{
+    font-size: 16px;
+}
+
 .file-div{
     background-color: #F8EDE3;
     border-radius: 4px;
     margin: auto;
     margin-bottom: 1rem;
+    text-align: center;
     width: 20%;
 }
 
@@ -113,6 +129,7 @@
     overflow-y: scroll;
     height: 10rem;
     width: 95%;
+    text-align: center;
 }
 
 .text-center {
@@ -143,22 +160,33 @@
     cursor: pointer;
     font-family: Arial, Helvetica, sans-serif;
     border-radius: 4px;
+    width: 60%;
+    min-width: 100px;
 }
+
+.button2:hover{
+    background-color: #F8EDE3;
+    color: black;
+}
+
 .buttonWrapper2 {
-    position:absolute;
-    top:10%;
-    left:2.5%;
     margin:auto;
     padding:1%;
 }
 
 .add-comment-button{
-    background-color: #BDD2B6;
+    background-color: #198754;
     border: none;
     border-radius: 4px;
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
     height: 100%;
     width: 100%
+}
+
+.add-comment-button:hover{
+    background-color: #157347;
+    color: white;
 }
 
 .status-button{
@@ -180,9 +208,10 @@
 }
 
 .back-button{
-    margin-bottom: 1rem;
-    padding:1%;
-    width: 20%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 15%;
+    text-align: center;
 }
 
 .prev-page-link{
@@ -196,4 +225,57 @@
 
 html {
     background-color:#61876ed9;
+}
+
+@media screen and (max-width: 1024px) {
+    .grantTitle{
+        width: 75%;
+    }
+    .title{
+        font-size: 30px;
+    }
+    .q4Wrapper-appform{
+        padding-top: 5%;
+    }
+    .row-appform{
+        margin-top: 2%;
+        margin-bottom: 2%;
+        display:block;
+    }
+    .col-md{
+        display: block;
+    }
+    .user-info-field{
+        margin-top: 2%;
+        margin-bottom: 2%;
+        text-align: center;
+    }
+    .questionSection{
+        width: 70%;
+    }
+    .file-div{
+        width: 60%;
+    }
+    .wrapper-admin-feedback{
+        width: 90%;
+    }
+    .wrapper-comment-button{
+        width: 105%;
+    }
+    .wrapper-status-button{
+        margin-right: 5px;
+        margin-left: -10px;
+    }
+    .back-button{
+        margin-left: 5px;
+        margin-bottom: 5px;
+    }
+}
+
+.q1select-appform {
+    font-size: 16px;
+}
+
+.q2select-appform {
+    font-size: 16px;
 }
