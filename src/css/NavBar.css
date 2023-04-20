@@ -49,3 +49,10 @@
     font-size: 14px;
   }
 }
+
+@media (min-width: 1250px) {
+  #navbar-custom{
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+  }
+}
