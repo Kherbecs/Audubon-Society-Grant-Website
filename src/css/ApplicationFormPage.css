@@ -4,7 +4,7 @@
 .grantTitle-appform {
     text-align:center;
     margin:auto;
-    width:60%;
+    width:75%;
     padding:1%;
     color:black;
 }
@@ -14,6 +14,7 @@
     padding:1%;
     margin:1%;
     border-radius: 4px;
+    text-align:center;
 }
 .questionSection-appform {
     margin:auto;
@@ -22,36 +23,111 @@
     padding:1%;
     color:black;
     border-radius: 4px;
+    text-align:center;
 }
 .q1-appform {
     margin:5px;
     padding:5px;
+    text-align:center;
+}
+.Q1Selection-appform {
+    margin:1%;
+    padding:1%;
+    text-align:center;
+}
+.Q2Selection-appform {
+    margin:1%;
+    padding:1%;
+    text-align:center;
 }
 .q2-appform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .q3-appform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .q4-appform {
     margin:5px;
     padding:5px;
+    text-align:center;
+}
+.form-label-appform4 {
+    text-align:center;
+}
+.q4Wrapper-appform {
+    margin:auto;
+    padding:1%;
+    text-align:center;
+}
+.q5-appform {
+    margin:5px;
+    padding:5px;
+    text-align:center;
+}
+.q6-appform {
+    margin:5px;
+    padding:5px;
+    text-align:center;
 }
 .qLast-appform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .text-center {
     margin:1%;
+    text-align:center;
 }
 .buttonWrapper1-appform {
     padding:1%;
     margin:auto;
+    text-align:center;
 }
-.form-label-appform {
-    text-decoration:underline;
+.form-label-appform1 {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
+}
+.form-label-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
+}
+.form-label-appform3 {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
+}
+.form-label-appform4 {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
+}
+.form-label-appform5 {
+    font-size: 20px;
+    text-align:center;
+}
+.form-label-appform6 {
+    font-size: 20px;
+    text-align:center;
+}
+.form-label-appformLast {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
+}
+.submitbutton-appform {
+    width:20%;
+    border-radius:4px;
+    font-size:20px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align:center;
+    padding:1%;
+    text-align:center;
 }
 .button1-appform {
     background-color: #BDD2B6;
@@ -76,13 +152,27 @@
     border-radius: 4px;
     padding:1%;
 }
+.button2-appform:hover {
+    background-color: #F8EDE3;
+}
 .buttonWrapper2-appform {
     padding:1%;
     margin:auto;
+    text-align:center;
 }
 .uploadButtonLetterOfRec-appform {
     margin:auto;
     padding:1%;
+    text-align:center;
+}
+.uploadButtonEssay-appform {
+    margin:auto;
+    padding:1%;
+    text-align:center;
+}
+.row-appform {
+    margin:1%;
+    text-align:center;
 }
 html {
     background-color:#61876ed9;

@@ -4,7 +4,7 @@
 .grantTitle-subappform {
     text-align:center;
     margin:auto;
-    width:60%;
+    width:75%;
     padding:1%;
     color:black;
 }
@@ -14,6 +14,7 @@
     padding:1%;
     margin:1%;
     border-radius: 4px;
+    text-align:center;
 }
 .questionSection-subappform {
     margin:auto;
@@ -22,33 +23,61 @@
     padding:1%;
     color:black;
     border-radius: 4px;
+    text-align:center;
+}
+.basicInfo-subappform {
+    margin:5px;
+    padding:5px;
+    text-align:center;
+}
+.basicInfoWrapper-subappform {
+    margin: auto;
+    padding:1%;
+    text-align:center;
+}
+.Q1Selection-subappform {
+    margin: 1%;
+    padding: 1%;
+    text-align:center;
 }
 .q1-subappform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .q2-subappform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .q3-subappform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .q4-subappform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .qLast-subappform {
     margin:5px;
     padding:5px;
+    text-align:center;
 }
 .qanswer-subappform {
     text-align:left;
     padding:1%;
 }
-.form-label-subappform {
-    text-decoration:underline;
+.form-label-subappform1 {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
+}
+.form-label-subappform2 {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
 }
 .answerarea-subappform {
     background-color:white;
@@ -56,10 +85,24 @@
 }
 .text-center-subappform {
     margin:1%;
+    text-align:center;
+}
+.uploadButtonLetterOfRec-subappform {
+    margin:1%;
+    padding:1%;
+    text-align:center;
+    color:blue;
+}
+.uploadButtonEssay-subappform {
+    margin: 1%;
+    padding: 1%;
+    text-align:center;
+    color:blue;
 }
 .buttonWrapper1-subappform {
     padding:1%;
     margin:auto;
+    text-align:center;
 }
 .button1-subappform {
     background-color: #BDD2B6;
@@ -73,6 +116,19 @@
     max-width:35%;
     border-radius: 4px;
 }
+.button1-subappform:hover {
+    background-color:#F8EDE3;
+}
 html {
     background-color:#61876ed9;
+}
+.q5-subappform {
+    margin:5px;
+    padding:5px;
+    text-align:center;
+}
+.q6-subappform {
+    margin:5px;
+    padding:5px;
+    text-align:center;
 }
