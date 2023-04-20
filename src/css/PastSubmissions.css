@@ -1,10 +1,8 @@
 .past-submissions-title {
-    font-weight: bolder;
-    background-color: #BDD2B6;
+    background-color: #F8EDE3;
     width: 100%;
     height: 100%;
  }
-
 .page-content {
     padding-bottom: 3%;
     overflow-x: hidden;
@@ -17,32 +15,28 @@
  .submission-body {
     background-color: #F8EDE3;
     border-width: 0px;
+    text-align: center;
 }
 
 .page-title {
-    width: 100%;
-    margin-bottom: 3%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    background-color: #BDD2B6;
+  padding:  1% 5% .5% 5%;
+  background-color: #F8EDE3;
+  text-align: center;
+  font-size: 10vh;
+  color: black;
+  outline-color: black;
 }
 
-/*container*/
 .container {
     display: flex;
     justify-content: center;
-}
-  
-
-.vstack {
-    width: 50%;
 }
 
 .application-headers {
     display:flex;
     justify-content: space-around;
     border: none;
-
+    background-color: #BDD2B6;
 }
 
 .back-to-grants {
@@ -57,17 +51,22 @@
     margin-top: 1%;
     margin-bottom: 1%;
 }
+.back-to-grants:hover {
+    background-color: #F8EDE3;
+    color: black;
+}
 
 .col {
     display: flex;
-    justify-content:flex-end;
     margin-right: 2%;
+    margin-left: 3%;
 }
 
 
 .main-card {
     height: 35rem;
-    max-height: 60rem;
+    overflow: auto;
+    overscroll-behavior: contain;
 }
 
 .applications {
@@ -76,75 +75,89 @@
     border-color: #BDD2B6;
     text-decoration: none;
 }
+
 .applications:hover {
-    color:white;
+    background-color: rgba(97, 135, 110, 1);
+    color: white;
 }
 
 .mobile-apps {
     display: none;
 }
 
-/*change back to grants button first*/
+.container-content {
+    display: flex;
+    justify-content: center;
+}
+
+.applicatoins-stack, .status-stack, .date-submitted-stack {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-self: stretch;
+  
+}
+
+.date-submitted {
+    height: 38px;
+}
+
+@media (min-width: 1200px) {
+    .container-content{
+        max-width: 2000px;
+    }
+}
+
 @media screen and (max-width: 992px) {
-     .back-to-grants {
-        font-size: 17px;
-        font-family: Arial, Helvetica, sans-serif;
-     }
+    .back-to-grants {
+       font-size: 17px;
+       font-family: Arial, Helvetica, sans-serif;
+    }
 }
 
 @media screen and (max-width: 768px) {
-    .back-to-grants {
-        font-size: 15px;
-        font-family: Arial, Helvetica, sans-serif;
-        padding: 10px 27px;
-    }
-    /*wrap*/
-    .vstack {
-        width: 100%;
-    }
+   .back-to-grants {
+       font-size: 15px;
+       font-family: Arial, Helvetica, sans-serif;
+       padding: 10px 27px;
+   }
+   .desktop-apps {
+       display: none;
 
-    .app-status {
-        width: 50%;
-        display: flex;
-        margin-bottom: 2%;
-    }
-    .main-card {
-        overflow: hidden;
-        max-height: 100rem;
-        height: 45rem;
-    }
+   }
+   .mobile-apps {
+       display: unset;
+   }
 
-    .desktop-apps {
-        display: none;
+   .btn-space {
+       margin-bottom: 50%;
+   }
+}
 
-    }
-    .mobile-apps {
-        display: unset;
-    }
-
-    .btn-space {
-        margin-bottom: 50%;
+@media screen and (max-width: 576px) {
+    .mobile-progress {
+        margin-bottom: -25%;
     }
 }
 
-@media screen and (max-width: 416px) {
-    .back-to-grants {
-        font-size: 15px;
-        font-family: Arial, Helvetica, sans-serif;
-        padding: 10px 27px;
-        padding-left: 8px;
-        padding-right: 8px;
-    }
+@media screen and (max-width: 970px) {
+   .back-to-grants {
+       font-size: 15px;
+       font-family: Arial, Helvetica, sans-serif;
+       padding: 10px 27px;
+       padding-left: 8px;
+       padding-right: 8px;
+   }
 
-    .main-card {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        height: 60rem;
-    }
-    .desktop-apps {
-        display: none;
+   .main-card {
+       overflow: auto;
+       overscroll-behavior: contain;
+   }
+   .desktop-apps {
+       display: none;
 
-    }
-
+   }
+   .mobile-apps {
+    display: unset;
+   }
 }
