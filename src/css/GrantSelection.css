@@ -1,18 +1,19 @@
+.GrantSelection{
+  padding: 2% 0% 0.5% 0%;
+  background-color: rgba(97, 135, 110, 1);
+
+
+}
+
 .GrantScholarshipHeader {
   padding:  1% 5% .5% 5%;
-  background-color: #BDD2B6;
+  background-color: #F8EDE3;
   text-align: center;
   font-size: 10vh;
   color: black;
   outline-color: black;
-
 }
 
-.SubmissionsButton {
-    display: flex;
-    justify-content: flex-end;
-    padding: 1% 1% 2% 1%;
-}
 
 .GrantScholarshipCard{
   width: 75%;
@@ -22,9 +23,8 @@
   margin-top:  2%;
   margin-bottom: 5%;
   border-radius: 5%;
-
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+  perspective: 1px;
+  
 }
 
 .TopPhoto {
@@ -76,24 +76,53 @@
   justify-content: left;
   padding-top: 1%;
 
+
 }
 
 .BottomHalf {
   background-color: #F8EDE3;
-  text-align: left;
+  text-align: center;
   padding-top: .5%;
-  padding-left: 3%;
+  padding-left: 2%;
   padding-right: 3%;
+  border-radius: 5px;
+  padding-bottom:.25%;
   
+  
+}
+
+.ApplicationSub{
+  align-self: center;
+  padding: 0% 0% 0% 0%;
 }
 
 .ApplyButton {
   display: flex;
   justify-content: center;
-  padding: 0% 0% 2% 0%;
+  padding: 0% 2.5% 0% 0%;
 }
 
 
+.apply_1{
+  padding: 15% 30% 15% 30%;
+}
+.apply_2{
+  padding: 15% 30% 15% 30%;
+}
+
+.ExampleBox{
+  text-align: center;
+  padding: 0% 0% 2% 0%;
+
+}
 
 
+.DropDownItem{
+  align-items: center;
+}
+
+.Requirements{
+  text-align: left;
+  padding-left: 0%;
+}
 
