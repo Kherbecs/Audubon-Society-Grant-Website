@@ -1,9 +1,15 @@
 .wrapper-landingpage {
-    background-repeat: repeat-y;
-    background-color: rgba(97, 135, 110, 1); 
+  background-repeat: repeat-y;
+  background-color: rgba(97, 135, 110, 1); 
 }
 
 .info-cards{
-  border-radius: 5px;
-  background-color: #F8EDE3;
+border-radius: 5px;
+background-color: #F8EDE3;
+text-align: center;
+}
+
+.carousel-item{
+height:300px;
+width:100%;
 }

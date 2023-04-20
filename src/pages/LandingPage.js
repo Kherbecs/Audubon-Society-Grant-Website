@@ -10,44 +10,30 @@ export function LandingPage() {
   return (
     <div class="wrapper-landingpage">
       <div class="carousel-div">
-        <Carousel>
+        <Carousel controls={false} indicators={false}>
           <Carousel.Item className="carousel-item" interval={1000}>
-              <img  
-                className="d-block w-100"
-                src="https://picsum.photos/1920/1080"
-                alt="First slide"
-                style={{height: '790px'}}
-              />
-              <Carousel.Caption>
-                <h3>First slide label</h3>
-                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-              </Carousel.Caption>
+              <div class="d-flex justify-content-center">
+                <img  
+                  src="https://picsum.photos/1920/1080"
+                  alt="First slide"
+                />
+              </div>
             </Carousel.Item>
             <Carousel.Item interval={500}>
-              <img
-                className="d-block w-100"
-                src="https://picsum.photos/1920/1080"
-                alt="Second slide"
-                style={{height: '790px'}}
-              />
-              <Carousel.Caption>
-                <h3>Second slide label</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </Carousel.Caption>
+              <div class="d-flex justify-content-center">
+                <img
+                  src="https://picsum.photos/1920/1080"
+                  alt="Second slide"
+                />
+              </div>
             </Carousel.Item>
             <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="https://picsum.photos/1920/1080"
-                alt="Third slide"
-                style={{height: '790px'}}
-              />
-              <Carousel.Caption>
-                <h3>Third slide label</h3>
-                <p>
-                  Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                </p>
-              </Carousel.Caption>
+              <div class="d-flex justify-content-center">
+                <img
+                  src="https://picsum.photos/1920/1080"
+                  alt="Third slide"
+                />
+              </div>
             </Carousel.Item>
         </Carousel>
       </div>
