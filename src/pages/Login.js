@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 export function Login() {
   return (
     <html>
-      <div className="wrapper-lr">
+      <div className="wrapper-lr wrapper-padding-l">
         <div className="form-lr">
           <h2 className="mb-3 h2-lr">Login</h2>
           <hr className="hr-lr"/>

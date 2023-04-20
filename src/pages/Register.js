@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 export function Register() {
   return (
-      <div className="wrapper-lr">
+      <div className="wrapper-lr wrapper-padding-r">
         <div className="form-lr">
 
           <h2 className="mb-3 h2-lr">Register</h2>

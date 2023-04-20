@@ -53,3 +53,11 @@
   padding-right: 10px;
   text-decoration: none;
 }
+
+@media screen and (max-width: 280px) and (min-height: 653px) {
+  .footer-description
+  {
+    min-width: 250px;
+    width: 200px;
+  }
+}

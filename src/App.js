@@ -15,11 +15,28 @@ import { PasswordChange } from './pages/PasswordChange.js';
 import { PasswordFullReset } from './pages/PasswordFullReset.js';
 import { SubAppForm } from './pages/SubAppForm.js';
 import { AdminSubAppForm } from './pages/AdminSubAppForm.js';
+import { UserNavBar } from './pages/UserNavBar.js';
 
 function App() {
   return (
     <Router>
-      <NavBar></NavBar>
+      <Route
+        render={({ location }) =>
+          location.pathname === '/' ||
+          location.pathname === '/login' ||
+          location.pathname === '/register' ? (
+            <NavBar />
+          ) : null
+        }
+      />
+      <Route
+        render={({ location }) =>
+          location.pathname === '/pastsubmissions' ||
+          location.pathname === '/grantselection' ? (
+            <UserNavBar />
+          ) : null
+        }
+      />
       <Switch>
         <Route exact path="/">
           <LandingPage></LandingPage>
@@ -61,7 +78,17 @@ function App() {
           <SubAppForm></SubAppForm>
         </Route>
       </Switch>
-      <Footer></Footer>
+      <Route
+        render={({ location }) =>
+          location.pathname === '/' ||
+          location.pathname === '/login' ||
+          location.pathname === '/register' ||
+          location.pathname === '/grantselection' ||
+          location.pathname === '/pastsubmissions' ? (
+            <Footer />
+          ) : null
+        }
+      />
     </Router>
   );
 }
