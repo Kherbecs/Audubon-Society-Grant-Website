@@ -6,22 +6,33 @@
 }
 
 @media screen and (max-width: 700px){
-  .col-md-admin{
+  .col-md-admin1{
       display: flex;
       flex: 50%;
   }
-  .switch {
-    top: 1%;
-    left: 85px;
+  .submissions-box {
+    padding-left: 6%;
+  }
+  .sub{
+    width: 85%;
   }
 }
 
 @media screen and (max-height: 1500px){
-  .col-md-admin{
-      display: flex;
-      flex: 50%;
+  .col-md-admin1{
+    /*
+    margin-right:10%;
+    margin-left: 0;
+    */
+    flex:40%;
+    margin-left: 0.5%;
   }
-
+  
+  .col-md-admin2{
+    display:flex;
+    flex:44%;
+  }
+  
   .search-admin {
     margin-right: 10%;
   }
@@ -36,16 +47,39 @@
     bottom: 2%;
     margin-left: 2%;
   }
+
+  .submissions-box {
+    padding-left: 6%;
+  }
+  .sub{
+    width: 85%;
+  }
 }
 
-@media screen and (min-width: 1025px) and (min-height: 650px) {
+@media screen and (max-width: 1097px) {
+  .col-md-admin1{
+    margin-left: 0;
+  }
+  .form-admin {
+    margin-top:8%;
+    margin-left: 20%;
+    width: 70%;
+  }
+  .col-md-admin2{
+    display:flex;
+    flex:44%;
+  }
   .search-admin  {
     margin-right: 20%;
   }
-  .form-admin  {
-    margin-top:20%;
-    margin-left: 60%;
-    width: 200%;
+  .submissions-box {
+    padding-left: 5%;
+  }
+  .logout {
+    margin-left: 79%;
+  }
+  .sub{
+    width: 85%;
   }
 }
 
@@ -91,10 +125,9 @@
 @media screen and (max-width: 700px){
 .logout {
 border-radius: 4px;
-margin-left: 70%;
 margin-top: 5%;
 margin-bottom: 3%;
-
+margin-left: 78%;
 background-color: #BDD2B6;
      border: none;
   color: black;
@@ -109,15 +142,21 @@ background-color: #BDD2B6;
     font-family: Arial, Helvetica, sans-serif;
 
 }
-
+.col-md-admin1{
+  margin-left: 1%;
+}
 .form-admin  {
-  margin-top:6%;
-  margin-left: 15%;
-  width: 70%;
+  width: 90%;
 }
 
 .search-admin  {
   margin-left: 10%;
+}
+.submissions-box {
+  padding-left: 10%;
+}
+.sub{
+  width: 70%;
 }
 }
 
@@ -171,13 +210,11 @@ overflow-y:scroll;
   padding-bottom: 3%;
   width: 80%;
   height: 50%;
-  padding-left: 7%;
   background-color: #F8EDE3;
 }
 
 
-.sub1 {
-  width: 85%;
+.sub {
   padding-top: 1%;
   padding-bottom: 1%;
   border-radius: 4px;
@@ -191,103 +228,7 @@ overflow-y:scroll;
       font-family: Arial, Helvetica, sans-serif;
 }
 
-.sub1:hover {
-background-color: rgba(97, 135, 110, 1);
-  color: black; 
-}
-
-.sub2 {
-  border-radius: 4px;
-  margin-top: 3%;
-  background-color: #BDD2B6;
-       border: none;
-    color: black;
-    width: 85%;
-  padding-top: 1%;
-  padding-bottom: 1%;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-}
-.sub2:hover {
-background-color: rgba(97, 135, 110, 1);
-  color: black; 
-}
-
-.sub3 {
-  border-radius: 4px;
-  margin-top: 3%;
-  background-color: #BDD2B6;
-       border: none;
-    color: black;
-    width: 85%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-}
-
-.sub3:hover {
-background-color: rgba(97, 135, 110, 1);
-  color: black; 
-}
-
-.sub4 {
-  border-radius: 4px;
-  margin-top: 3%;
-  background-color: #BDD2B6;
-       border: none;
-    color: black;
-    width: 85%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-}
-.sub4:hover {
-background-color: rgba(97, 135, 110, 1);
-  color: black; 
-}
-
-.sub5 {
-  border-radius: 4px;
-  margin-top: 3%;
-  background-color: #BDD2B6;
-       border: none;
-    color: black;
-    width: 85%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-}
-.sub5:hover {
-background-color: rgba(97, 135, 110, 1);
-  color: black; 
-}
-
-.sub6 {
-  border-radius: 4px;
-  margin-top: 3%;
-  background-color: #BDD2B6;
-       border: none;
-    color: black;
-    width: 85%;
-    padding-top: 1%;
-    padding-bottom: 1%;
-    text-align: center;
-    font-size: 20px;
-    cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-}
-.sub6:hover {
+.sub:hover {
 background-color: rgba(97, 135, 110, 1);
   color: black; 
 }
@@ -365,4 +306,3 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-  

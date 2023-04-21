@@ -16,7 +16,7 @@ export function AdminPortal() {
             </p>
         </p>
         <div class="row g-2">
-            <div class="col-md col-md-admin">
+            <div class="col-md col-md-admin1">
                 <div class="form-floating form-floating-custom">
                     <select class="form-select form-admin" id="floatingSelect" aria-label="Filter drop down menu">
                         <option selected>Filter by grant, date, read/unread</option>
@@ -29,7 +29,7 @@ export function AdminPortal() {
                 </div>
             </div>
         
-            <div class="col-md col-md-admin">
+            <div class="col-md col-md-admin2">
                 <div class="mb-3 search-bar search-admin">
                     <div class="searchField">
                         <input type="name" class="form-control" id="searchBar" placeholder="Search for applicants"></input> 
@@ -42,37 +42,37 @@ export function AdminPortal() {
             
         </div>
         <div class="submissions-box">
-                <button class="sub1"><a class="submission-link" href="/adminsubappform">Submission</a> 
+                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
                 </button>
                 <label class="switch">
                 <input type="checkbox"></input>
                 <span class="slider round"></span></label>
 
-                <button class="sub2"><a class="submission-link" href="/adminsubappform">Submission</a> 
+                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
                 </button>
                 <label class="switch">
                 <input type="checkbox"></input>
                 <span class="slider round"></span></label>
                 
-                <button class="sub3"><a class="submission-link" href="/adminsubappform">Submission</a> 
+                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
                 </button>
                 <label class="switch">
                 <input type="checkbox"></input>
                 <span class="slider round"></span></label>
 
-                <button class="sub4"><a class="submission-link" href="/adminsubappform">Submission</a> 
+                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
                 </button>
                 <label class="switch">
                 <input type="checkbox"></input>
                 <span class="slider round"></span></label>
 
-                <button class="sub5"><a class="submission-link" href="/adminsubappform">Submission</a> 
+                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
                 </button>
                 <label class="switch">
                 <input type="checkbox"></input>
                 <span class="slider round"></span></label>
 
-                <button class="sub6"><a class="submission-link" href="/adminsubappform">Submission</a> 
+                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
                 </button>
                 <label class="switch">
                 <input type="checkbox"></input>

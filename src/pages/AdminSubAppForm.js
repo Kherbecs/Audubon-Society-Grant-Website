@@ -17,43 +17,43 @@ export function AdminSubAppForm() {
                         <label for="question4Text" class="question-label">In the text boxes below, please type your name, address, home phone, email, birth date (mm/dd/yy), and your city, state, and ZIP code.</label>
                         <div className = "q4Wrapper-appform">
                             <div class = "row g-3 row-appform">
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "fname">First Name</label>
                                     <input type = "text" value = "John" class = "form-control user-info-field" placeholder = "First Name" aria-label= "First Name" readOnly></input>
                                 </div>
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "lname">Last Name</label>
                                     <input type = "text" value = "Smith" class = "form-control user-info-field" placeholder = "Last Name" aria-label= "Last Name" readOnly></input>
                                 </div>
                             </div>
                             <div class = "row g-3 row-appform">
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "birthday">Birth Date (mm/dd/yy)</label>
                                     <input type = "text" value = "04/19/1993" class = "form-control user-info-field" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)" readOnly></input>
                                 </div>
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "email">Email</label>
                                     <input type = "text" value = "JohnSmith@gmail.com" class = "form-control user-info-field" placeholder = "Email" aria-label = "Email" readOnly></input>
                                 </div>
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "homephone">Home Phone</label>
                                     <input type = "text" value = "(916) 501-7088" class = "form-control user-info-field" placeholder = "Home Phone" aria-label = "Home Phone" readOnly></input>
                                 </div>
                             </div>
                             <div class = "row g-3 row-appform">
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "address">Address</label>
                                     <input type = "text" value = "6801 Shiner Street" class = "form-control user-info-field" placeholder = "Address" aria-label = "Address" readOnly></input>
                                 </div>
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "city">City</label>
                                     <input type = "text" value = "Sacramento" class = "form-control user-info-field" placeholder = "City" aria-label = "City" readOnly></input>
                                 </div>
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "state">State</label>
                                     <input type = "text" value = "CA" class = "form-control user-info-field" placeholder = "State" aria-label = "State" readOnly></input>
                                 </div>
-                                <div class = "col-md">
+                                <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "zip">ZIP Code</label>
                                     <input type = "text" value = "95828" class = "form-control user-info-field" placeholder = "ZIP Code" aria-label = "ZIP Code" readOnly></input>
                                 </div>
