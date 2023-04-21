@@ -56,8 +56,7 @@ The project is a second website for the San Joaquin Audubon Society to advertise
 <a name="slideshow"></a>
 ## Prototype Slideshow
 
-![prototypeSlideshow](https://user-images.githubusercontent.com/64297072/231573097-f1abbca9-4a05-4f22-86c7-be2d535db949.gif)
-
+![prototype](https://user-images.githubusercontent.com/64297072/233535108-4448d363-85a7-43ad-919a-3ee7b8f56828.gif)
 
 
 <a name="made-with"></a>
