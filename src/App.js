@@ -16,6 +16,54 @@ import { PasswordFullReset } from './pages/PasswordFullReset.js';
 import { SubAppForm } from './pages/SubAppForm.js';
 import { AdminSubAppForm } from './pages/AdminSubAppForm.js';
 import { UserNavBar } from './pages/UserNavBar.js';
+import { AdminLogin } from './pages/AdminLogin.js';
+import { AdminRegister } from './pages/AdminRegister.js';
+import { AdminForgotPassword } from './pages/AdminForgotPassword.js';
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
+import 'firebase/compat/analytics';
+import 'firebase/compat/database';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getDatabase } from 'firebase/database';
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// User database config
+const firebaseConfig = {
+  apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
+  authDomain: "team-pwd.firebaseapp.com",
+  projectId: "team-pwd",
+  storageBucket: "team-pwd.appspot.com",
+  messagingSenderId: "129648865838",
+  appId: "1:129648865838:web:9713fb401ac09b481e25bf",
+  measurementId: "G-6FM488KSS5"
+};
+
+// Admin database config
+const adminFirebaseConfig = {
+  apiKey: "AIzaSyB0pkdIGT5RiCe5jPY2628O27X_sTk3Xn4",
+  authDomain: "team-pwd-admin.firebaseapp.com",
+  projectId: "team-pwd-admin",
+  storageBucket: "team-pwd-admin.appspot.com",
+  messagingSenderId: "445587795844",
+  appId: "1:445587795844:web:9b1ed3d5902ddca9d577d1",
+  measurementId: "G-0FLPMK8X2Z"
+};
+
+// Initialize Firebase for users
+const app = firebase.initializeApp(firebaseConfig, 'my-app');
+console.log(app);
+const database = getDatabase(app);
+const auth = app.auth();
+
+// Initialize Firebase for admins
+const adminApp = firebase.initializeApp(adminFirebaseConfig);
+console.log(adminApp);
+const adminAuth = adminApp.auth();
 
 function App() {
   return (
@@ -76,6 +124,15 @@ function App() {
         </Route>
         <Route exact path="/subappform">
           <SubAppForm></SubAppForm>
+        </Route>
+        <Route exact path="/adminlogin">
+          <AdminLogin></AdminLogin>
+        </Route>
+        <Route exact path="/adminregister">
+          <AdminRegister></AdminRegister>
+        </Route>
+        <Route exact path="/adminforgotpassword">
+          <AdminForgotPassword></AdminForgotPassword>
         </Route>
       </Switch>
       <Route
