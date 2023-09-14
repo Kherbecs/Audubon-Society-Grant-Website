@@ -5,56 +5,61 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import 'firebase/compat/analytics';
 import 'firebase/compat/database';
+import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
-  authDomain: "team-pwd.firebaseapp.com",
-  projectId: "team-pwd",
-  storageBucket: "team-pwd.appspot.com",
-  messagingSenderId: "129648865838",
-  appId: "1:129648865838:web:9713fb401ac09b481e25bf",
-  measurementId: "G-6FM488KSS5"
-};
-
-
-const app = firebase.initializeApp(firebaseConfig, 'my-app');
-console.log(app);
-const database = getDatabase(app);
-const  auth= app.auth();
-
-
-export function PasswordReset() {
-  function passwordUserReset(){
-    
-    const userEmail = document.getElementById('InputEmail1').value;
-    if(userEmail===''){
-      alert('Enter a vaild email')
-      return;
-    } else if(!/\S+@\S+\.\S+/.test(userEmail)){
-      alert('Enter a vaild email')
-      return;
-    }
-    sendPasswordResetEmail(auth,userEmail)
-    .then((userCredential) => {
-      if (userCredential && userCredential.user && !userCredential.user.emailVerified) {
-        alert('Email is not found.');
-        firebase.auth().signOut();
-        return;
-      }
-      alert('Reset link sent. Check email');
-      
-    })
-    .catch((error) => {
-      
-      alert('Account not found.');
-      console.error(error);
-      
-    });
+/*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
+const adminFirebaseConfig = {
+    apiKey: "AIzaSyB0pkdIGT5RiCe5jPY2628O27X_sTk3Xn4",
+    authDomain: "team-pwd-admin.firebaseapp.com",
+    projectId: "team-pwd-admin",
+    storageBucket: "team-pwd-admin.appspot.com",
+    messagingSenderId: "445587795844",
+    appId: "1:445587795844:web:9b1ed3d5902ddca9d577d1",
+    measurementId: "G-0FLPMK8X2Z"
+  };
   
-  }
+  // Initialize Firebase for admins
+  const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
+  console.log(adminApp);
+  const databaseAdmin = getDatabase(adminApp);
+  const adminAuth = adminApp.auth();
+
+export function AdminForgotPassword() {
+    function handlePasswordReset() {
+        const email = document.getElementById('InputEmail1').value;
+        
+        if(email.trim() === '') {
+          alert('Please enter your email.');
+          return;
+        }
+        
+        // Checks if email is valid
+        if(!/\S+@\S+\.\S+/.test(email)) {
+          alert('Please enter a valid email address.');
+          return;
+        }
+        
+        //Will send the password reset through email
+        adminAuth.sendPasswordResetEmail(email)
+        .then((userCredential) => {
+          // Check if email is verified
+          if (userCredential && userCredential.user && !userCredential.user.emailVerified) {
+            alert('Email is not found.');
+            firebase.auth().signOut();
+            return;
+          }
+      
+          // Redirect to home page
+          alert('Reset link sent. Check email');          
+          return;
+        })
+        .catch((error) => {
+          alert('Account not found.');
+          console.error(error);
+        });
+      }
+
   return (
     <div className="PasswordReset">
       <div className="passwordwrapper">
@@ -74,10 +79,10 @@ export function PasswordReset() {
               </div>
             </div>
             <div class="containerty">
-              <a  className="links-password"><button type="sign in" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={()=>passwordUserReset()}>Submit</button></a>
+              <button type="sign in" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={() => handlePasswordReset()}>Submit</button>
             </div>
           <div class="containerty">
-          <a href="/login" class="links-password ">Back</a>
+          <a href="/adminlogin" class="links-password ">Back</a>
           </div>
         
       </div>
@@ -87,4 +92,5 @@ export function PasswordReset() {
       </div> 
   );
 }
+
 
