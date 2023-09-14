@@ -19,6 +19,7 @@ const adminFirebaseConfig = {
     measurementId: "G-0FLPMK8X2Z"
   };
   
+  
   // Initialize Firebase for admins
   const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
   console.log(adminApp);
