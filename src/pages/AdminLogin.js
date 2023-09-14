@@ -1,42 +1,34 @@
 import React from 'react'
-import '../css/LoginAndRegister.css'
+import '../css/AdminLoginAndRegister.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+/*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
+const adminFirebaseConfig = {
+    apiKey: "AIzaSyB0pkdIGT5RiCe5jPY2628O27X_sTk3Xn4",
+    authDomain: "team-pwd-admin.firebaseapp.com",
+    projectId: "team-pwd-admin",
+    storageBucket: "team-pwd-admin.appspot.com",
+    messagingSenderId: "445587795844",
+    appId: "1:445587795844:web:9b1ed3d5902ddca9d577d1",
+    measurementId: "G-0FLPMK8X2Z"
+  };
+  
+  // Initialize Firebase for admins
+  const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
+  console.log(adminApp);
+  const databaseAdmin = getDatabase(adminApp);
+  const adminAuth = adminApp.auth();
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
-  authDomain: "team-pwd.firebaseapp.com",
-  projectId: "team-pwd",
-  storageBucket: "team-pwd.appspot.com",
-  messagingSenderId: "129648865838",
-  appId: "1:129648865838:web:9713fb401ac09b481e25bf",
-  measurementId: "G-6FM488KSS5"
-};
-
-// Initialize Firebase for users
-const app = firebase.initializeApp(firebaseConfig, 'my-app');
-const analytics = getAnalytics(app);
-console.log(app);
-const database = getDatabase(app);
-const auth = app.auth();
-
-/*Login Page that uses React JS, HTML, CSS, and Bootstrap 5*/
-
-export function Login() {
+export function AdminLogin() {
   const history = useHistory();
-  function handleLogin() {
+  function handleAdminLogin() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
@@ -54,19 +46,19 @@ export function Login() {
       alert('Please enter your email.');
       return;
     }
-    
+
     // Signing in with the user account
-    auth.signInWithEmailAndPassword(email, password)
+    adminAuth.signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
       // Check if email is verified
       if (!userCredential.user.emailVerified) {
         alert('Please verify your email before logging in.');
-        auth.signOut();
+        firebase.auth().signOut();
         return;
       }
-      
-      // Redirect to the grantselection page
-      window.location.href = '/grantselection';
+  
+      // Redirect to admin page
+      window.location.href = '/adminportal';
     })
     .catch((error) => {
       // Handle incorrect password or email
@@ -79,7 +71,7 @@ export function Login() {
     <html>
       <div className="wrapper-lr wrapper-padding-l">
         <div className="form-lr">
-          <h2 className="mb-3 h2-lr">Login</h2>
+          <h2 className="mb-3 h2-lr">Admin Login</h2>
           <hr className="hr-lr"/>
 
           <div className="form-floating mb-2">
@@ -93,11 +85,11 @@ export function Login() {
           </div>
 
           <div className="link1-lr">
-            <a href="/passwordreset" className="link-lr2">Forgot password?</a>
+            <a href="/adminforgotpassword" className="link-lr2">Forgot password?</a>
           </div>
-          <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleLogin}>Sign In</button>
+          <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleAdminLogin}>Sign In</button>
           <div className="link2-lr">
-            Need an account? <a class="one" href="/register" className="link-lr2">Sign up</a>
+            Need an account? <a class="one" href="/adminregister" className="link-lr2">Sign up</a>
           </div>
   
         </div>

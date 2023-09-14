@@ -1,43 +1,37 @@
 import React from 'react'
-import '../css/LoginAndRegister.css'
+import '../css/AdminLoginAndRegister.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import 'firebase/compat/analytics';
 import 'firebase/compat/database';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { useHistory } from 'react-router-dom';
+import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
-  authDomain: "team-pwd.firebaseapp.com",
-  projectId: "team-pwd",
-  storageBucket: "team-pwd.appspot.com",
-  messagingSenderId: "129648865838",
-  appId: "1:129648865838:web:9713fb401ac09b481e25bf",
-  measurementId: "G-6FM488KSS5"
-};
-
-// Initialize Firebase for users
-const app = firebase.initializeApp(firebaseConfig, 'my-app');
-console.log(app);
-const database = getDatabase(app);
-const auth = app.auth();
-
 /*Register Page that uses React JS, HTML, CSS, and Bootstrap 5*/
-async function handleRegistration() {
+const adminFirebaseConfig = {
+    apiKey: "AIzaSyB0pkdIGT5RiCe5jPY2628O27X_sTk3Xn4",
+    authDomain: "team-pwd-admin.firebaseapp.com",
+    projectId: "team-pwd-admin",
+    storageBucket: "team-pwd-admin.appspot.com",
+    messagingSenderId: "445587795844",
+    appId: "1:445587795844:web:9b1ed3d5902ddca9d577d1",
+    measurementId: "G-0FLPMK8X2Z"
+  };
+  
+  // Initialize Firebase for admins
+  const adminApp = firebase.initializeApp(adminFirebaseConfig);
+  console.log(adminApp);
+  const database = getDatabase(adminApp);
+  const adminAuth = adminApp.auth();
+
+async function handleAdminRegistration() {
   const fullName = document.getElementById('full-name').value;
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   const confirmPassword = document.getElementById('confirm-password').value;
-  const signUpForGrants = document.getElementById('sign-up-for-grants').checked;
-
+  
   //Checks if email is valid
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)) {
@@ -79,7 +73,7 @@ async function handleRegistration() {
 
   // Checks if the email is used 
   try {
-    const signInMethods = await auth.fetchSignInMethodsForEmail(email);
+    const signInMethods = await adminApp.auth().fetchSignInMethodsForEmail(email);
     if (signInMethods.length > 0) {
       alert('This email address is already registered.');
       return;
@@ -89,28 +83,27 @@ async function handleRegistration() {
     const errorMessage = error.message;
     console.log(errorMessage);
   }
-
+  
   // firebase creates the acc with the email and password
-  auth.createUserWithEmailAndPassword(email, password)
+  adminAuth.createUserWithEmailAndPassword(email, password)
     .then(async (userCredential) => {
       // Signed up
       const user = userCredential.user;
       console.log(user);
       alert('Account successfully created! Please check your email for verification.');
       try {
-        await auth.currentUser.sendEmailVerification();
+        await adminAuth.currentUser.sendEmailVerification();
         // Email verification sent
         console.log('Email verification sent');
 
         // Write registration data to the Realtime Database
-        const userDatabase = firebase.database(app);
+        const databaseAdmin = firebase.database(adminApp);
         const userId = user.uid;
         const userData = {
           fullName: fullName,
-          email: email,
-          signUpForGrants: signUpForGrants
+          email: email
         };
-        userDatabase.ref('users/' + userId).set(userData)
+        databaseAdmin.ref('users/' + userId).set(userData)
           .then(() => {
           console.log('Data successfully written to the database');
           window.location.reload();
@@ -132,12 +125,12 @@ async function handleRegistration() {
 }
 
 
-export function Register() {
+export function AdminRegister() {
   return (
       <div className="wrapper-lr wrapper-padding-r">
         <div className="form-lr">
 
-          <h2 className="mb-3 h2-lr">Register</h2>
+          <h2 className="mb-3 h2-lr">Admin Register</h2>
           <hr className="hr-lr"/>
 
           <div className="form-floating mb-2">
@@ -162,16 +155,11 @@ export function Register() {
             <input type="password" className="form-control form-control-lg" id="confirm-password" placeholder="Confirm Password"></input>
             <label htmlFor="confirm-password">Confirm Password</label>
           </div>
-          
-          <div className="form-group form-check mb-2">
-            <input type="checkbox" className="form-check-input" id="sign-up-for-grants"></input>
-            <label htmlFor="sign-up-for-grants" className="form-check-label-lr">Sign Up for Grant Updates</label>
-          </div>
 
-          <button className="btn btn-success btn-lg w-100 block mt-2" onClick={handleRegistration}>Sign Up</button>
+          <button className="btn btn-success btn-lg w-100 block mt-2" onClick={handleAdminRegistration}>Sign Up</button>
 
           <div className="link2-lr">
-            Already have an account? <a href="/login" className="link-lr2">Sign in</a>
+            Already have an account? <a href="/adminlogin" className="link-lr2">Sign in</a>
           </div>
         </div>
       </div>

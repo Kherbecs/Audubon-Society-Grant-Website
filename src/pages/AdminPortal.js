@@ -7,7 +7,7 @@ export function AdminPortal() {
    
     <div class="wrapper-admin-portal">
          
-         <a href="/login"><button class="logout">Logout</button></a>
+         <a href="/adminlogin"><button class="logout">Logout</button></a>
         <p class="fs-1 adminportal-heading">
             <p class="text-center">Current Applicants</p>
             <p class="text-end">
