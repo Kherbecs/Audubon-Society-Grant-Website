@@ -8,7 +8,7 @@ import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
@@ -26,6 +26,27 @@ const analytics = getAnalytics(app);
 console.log(app);
 const database = getDatabase(app);
 const auth = app.auth();
+
+//done is used so that the function can run onLoad but is only used once
+//to check if 
+let done = false;
+onAuthStateChanged(auth, (currentUser) => {
+  if (currentUser && !done) {
+    //user is signed in
+    done = true;
+    return;
+  } 
+  else if(!currentUser && !done) {
+    // User is signed out
+    //hide the webpage if no viable admin user
+    done = true;
+    document.getElementById('subAppFormWrapper').style.visibility = "hidden";
+    window.location.href = '/login';
+    console.error(401);
+    return;
+  }
+  return;
+});
 
 export function SubAppForm() {
     // desired field is passed in, linked to appropriate box on submission
@@ -49,7 +70,7 @@ export function SubAppForm() {
         });
     }
     return (
-        <div className = "wrapper-subappform">
+        <div className = "wrapper-subappform" id="subAppFormWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
             <div className = "form-subappform">
                 <div className = "grantTitle-subappform">
                     <label for = "title-subappform" className = "title-subappform">Steve Stocking Youth Environmental Scholarship</label>

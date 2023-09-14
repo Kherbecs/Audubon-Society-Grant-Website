@@ -1,10 +1,53 @@
 import React from "react";
 import '../css/PastSubmissions.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import firebase from 'firebase/compat/app'
+import { getDatabase } from 'firebase/database';
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { useHistory } from 'react-router-dom';
+
+// User database config
+const firebaseConfig = {
+    apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
+    authDomain: "team-pwd.firebaseapp.com",
+    projectId: "team-pwd",
+    storageBucket: "team-pwd.appspot.com",
+    messagingSenderId: "129648865838",
+    appId: "1:129648865838:web:9713fb401ac09b481e25bf",
+    measurementId: "G-6FM488KSS5"
+};
+
+// Initialize Firebase for users
+const app = firebase.initializeApp(firebaseConfig, 'my-app');
+console.log(app);
+const database = getDatabase(app);
+const auth = app.auth();
+
+//done is used so that the function can run onLoad but is only used once
+//to check if 
+let done = false;
+onAuthStateChanged(auth, (currentUser) => {
+  if (currentUser && !done) {
+    //user is signed in
+    done = true;
+    return;
+  } 
+  else if(!currentUser && !done) {
+    // User is signed out
+    //hide the webpage if no viable user
+    done = true;
+    document.getElementById('pastSubmissionsWrapper').style.visibility = "hidden";
+    window.location.href = '/login';
+    console.error(401);
+    return;
+  }
+  return;
+});
+
 
 export function PastSubmissions() {
     return (
-        <div class="flex-wrap page-content">
+        <div class="flex-wrap page-content" id="pastSubmissionsWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
             <div class="col">
                 <a class="btn btn-nav btn-sm btn-success back-to-grants" href="/grantselection">Back</a>
             </div>
