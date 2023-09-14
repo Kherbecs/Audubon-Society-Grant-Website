@@ -1,4 +1,5 @@
 import react from 'react'
+import React, { useState, useEffect } from 'react';
 import '../css/AdminPortal.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -25,7 +26,6 @@ const adminFirebaseConfig = {
  // Initialize Firebase for admins
 const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
 console.log(adminApp);
-const databaseAdmin = getDatabase(adminApp);
 const adminAuth = adminApp.auth();
 
 //done is used so that the function can run onLoad but is only used once
@@ -49,7 +49,109 @@ onAuthStateChanged(adminAuth, (currentUser) => {
   return;
 });
 
-export function AdminPortal() {    
+const databaseAdmin = firebase.database(adminApp);
+
+  /*
+  const submissionData = {
+    'id': 'Submission 6'
+  };
+
+  databaseAdmin.ref('Submissions/').set(submissionData) //change submission data in db
+*/
+    
+
+export function AdminPortal() {
+
+ //DYNAMIC SUBMISSIONS AND LOCK STATES
+    const [submissions, setSubmissions] = useState([
+        { id: 1, name: "Submission 1" }, //dummy submissions
+        { id: 2, name: "Submission 2" },
+        { id: 3, name: "Submission 3" },
+        { id: 4, name: "Tester "      },
+        { id: 5, name: "Alex Jackson "},
+        { id: 6, name: "Submission 6"},
+    ]); // List of submissions
+
+
+    const [buttonStates, setButtonStates] = useState([]); // List of button (lock) states
+      
+    const handleCheckbox = (index) => {
+        const lockID = `lock_${submissions[index].id}`;
+
+        databaseAdmin.ref(`locks/${lockID}`).set({
+            state: !buttonStates[index]
+        });
+
+        setButtonStates((prevStates) => {
+        const newStates = [...prevStates];
+        newStates[index] = !newStates[index];
+        return newStates;
+        });
+    };
+
+    useEffect(() => {
+        const getStates = async () => {
+            const newButtonStates = await Promise.all(
+                submissions.map(async (submission) => {
+                    const lockID = `lock_${submission.id}`;
+                    const dbStates = await databaseAdmin.ref(`locks/${lockID}`).get();
+                    const curStates = dbStates.val();
+                    return curStates ? curStates.state : false;
+                })
+            );
+            setButtonStates(newButtonStates);
+        };
+        getStates();
+    }, []);
+
+const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  //NOT YET WORKING; CODE FOR HANDLING SEARCHBAR INPUTS
+  const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = (event) => {
+    const input = event.target.value.toLowerCase();
+
+
+    /*TESTS FOR RETRIEVING DATA FROM DB
+    database.child('users').orderByChild('email').equalTo(input).once('value')
+        .then((snapshot) => {
+            const results = [];
+            snapshot.forEach((childSnapshot) => {
+                const user = childSnapshot.val();
+                if(user.email.toLowerCase().includes(input)) {
+                    results.push(user);
+                }
+            });
+            setSearchResults(results);
+        })
+        .catch((error) => {
+            console.error('Error searching by email:', error);
+        });
+    */
+    
+    /*
+    database.child('users').orderByChild('fullName').equalTo(input).once('value')
+        .then((snapshot) => {
+            const results = [];
+            snapshot.forEach((childSnapshot) => {
+                const user = childSnapshot.val();
+                if(user.fullName.toLowerCase().includes(input)) {
+                    results.push(user);
+                }
+            });
+            setSearchResults(results);
+        })
+        .catch((error) => {
+            console.error('Error searching by Full Name:', error);
+        });
+    
+  };
+  */
+
+
+  //REMOVE ${submission.id} FROM SUB BOX TO GET LINK TO SUBAPPFORM WORKING; id is for when there are real submissions to pull forms from
+}
     return (
    
     <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
@@ -77,54 +179,75 @@ export function AdminPortal() {
             </div>
         
             <div class="col-md col-md-admin2">
+                
                 <div class="mb-3 search-bar search-admin">
                     <div class="searchField">
-                        <input type="name" class="form-control" id="searchBar" placeholder="Search for applicants"></input> 
+                        <input type="name" class="form-control" id="searchBar" placeholder="Search for applicants" onChange={handleSearch}></input> 
                         <button class="search">Search</button>
                     </div>
                 </div>
             </div>
-            
-            
-            
-        </div>
-        <div class="submissions-box">
-                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
-                </button>
-                <label class="switch">
-                <input type="checkbox"></input>
-                <span class="slider round"></span></label>
 
-                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
-                </button>
-                <label class="switch">
-                <input type="checkbox"></input>
-                <span class="slider round"></span></label>
-                
-                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
-                </button>
-                <label class="switch">
-                <input type="checkbox"></input>
-                <span class="slider round"></span></label>
-
-                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
-                </button>
-                <label class="switch">
-                <input type="checkbox"></input>
-                <span class="slider round"></span></label>
-
-                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
-                </button>
-                <label class="switch">
-                <input type="checkbox"></input>
-                <span class="slider round"></span></label>
-
-                <button class="sub"><a class="submission-link" href="/adminsubappform">Submission</a> 
-                </button>
-                <label class="switch">
-                <input type="checkbox"></input>
-                <span class="slider round"></span></label>
+            <div>
+                {searchResults.map((user) => (
+                    <div key = {user.email} class = 'user-result'>
+                        <p>email: {user.email}</p>
+                        <p>full name: {user.fullName}</p>
+                    </div>
+                ))}
             </div>
+        </div>
+       
+        <div className="submissions-box">
+            {submissions.map((submission, index) => (
+                <div key={index}>
+                <button className="sub" disabled={buttonStates[index]}>
+                    {buttonStates[index] ? (
+                    <span className="submission-link">Submission</span>
+                    ) : (
+                    <a className="submission-link" href={`/adminsubappform/${submission.id}`}> 
+                        {submission.name}
+                    </a>
+                    )}
+                </button>
+                <label className="switch">
+                    <input
+                    type="checkbox"
+                    onChange={() => handleCheckbox(index)}
+                    checked={buttonStates[index]}
+                    />
+                    <span className="slider round"></span>
+                </label>
+                </div>
+            ))}
+        </div>
+
+        
     </div>
     )
   }
+
+/*
+export function AdminPortal() {
+
+
+    const search = () => {
+        let sBar = document.getElementById("input").value.toUppercase();
+        let myTable = document.getElementById('');
+        let tag = myTable.getElementsByTagName('tag'); //
+        
+        for(var i = 0; i < tag.length;i++){
+            let tag = tag[i].getElementsByTagName('')[1];
+            if(tag){
+                let textval = tag.textContent || tag.innerHTML;
+                if(textval.toUppercase().indexOf(sBar) > -1){
+                    tag[i].style.display = "";
+                }
+                else{
+                    tag[i].style.display = "none";
+                }
+            }
+        }
+
+    }
+*/
