@@ -8,7 +8,7 @@ import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
@@ -27,6 +27,26 @@ console.log(app);
 const database = getDatabase(app);
 const auth = app.auth();
 
+//done is used so that the function can run onLoad but is only used once
+//to check if 
+let done = false;
+onAuthStateChanged(auth, (currentUser) => {
+  if (currentUser && !done) {
+    //user is signed in
+    done = true;
+    return;
+  } 
+  else if(!currentUser && !done) {
+    // User is signed out
+    //hide the webpage if no viable user
+    done = true;
+    document.getElementById('appFormWrapper').style.visibility = "hidden";
+    window.location.href = '/login';
+    console.error(401);
+    return;
+  }
+  return;
+});
 
 export function ApplicationFormPage() {
     function handleSubmit() {
@@ -119,7 +139,7 @@ export function ApplicationFormPage() {
         })
     }
     return (
-        <div className = "wrapper-appform">
+        <div className = "wrapper-appform" id="appFormWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
             <div className = "form-appform">
                 <div className = "grantTitle-appform">
                     <label for = "title-appform" class = "title-appform">Steve Stocking Youth Environmental Scholarship</label>
