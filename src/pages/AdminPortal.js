@@ -50,6 +50,7 @@ onAuthStateChanged(adminAuth, (currentUser) => {
 });
 
 const databaseAdmin = firebase.database(adminApp);
+const numHitsRef = databaseAdmin.ref("numHits");
 
   /*
   const submissionData = {
@@ -104,7 +105,37 @@ export function AdminPortal() {
         getStates();
     }, []);
 
-const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+    /*-----------UNIQUE VISITOR COUNTER STATES-----------------*/
+
+
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const docRef = numHitsRef;
+                const docSnapshot = await docRef.get();
+                if(docSnapshot.exists){
+                    const data = docSnapshot.val();
+                    setData(data);
+                    setLoading(false);
+                }else{
+                    console.log("No such document dude");
+                }   
+            }catch (error){
+                console.error('Error fetching document: ', error);
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    console.log(data);
+    /*----------------UNIQUE VISITOR CODE END----------------------*/
+
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   //NOT YET WORKING; CODE FOR HANDLING SEARCHBAR INPUTS
   const [searchResults, setSearchResults] = useState([]);
@@ -220,6 +251,10 @@ const [isButtonDisabled, setIsButtonDisabled] = useState(false);
                 </label>
                 </div>
             ))}
+        </div>
+
+        <div class="hit-counter">
+            {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
         </div>
 
         
