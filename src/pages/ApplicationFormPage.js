@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
@@ -26,7 +27,7 @@ const analytics = getAnalytics(app);
 console.log(app);
 const database = getDatabase(app);
 const auth = app.auth();
-
+const storage = getStorage(app);
 //done is used so that the function can run onLoad but is only used once
 //to check if 
 let done = false;
@@ -79,6 +80,12 @@ export function ApplicationFormPage() {
                         const q2 = document.getElementById('q2').value;
                         const q3 = document.getElementById('q3').value;
                         const q4 = document.getElementById('q4').value;
+
+                        const letterFileInput = document.getElementById('letterFile');
+                        const letterFile = letterFileInput.files[0];
+        
+                        const essayFileInput = document.getElementById('essayFile');
+                        const essayFile = essayFileInput.files[0];
 
                         // Error checking to see if any of the fields are empty
                         if(!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !q4) {
@@ -216,10 +223,61 @@ export function ApplicationFormPage() {
                             })
                         }
 
-                        // Successfully submitted
-                        alert('Successfully submitted.');       
-                        window.location.reload();   
-                        return;
+                // Upload the letter of recommendation file
+                const fileUploadPromises = [];
+
+                        if (letterFile) {
+                            // Create a storage reference for the letter of recommendation file
+                            const letterStorageRef = storageRef(storage, `users/${uid}/forms/steve_stocking/letter_of_recommendation.pdf`);
+                            const uploadLetterPromise = uploadBytes(letterStorageRef, letterFile)
+
+                                // Get download link
+                                .then((snapshot) => {
+                                    return getDownloadURL(letterStorageRef);
+                                })
+                                .then((letterDownloadURL) => {
+                                    // Update the database with the download URL
+                                    return update(ref(database, `users/${uid}/forms/steve_stocking`), {
+                                        urlLinkLetter: letterDownloadURL
+                                    });
+                                });
+
+                            // Add the promise to the array
+                            fileUploadPromises.push(uploadLetterPromise);
+                        }
+
+                        if (essayFile) {
+                            // Create a storage reference for the personal essay file
+                            const essayStorageRef = storageRef(storage, `users/${uid}/forms/steve_stocking/personal_essay.pdf`);
+                            const uploadEssayPromise = uploadBytes(essayStorageRef, essayFile)
+
+                                // Get download link
+                                .then((snapshot) => {
+                                    return getDownloadURL(essayStorageRef);
+                                })
+                                .then((essayDownloadURL) => {
+                                    // Update the database with the download URL
+                                    return update(ref(database, `users/${uid}/forms/steve_stocking`), {
+                                        urlLinkEssay: essayDownloadURL
+                                    });
+                                });
+
+                            // Add the promise to the array
+                            fileUploadPromises.push(uploadEssayPromise);
+                        }
+
+                        // Use Promise.all() to wait for all file uploads and database updates
+                        Promise.all(fileUploadPromises)
+                            .then(() => {
+                                // All uploads and updates completed successfully
+                                alert('Successfully submitted. You can now view your submission in the Past Submissions.');
+                                // Page reload
+                                window.location.href = '/applicationformpage';
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+
                     }
                 });
             } else {

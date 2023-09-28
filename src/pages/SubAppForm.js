@@ -69,6 +69,29 @@ export function SubAppForm() {
             }
         });
     }
+
+    function handleURLDisplay(field, id) {
+        app.auth().onAuthStateChanged((user) => {
+            if(user) {
+                const uid = user.uid;
+                const dbRef = ref(database);
+                // get data from database as a JSON object, and get each field
+                get(child(dbRef, 'users/' + uid + '/forms/steve_stocking')).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        document.getElementById(id).href = data[field];
+                    } else {
+                        alert("Document not found");
+                        console.log("NO DATA");
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        });
+    }
+
+
     return (
         <div className = "wrapper-subappform" id="subAppFormWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
             <div className = "form-subappform">
@@ -153,17 +176,18 @@ export function SubAppForm() {
                         <label for="question5Text" className="form-label-appform5">Please submit a letter of recommendation from a teacher, parent, or adult friend that should cover what they know about your interest in learning about the environment, nature, or birds.</label>
                     </div>
                     <div className = "uploadButtonLetterOfRec-subappform">
-                        <div className = "uploadButtonTextDiv-subappform">
-                            <label for = "uploadButtonLetterText-subappform" id = "form-label">SAMPLE_LETTER_OF_REC.pdf</label>
-                        </div>
+                        
+                            <a className = "letterLink" id = "letterLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkLetter', 'letterLinkID')}>
+                                letter_of_recommendation.pdf
+                            </a>
+                    
                     </div>
                     <div className = "q6-subappform">
                         <label for="question6Text" className="form-label-appform6">Please also submit a personal essay that states the importance of attending an environmental, nature, or birding camp or program to you. The essay should not be more than 2 pages long. Do you try to teach others about nature or birds? Do you draw trees, plants, birds, or other animals in nature you see? We want to know about your interest in the environment and nature.</label>
                     </div>
                     <div className = "uploadButtonEssay-subappform">
-                        <div className = "uploadButtonTextDiv-subappform">
-                            <label for = "uploadButtonLetterText-subappform" id = "form-label">SAMPLE_ESSAY.pdf</label>
-                        </div>
+                        <a className = "essayLink" id = "essayLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkEssay', 'essayLinkID')}>
+                            personal_essay.pdf</a>
                     </div>
                 </div>
                 <div className = "buttonWrapper1-subappform" >
