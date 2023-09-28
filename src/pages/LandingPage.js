@@ -6,6 +6,13 @@ import 'firebase/compat/auth';
 import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 
+import blackBird from '../assets/black-bird.jpeg'
+import longLeg from '../assets/long-leg-bird.jpeg'
+import groupPhoto from '../assets/group-photo.jpeg'
+import eagle from '../assets/oil-scouter.jpeg'
+import pelicanCousin from '../assets/pelican-cousin.jpeg'
+import smallBird from '../assets/smol-bird.jpeg'
+
 
 import { Col, Row, Container, Button, Carousel } from 'react-bootstrap'
 const adminFirebaseConfig = {
@@ -49,7 +56,7 @@ function checkUserCookie(userCookieName){
 }
 function createUserCookie(userCookieName){
   const userCookieValue = "Yes";
-  const userCookieDays = 7;
+  const userCookieDays = 365;
   let expiryDate = new Date();
   expiryDate.setDate(expiryDate.getDate() + userCookieDays);
   document.cookie = userCookieName + "=" + userCookieValue + "; expires=" + expiryDate.toLocaleTimeString() + "path=/";
@@ -58,26 +65,50 @@ function createUserCookie(userCookieName){
     <div class="wrapper-landingpage">
       <div class="carousel-div">
         <Carousel controls={false} indicators={false}>
-          <Carousel.Item className="carousel-item" interval={1000}>
+          <Carousel.Item className="carousel-item" interval={6000}>
               <div class="d-flex justify-content-center">
                 <img  
-                  src="https://picsum.photos/1920/1080"
+                  src={groupPhoto}
                   alt="First slide"
                 />
               </div>
             </Carousel.Item>
-            <Carousel.Item interval={500}>
+            <Carousel.Item interval={6000}>
               <div class="d-flex justify-content-center">
                 <img
-                  src="https://picsum.photos/1920/1080"
+                  src={blackBird}
                   alt="Second slide"
                 />
               </div>
             </Carousel.Item>
-            <Carousel.Item>
+            <Carousel.Item interval={6000}>
               <div class="d-flex justify-content-center">
                 <img
-                  src="https://picsum.photos/1920/1080"
+                  src={longLeg}
+                  alt="Third slide"
+                />
+              </div>
+            </Carousel.Item>
+            <Carousel.Item interval={6000}>
+              <div class="d-flex justify-content-center">
+                <img
+                  src={eagle}
+                  alt="Third slide"
+                />
+              </div>
+            </Carousel.Item>
+            <Carousel.Item interval={6000}>
+              <div class="d-flex justify-content-center">
+                <img
+                  src={pelicanCousin}
+                  alt="Third slide"
+                />
+              </div>
+            </Carousel.Item>
+            <Carousel.Item interval={6000}>
+              <div class="d-flex justify-content-center">
+                <img
+                  src={smallBird}
                   alt="Third slide"
                 />
               </div>

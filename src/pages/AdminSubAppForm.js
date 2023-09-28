@@ -1,4 +1,4 @@
-import React from 'react'
+import {React, useState} from 'react'
 import '../css/AdminSubAppForm.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -77,6 +77,16 @@ onAuthStateChanged(adminAuth, (currentUser) => {
 });
 
 export function AdminSubAppForm() {
+    const getInitialState = () =>{
+        const value = "Grade";
+        return value;
+    }
+
+    const [grade, setGrade] = useState(getInitialState);
+
+    const handleChange = (e) => {
+        setGrade(e.target.value);
+    };
     function handleInfoDisplay(field, id) {
         app.auth().onAuthStateChanged((user) => {
             if(user) {
@@ -128,7 +138,12 @@ export function AdminSubAppForm() {
             snapshot.forEach((snapshot) => {
                 const commenter = snapshot.val().commenter;
                 const comment = snapshot.val().comment;
-                commentsHTML += commenter + " | Grade : 8" + "<br />" + "&emsp;" + comment + "<br />";
+                if (snapshot.val().grade != null){
+                    commentsHTML += commenter + " | Grade : " + snapshot.val().grade + "<br />" + "&emsp;" + comment + "<br />";
+                }else{
+                    commentsHTML += commenter + " | Grade : NONE" + "<br />" + "&emsp;" + comment + "<br />";
+                }
+  
             })
             updateCommentSection(commentsHTML);
         })
@@ -140,19 +155,26 @@ export function AdminSubAppForm() {
     }
     getComments();
 
-
-    
-
     function postComment(){
         var newComment = document.getElementById("new-comment").value;
         document.getElementById("addCommmentButton").id = "addCommmentButton";
 
         const databaseAdmin = firebase.database(adminApp);
-        const pastComments = {
-            commenter: userEmail,
-            comment: newComment
-        }
-
+       // const userId = user.uid;
+       var pastComments = null;
+       if(grade != "Grade"){
+            var pastComments = {
+                commenter: userEmail,
+                comment: newComment,
+                grade: grade
+            }
+       }else if(newComment == null){
+            alert("Comment cannot be blank.");
+            return;
+       }else{
+            alert("A grade must be chosen.");
+            return;
+       }
         databaseAdmin.ref('users/commentHistory').push(pastComments)
           .then(() => {
           console.log('Data successfully written to the database');
@@ -162,7 +184,7 @@ export function AdminSubAppForm() {
           console.error('Error writing data to the database: ', error);
         });
 
-        // document.getElementById('addCommmentButton').addEventListener('onClick');
+        document.getElementById('addCommmentButton').addEventListener('onClick');
     }
 
     return (
@@ -272,18 +294,18 @@ export function AdminSubAppForm() {
                                     </select>
                                 </div>
                                 <div class="wrapper-grade-button">
-                                <select class="form-select" id="floatingSelect" aria-label="Filter drop down menu">
-                                        <option selected>Grade</option>
-                                        <option value="grant">1</option>
-                                        <option value="grant">2</option>
-                                        <option value="grant">3</option>
-                                        <option value="grant">4</option>
-                                        <option value="grant">5</option>
-                                        <option value="grant">6</option>
-                                        <option value="grant">7</option>
-                                        <option value="grant">8</option>
-                                        <option value="grant">9</option>
-                                        <option value="grant">10</option>
+                                <select class="form-select" id="floatingSelect" aria-label="Filter drop down menu" onChange={handleChange}>
+                                        <option value="Grade">Grade</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
                                     </select>
                                 </div>
                             </div>
