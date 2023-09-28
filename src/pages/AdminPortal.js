@@ -52,6 +52,23 @@ onAuthStateChanged(adminAuth, (currentUser) => {
 const databaseAdmin = firebase.database(adminApp);
 const numHitsRef = databaseAdmin.ref("numHits");
 
+const firebaseConfig = {
+    apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
+    authDomain: "team-pwd.firebaseapp.com",
+    projectId: "team-pwd",
+    storageBucket: "team-pwd.appspot.com",
+    messagingSenderId: "129648865838",
+    appId: "1:129648865838:web:9713fb401ac09b481e25bf",
+    measurementId: "G-6FM488KSS5"
+  };
+  
+  // Initialize Firebase for users
+  const app = firebase.initializeApp(firebaseConfig, 'my-app');
+  console.log(app);
+  const database = firebase.database(app);
+  const auth = app.auth();
+  
+
   /*
   const submissionData = {
     'id': 'Submission 6'
@@ -62,227 +79,227 @@ const numHitsRef = databaseAdmin.ref("numHits");
     
 
 export function AdminPortal() {
+    const history = useHistory(); 
+
+    function handleLogOut () {
+        // Checks if it's an admin account and if it is, it redirects them to admin login and signs out
+        signOut(adminAuth).then(() => {
+            console.log('Logout success');
+            window.location.href = '/adminlogin';
+        }).catch((error) => {
+            console.error('Logout error:', error);
+        });
+    }
 
  //DYNAMIC SUBMISSIONS AND LOCK STATES
-    const [submissions, setSubmissions] = useState([
-        { id: 1, name: "Submission 1" }, //dummy submissions
-        { id: 2, name: "Submission 2" },
-        { id: 3, name: "Submission 3" },
-        { id: 4, name: "Tester "      },
-        { id: 5, name: "Alex Jackson "},
-        { id: 6, name: "Submission 6"},
-    ]); // List of submissions
+ const [submissions, setSubmissions] = useState([
+    { id: 1, name: "Submission 1" }, //dummy submissions
+    { id: 2, name: "Submission 2" },
+    { id: 3, name: "Submission 3" },
+    { id: 4, name: "Tester "      },
+    { id: 5, name: "Alex Jackson "},
+    { id: 6, name: "Submission 6"},
+]); // List of submissions
 
 
-    const [buttonStates, setButtonStates] = useState([]); // List of button (lock) states
-      
-    const handleCheckbox = (index) => {
-        const lockID = `lock_${submissions[index].id}`;
+const [buttonStates, setButtonStates] = useState([]); // List of button (lock) states
+  
+const handleCheckbox = (index) => {
+    const lockID = `lock_${submissions[index].id}`;
 
-        databaseAdmin.ref(`locks/${lockID}`).set({
-            state: !buttonStates[index]
-        });
+    database.ref(`locks/${lockID}`).set({
+        state: !buttonStates[index]
+    });
 
-        setButtonStates((prevStates) => {
-        const newStates = [...prevStates];
-        newStates[index] = !newStates[index];
-        return newStates;
-        });
+    setButtonStates((prevStates) => {
+    const newStates = [...prevStates];
+    newStates[index] = !newStates[index];
+    return newStates;
+    });
+};
+
+useEffect(() => {
+    const getStates = async () => {
+        const newButtonStates = await Promise.all(
+            submissions.map(async (submission) => {
+                const lockID = `lock_${submission.id}`;
+                const dbStates = await database.ref(`locks/${lockID}`).get();
+                const curStates = dbStates.val();
+                return curStates ? curStates.state : false;
+            })
+        );
+        setButtonStates(newButtonStates);
     };
-
-    useEffect(() => {
-        const getStates = async () => {
-            const newButtonStates = await Promise.all(
-                submissions.map(async (submission) => {
-                    const lockID = `lock_${submission.id}`;
-                    const dbStates = await databaseAdmin.ref(`locks/${lockID}`).get();
-                    const curStates = dbStates.val();
-                    return curStates ? curStates.state : false;
-                })
-            );
-            setButtonStates(newButtonStates);
-        };
-        getStates();
-    }, []);
+    getStates();
+}, []);
 
 
-    /*-----------UNIQUE VISITOR COUNTER STATES-----------------*/
+/*-----------UNIQUE VISITOR COUNTER STATES-----------------*/
 
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
+const [data, setData] = useState(null);
+const [loading, setLoading] = useState(true);
 
-    useEffect(()=>{
-        const fetchData = async () => {
-            try{
-                const docRef = numHitsRef;
-                const docSnapshot = await docRef.get();
-                if(docSnapshot.exists){
-                    const data = docSnapshot.val();
-                    setData(data);
-                    setLoading(false);
-                }else{
-                    console.log("No such document dude");
-                }   
-            }catch (error){
-                console.error('Error fetching document: ', error);
+useEffect(()=>{
+    const fetchData = async () => {
+        try{
+            const docRef = numHitsRef;
+            const docSnapshot = await docRef.get();
+            if(docSnapshot.exists){
+                const data = docSnapshot.val();
+                setData(data);
                 setLoading(false);
+            }else{
+                console.log("No such document dude");
+            }   
+        }catch (error){
+            console.error('Error fetching document: ', error);
+            setLoading(false);
+        }
+    };
+    fetchData();
+}, []);
+
+console.log(data);
+/*----------------UNIQUE VISITOR CODE END----------------------*/
+
+const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+//NOT YET WORKING; CODE FOR HANDLING SEARCHBAR INPUTS
+
+const [searchResults, setSearchResults] = useState([]);
+
+useEffect(() => {
+const fetchAllUsers = async () => {
+  try {
+    const snapshot = await database.ref('users').once('value');
+    const results = [];
+    snapshot.forEach((childSnapshot) => {
+      const user = childSnapshot.val();
+      results.push(user);
+    });
+    setSearchResults(results);
+  } catch (error) {
+    console.error('Error fetching all users:', error);
+  }
+};
+
+fetchAllUsers();
+}, []);
+
+const handleSearch = async (event) => {
+const input = event.target.value.toLowerCase().trim();
+const results = [];
+
+
+
+try {
+    const snapshot = await database.ref('users').once('value');
+    snapshot.forEach((childSnapshot) => {
+        const user = childSnapshot.val();
+        console.log(user);
+        // Check if the user's name or grant type contains the input
+        if(user) {
+            const {fullName, grantType, email} = user;
+            if(fullName && email) {
+                if(fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)){
+                    results.push(user);
+                }
+            if(grantType && grantType.toLowerCase().includes(input)) {
+                results.push(user);
             }
-        };
-        fetchData();
-    }, []);
-
-    console.log(data);
-    /*----------------UNIQUE VISITOR CODE END----------------------*/
-
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-
-  //NOT YET WORKING; CODE FOR HANDLING SEARCHBAR INPUTS
-  const [searchResults, setSearchResults] = useState([]);
-
-  const handleSearch = (event) => {
-    const input = event.target.value.toLowerCase();
-
-
-    /*TESTS FOR RETRIEVING DATA FROM DB
-    database.child('users').orderByChild('email').equalTo(input).once('value')
-        .then((snapshot) => {
-            const results = [];
-            snapshot.forEach((childSnapshot) => {
-                const user = childSnapshot.val();
-                if(user.email.toLowerCase().includes(input)) {
-                    results.push(user);
-                }
-            });
-            setSearchResults(results);
-        })
-        .catch((error) => {
-            console.error('Error searching by email:', error);
-        });
-    */
-    
-    /*
-    database.child('users').orderByChild('fullName').equalTo(input).once('value')
-        .then((snapshot) => {
-            const results = [];
-            snapshot.forEach((childSnapshot) => {
-                const user = childSnapshot.val();
-                if(user.fullName.toLowerCase().includes(input)) {
-                    results.push(user);
-                }
-            });
-            setSearchResults(results);
-        })
-        .catch((error) => {
-            console.error('Error searching by Full Name:', error);
-        });
-    
-  };
-  */
-
-
-  //REMOVE ${submission.id} FROM SUB BOX TO GET LINK TO SUBAPPFORM WORKING; id is for when there are real submissions to pull forms from
+            }
+        
+        }
+    });
+} catch (error) {
+    console.error('Error searching users:', error);
 }
-    return (
-   
-    <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
-         
-         <a href="/adminlogin"><button class="logout">Logout</button></a>
-        <p class="fs-1 adminportal-heading">
-            <p class="text-center">Current Applicants</p>
-            <p class="text-end">
-                <p class="fs-6">
-                </p>
+
+setSearchResults(results);
+};
+
+//REMOVE ${submission.id} FROM SUB BOX TO GET LINK TO SUBAPPFORM WORKING; id is for when there are real submissions to pull forms from
+
+return (
+
+<div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
+     
+<a href="/adminlogin"><button class="logout" onClick={handleLogOut}>Logout</button></a>
+    <p class="fs-1 adminportal-heading">
+        <p class="text-center">Current Applicants</p>
+        <p class="text-end">
+            <p class="fs-6">
             </p>
         </p>
-        <div class="row g-2">
-            <div class="col-md col-md-admin1">
-                <div class="form-floating form-floating-custom">
-                    <select class="form-select form-admin" id="floatingSelect" aria-label="Filter drop down menu">
-                        <option selected>Filter by grant, date, read/unread</option>
-                        <option value="grant">grant 1</option>
-                        <option value="grant2">grant 2</option>
-                        <option value="date">date</option>
-                        <option value="read">read</option>
-                        <option value="unread">unread</option>
-                    </select>
+    </p>
+    <div class="row g-2">
+        <div class="col-md col-md-admin1">
+            <div class="form-floating form-floating-custom">
+                <select class="form-select form-admin" id="floatingSelect" aria-label="Filter drop down menu">
+                    <option selected>Filter by grant, date, read/unread</option>
+                    <option value="grant">grant 1</option>
+                    <option value="grant2">grant 2</option>
+                    <option value="date">date</option>
+                    <option value="read">read</option>
+                    <option value="unread">unread</option>
+                </select>
+            </div>
+        </div>
+    
+        <div class="col-md col-md-admin2">
+            
+            <div class="mb-3 search-bar search-admin">
+                <div class="searchField">
+                    <input type="name" class="form-control" id="searchBar" placeholder="Search for applicants" onChange={handleSearch}></input> 
+                    <button class="search">Search</button>
                 </div>
             </div>
-        
-            <div class="col-md col-md-admin2">
-                
-                <div class="mb-3 search-bar search-admin">
-                    <div class="searchField">
-                        <input type="name" class="form-control" id="searchBar" placeholder="Search for applicants" onChange={handleSearch}></input> 
-                        <button class="search">Search</button>
-                    </div>
-                </div>
-            </div>
+        </div>
 
-            <div>
+        <div class="search-results">
+            <div class="search-results-box">
                 {searchResults.map((user) => (
-                    <div key = {user.email} class = 'user-result'>
-                        <p>email: {user.email}</p>
-                        <p>full name: {user.fullName}</p>
+                    <div key={user.id}>
+                        <p style={{fontWeight: 'bold'}}>Full Name: {user.fullName}</p>
+                        <p>Email: {user.email}</p>
+                        <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
+                        <p>Grant Type: {user.grantType ? user.grantType : 'N/A'}</p>
                     </div>
                 ))}
             </div>
         </div>
-       
-        <div className="submissions-box">
-            {submissions.map((submission, index) => (
-                <div key={index}>
-                <button className="sub" disabled={buttonStates[index]}>
-                    {buttonStates[index] ? (
-                    <span className="submission-link">Submission</span>
-                    ) : (
-                    <a className="submission-link" href={`/adminsubappform/${submission.id}`}> 
-                        {submission.name}
-                    </a>
-                    )}
-                </button>
-                <label className="switch">
-                    <input
-                    type="checkbox"
-                    onChange={() => handleCheckbox(index)}
-                    checked={buttonStates[index]}
-                    />
-                    <span className="slider round"></span>
-                </label>
-                </div>
-            ))}
-        </div>
-
-        <div class="hit-counter">
-            {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
-        </div>
-
-        
     </div>
-    )
-  }
+   
+    <div className="submissions-box">
+        {submissions.map((submission, index) => (
+            <div key={index}>
+            <button className="sub" disabled={buttonStates[index]}>
+                {buttonStates[index] ? (
+                <span className="submission-link">Submission</span>
+                ) : (
+                <a className="submission-link" href={`/adminsubappform/${submission.id}`}> 
+                    {submission.name}
+                </a>
+                )}
+            </button>
+            <label className="switch">
+                <input
+                type="checkbox"
+                onChange={() => handleCheckbox(index)}
+                checked={buttonStates[index]}
+                />
+                <span className="slider round"></span>
+            </label>
+            </div>
+        ))}
+    </div>
 
-/*
-export function AdminPortal() {
+    <div class="hit-counter">
+        {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
+    </div>
 
-
-    const search = () => {
-        let sBar = document.getElementById("input").value.toUppercase();
-        let myTable = document.getElementById('');
-        let tag = myTable.getElementsByTagName('tag'); //
-        
-        for(var i = 0; i < tag.length;i++){
-            let tag = tag[i].getElementsByTagName('')[1];
-            if(tag){
-                let textval = tag.textContent || tag.innerHTML;
-                if(textval.toUppercase().indexOf(sBar) > -1){
-                    tag[i].style.display = "";
-                }
-                else{
-                    tag[i].style.display = "none";
-                }
-            }
-        }
-
-    }
-*/
+    
+</div>
+)
+}

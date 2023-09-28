@@ -201,12 +201,29 @@ background-color: rgba(97, 135, 110, 1);
   color: black; 
 }
 
+/*text search results*/
+.search-results {
+  display: flex;
+  justify-content: center;
+}
+
+/*box for text search results*/
+.search-results-box {
+  text-align: center;
+  overflow-y: scroll;
+  background-color: #F8EDE3;
+  border-radius: 4px;
+  height: 30vh;
+  width: 30%;
+  padding-top: 2%;
+}
+
 
 /*submissions box*/
 .submissions-box {
 overflow-y:scroll;
   border-radius: 4px;
-  margin-top: 2%;
+  margin-top: 1.5%;
   margin-left: 10%;
   margin-bottom: 3%;
   padding-bottom: 3%;
