@@ -2,8 +2,13 @@ import React from 'react'
 import '../css/AdminSubAppForm.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import 'firebase/compat/auth'
+import 'firebase/compat/analytics';
+import 'firebase/compat/database';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
+import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth'
 
 
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
@@ -33,11 +38,22 @@ console.log(adminApp);
 const databaseAdmin = getDatabase(adminApp);
 const adminAuth = adminApp.auth();
 
+// User information for comments
+var userEmail = null;
+const auth = getAuth();
+onAuthStateChanged(auth, (currentUser)=>{
+    if(currentUser){
+        console.log(currentUser.email);
+        userEmail = currentUser.email;
+    }else{
+        console.log('no one logged in');
+    }
+})
+
 // Initialize Firebase for users
 const app = firebase.initializeApp(firebaseConfig, 'my-app');
 console.log(app);
 const database = getDatabase(app);
-const auth = app.auth();
 
 //done is used so that the function can run onLoad but is only used once
 //to check if 
@@ -102,6 +118,53 @@ export function AdminSubAppForm() {
             }
         });
     }
+
+    function getComments(){
+        const databaseAdmin = firebase.database(adminApp);
+
+        var pastComments = databaseAdmin.ref('users/commentHistory');
+        pastComments.on('value', (snapshot) => {
+            let commentsHTML = '';
+            snapshot.forEach((snapshot) => {
+                const commenter = snapshot.val().commenter;
+                const comment = snapshot.val().comment;
+                commentsHTML += commenter + " | Grade : 8" + "<br />" + "&emsp;" + comment + "<br />";
+            })
+            updateCommentSection(commentsHTML);
+        })
+    }
+
+    function updateCommentSection(commentsHTML) {
+        var prevComments = document.getElementById("prev-comments");
+        prevComments.innerHTML = commentsHTML;
+    }
+    getComments();
+
+
+    
+
+    function postComment(){
+        var newComment = document.getElementById("new-comment").value;
+        document.getElementById("addCommmentButton").id = "addCommmentButton";
+
+        const databaseAdmin = firebase.database(adminApp);
+        const pastComments = {
+            commenter: userEmail,
+            comment: newComment
+        }
+
+        databaseAdmin.ref('users/commentHistory').push(pastComments)
+          .then(() => {
+          console.log('Data successfully written to the database');
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error('Error writing data to the database: ', error);
+        });
+
+        // document.getElementById('addCommmentButton').addEventListener('onClick');
+    }
+
     return (
         <div className = "wrapper-appform" id="adminSubAppFormWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
             <div className = "form-appform">
@@ -194,11 +257,11 @@ export function AdminSubAppForm() {
                 <div class="wrapper-admin-feedback">
                     <div class="wrapper-new-comment">
                         <div class="admin-comments">
-                            <textarea type="answer" class="form-control admin-comment-box" id="inputAnswer1" aria-describedby="answerHelp" rows = "4"></textarea>
+                            <textarea type="answer" class="form-control admin-comment-box" id="new-comment" aria-describedby="answerHelp" rows = "4"></textarea>
                         </div>
                         <div class="wrapper-feedback-buttons"> 
                             <div class="wrapper-comment-button">
-                                <button class="add-comment-button">Add Comment</button>
+                                <button onClick={postComment} id="addCommmentButton" class="add-comment-button" >Add Comment</button>
                             </div>
                             <div class="wrapper-small-feedback-buttons">
                                 <div class="wrapper-status-button">
@@ -226,38 +289,7 @@ export function AdminSubAppForm() {
                             </div>
                         </div>
                     </div>
-                    <div class="wrapper-previous-comments">
-                        <div class="comment">
-                            <p><strong>Robert Left a Comment: </strong>
-                                John did a great job with questions 1-3 but left a little to be desired on question 4. 
-                                Feedback noted!
-                            </p>
-                        </div>
-                        <div class="comment">
-                            <p><strong>Alex Left a Comment: </strong>
-                                John did a decent job with questions 1-2 but did amazing on question 4. 
-                            </p>
-                        </div>
-                        <div class="comment">
-                            <p><strong>Jose Left a Comment: </strong>
-                                John did a decent job with questions 1-2 but did bad on question 4. 
-                            </p>
-                        </div>
-                        <div class="comment">
-                            <p><strong>Sarah Left a Comment: </strong>
-                                John did an amazing job! 
-                            </p>
-                        </div>
-                        <div class="comment">
-                            <p><strong>Larry Left a Comment: </strong>
-                                John did great on his application. 
-                            </p>
-                        </div>
-                        <div class="comment">
-                            <p><strong>Tracy Left a Comment: </strong>
-                                I think John did terrible
-                            </p>
-                        </div>
+                    <div class="wrapper-previous-comments" id="prev-comments">
                     </div>
                 </div>
                 <div class="back-button">
