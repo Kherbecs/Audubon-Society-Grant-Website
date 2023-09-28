@@ -52,6 +52,18 @@ onAuthStateChanged(auth, (currentUser) => {
 /*Navigation Bar that uses React JS, HTML, CSS, and Bootstrap 5*/
 
 export function UserNavBar() {
+  const history = useHistory(); 
+
+  // Checks if it's a user account and if it is, it redirects them to login and signs out
+  function handleLogOut () {
+      signOut(auth).then(() => {
+          console.log('Logout success');
+          window.location.href = '/login';
+      }).catch((error) => {
+          console.error('Logout error:', error);
+      });
+  }
+
   return (
     <div class="navbar-div" id="navBarWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
         <nav class="navbar navbar-expand-lg sticky-top" id='navbar-custom'>
@@ -79,7 +91,7 @@ export function UserNavBar() {
                        <a class="nav-link" href="/pastsubmissions">PAST SUBMISSIONS</a>
                     </li>
                     <li class="nav-item">
-                       <a class="nav-link" href="/login">LOGOUT</a>
+                       <a class="nav-link" href="/login" onClick={handleLogOut}>LOGOUT</a>
                     </li>
                 </ul>
             </div>
