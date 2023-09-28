@@ -66,6 +66,13 @@ export function ApplicationFormPage() {
                     } 
                     
                     else {
+                        const _AppID = uid + "_0";
+                        const currDate = new Date();
+                        const month = currDate.getMonth() + 1;
+                        const year = currDate.getFullYear();
+                        const date = currDate.getDate();
+                        const time = currDate.getHours() + ":" + currDate.getMinutes() + ":" + currDate.getSeconds();
+                        const today = month + "/" + date + "/" + year;
                         // get each field's data
                         const fname = document.getElementById('fname').value;
                         const lname = document.getElementById('lname').value;
@@ -222,6 +229,15 @@ export function ApplicationFormPage() {
                                 question4: q4
                             })
                         }
+                        update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                            _AppID: _AppID
+                        });
+                        update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                            _DateSubmitted: today
+                        });
+                        update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                            _TimeSubmitted: time
+                        });
 
                 // Upload the letter of recommendation file
                 const fileUploadPromises = [];

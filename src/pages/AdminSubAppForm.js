@@ -2,8 +2,8 @@ import React from 'react'
 import '../css/AdminSubAppForm.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
-import { getDatabase } from 'firebase/database';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
 
 
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
@@ -17,11 +17,27 @@ const adminFirebaseConfig = {
     measurementId: "G-0FLPMK8X2Z"
 };
 
+const firebaseConfig = {
+    apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
+    authDomain: "team-pwd.firebaseapp.com",
+    projectId: "team-pwd",
+    storageBucket: "team-pwd.appspot.com",
+    messagingSenderId: "129648865838",
+    appId: "1:129648865838:web:9713fb401ac09b481e25bf",
+    measurementId: "G-6FM488KSS5"
+  };
+
  // Initialize Firebase for admins
 const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
 console.log(adminApp);
 const databaseAdmin = getDatabase(adminApp);
 const adminAuth = adminApp.auth();
+
+// Initialize Firebase for users
+const app = firebase.initializeApp(firebaseConfig, 'my-app');
+console.log(app);
+const database = getDatabase(app);
+const auth = app.auth();
 
 //done is used so that the function can run onLoad but is only used once
 //to check if 
@@ -45,6 +61,47 @@ onAuthStateChanged(adminAuth, (currentUser) => {
 });
 
 export function AdminSubAppForm() {
+    function handleInfoDisplay(field, id) {
+        app.auth().onAuthStateChanged((user) => {
+            if(user) {
+                const uid = user.uid;
+                const dbRef = ref(database);
+                // get data from database as a JSON object, and get each field
+                // path temporarily hardcoded
+                get(child(dbRef, 'users/' + 'zPUcMiHBRIeGxQTufE2r66oiyc82' + '/forms/steve_stocking')).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        document.getElementById(id).value = data[field];
+                    } else {
+                        console.log("NO DATA");
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        });
+    }
+    function handleURLDisplay(field, id) {
+        app.auth().onAuthStateChanged((user) => {
+            if(user) {
+                const uid = user.uid;
+                const dbRef = ref(database);
+                // get data from database as a JSON object, and get each field
+                // path temporarily hardcoded
+                get(child(dbRef, 'users/' + 'zPUcMiHBRIeGxQTufE2r66oiyc82' + '/forms/steve_stocking')).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        document.getElementById(id).href = data[field];
+                    } else {
+                        alert("Document not found");
+                        console.log("NO DATA");
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        });
+    }
     return (
         <div className = "wrapper-appform" id="adminSubAppFormWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
             <div className = "form-appform">
@@ -61,43 +118,43 @@ export function AdminSubAppForm() {
                             <div class = "row g-3 row-appform">
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "fname">First Name</label>
-                                    <input type = "text" value = "John" class = "form-control user-info-field" placeholder = "First Name" aria-label= "First Name" readOnly></input>
+                                    <input type = "text" id = 'fname' value = '' onLoad = {handleInfoDisplay('firstName', 'fname')} className = "form-control user-info-field" placeholder = "First Name" aria-label= "First Name" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "lname">Last Name</label>
-                                    <input type = "text" value = "Smith" class = "form-control user-info-field" placeholder = "Last Name" aria-label= "Last Name" readOnly></input>
+                                    <input type = "text" id = 'lname' value = '' onLoad = {handleInfoDisplay('lastName', 'lname')} className = "form-control user-info-field" placeholder = "Last Name" aria-label= "Last Name" readOnly></input>
                                 </div>
                             </div>
                             <div class = "row g-3 row-appform">
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "birthday">Birth Date (mm/dd/yy)</label>
-                                    <input type = "text" value = "04/19/1993" class = "form-control user-info-field" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)" readOnly></input>
+                                    <input type = "text" id = 'birthday' value = '' onLoad = {handleInfoDisplay('birthday', 'birthday')} className = "form-control user-info-field" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "email">Email</label>
-                                    <input type = "text" value = "JohnSmith@gmail.com" class = "form-control user-info-field" placeholder = "Email" aria-label = "Email" readOnly></input>
+                                    <input type = "text" id = 'email' value = '' onLoad = {handleInfoDisplay('email', 'email')} className = "form-control user-info-field" placeholder = "Email" aria-label = "Email" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "homephone">Home Phone</label>
-                                    <input type = "text" value = "(916) 501-7088" class = "form-control user-info-field" placeholder = "Home Phone" aria-label = "Home Phone" readOnly></input>
+                                    <input type = "text" id = 'phone' value = '' onLoad = {handleInfoDisplay('phone', 'phone')} className = "form-control user-info-field" placeholder = "Home Phone" aria-label = "Home Phone" readOnly></input>
                                 </div>
                             </div>
                             <div class = "row g-3 row-appform">
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "address">Address</label>
-                                    <input type = "text" value = "6801 Shiner Street" class = "form-control user-info-field" placeholder = "Address" aria-label = "Address" readOnly></input>
+                                    <input type = "text" id = 'address' value = '' onLoad = {handleInfoDisplay('address', 'address')} className = "form-control user-info-field" placeholder = "Address" aria-label = "Address" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "city">City</label>
-                                    <input type = "text" value = "Sacramento" class = "form-control user-info-field" placeholder = "City" aria-label = "City" readOnly></input>
+                                    <input type = "text" id = 'city' value = '' onLoad = {handleInfoDisplay('city', 'city')} className = "form-control user-info-field" placeholder = "City" aria-label = "City" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "state">State</label>
-                                    <input type = "text" value = "CA" class = "form-control user-info-field" placeholder = "State" aria-label = "State" readOnly></input>
+                                    <input type = "text" id = 'state' value = '' onLoad = {handleInfoDisplay('state', 'state')} className = "form-control user-info-field" placeholder = "State" aria-label = "State" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "zip">ZIP Code</label>
-                                    <input type = "text" value = "95828" class = "form-control user-info-field" placeholder = "ZIP Code" aria-label = "ZIP Code" readOnly></input>
+                                    <input type = "text" id = 'zip' value = '' onLoad = {handleInfoDisplay('zip', 'zip')} className = "form-control user-info-field" placeholder = "ZIP Code" aria-label = "ZIP Code" readOnly></input>
                                 </div>
                             </div>
                         </div>
@@ -105,40 +162,34 @@ export function AdminSubAppForm() {
                     <div className = "question">
                         <label for="question1Text" class="question-label">Are you, or a parent or guardian, a member of the San Joaquin Audubon Society?</label>
                         <div className = "Q1Selection-appform">
-                            <select className = "q1select-appform" id = "q1select-appform" disabled>
-                                <option value = "Yes">Yes</option>
-                            </select>
+                            <input type = 'text' className = "q1select-adminsubappform" id = 'q1' onLoad = {handleInfoDisplay('question1', 'q1')} size = '2' readOnly></input>
                         </div>                      
                     </div>
                     <div className = "question">
                         <label for="question2Text" class="question-label">Do you live in San Joaquin County?</label>
                         <div className = "Q2Selection-appform">
-                            <select className = "q2select-appform" id = "q1select-appform" disabled>
-                                <option value = "No">No</option>
-                            </select>
+                            <input type = 'text'  className = "q2select-adminsubappform" id = 'q2' onLoad = {handleInfoDisplay('question2', 'q2')} size = '2' readOnly></input>
                         </div>                        
                     </div>
                     <div className = "question">
                         <label for="question3Text" class="question-label">Which camp or program do you want to attend?</label>
                         <div class="wrapper-user-answer">
-                            <textarea class="form-control" id="textAreaExample" rows="4" 
-                                value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Aliquam eleifend mi in nulla posuere sollicitudin." readOnly>
-                            </textarea>
+                            <textarea class="form-control" id = 'q3' rows="4" value = '' onLoad = {handleInfoDisplay('question3', 'q3')} readOnly></textarea>
                         </div>                         
                     </div>
                     
                     <div className = "question">
                         <label for="qLastText" class="question-label">Do you have any feedback for us?</label>
                         <div class="wrapper-user-answer">
-                        <textarea class="form-control" id="textAreaExample" rows="4" 
-                            value = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Porttitor eget dolor morbi non arcu risus quis. Enim praesent elementum facilisis leo vel. Ultricies leo integer malesuada nunc vel." readOnly>
-                        </textarea>       
+                            <textarea className="form-control" id = 'q4' rows="4" value = '' onLoad = {handleInfoDisplay('question4', 'q4')} readOnly></textarea>    
                         </div> 
                     </div>
                 </div>
                 <div class="file-div">
-                    <p><a href="#">user_letter_of_rec.pdf</a></p>
-                    <p><a href="#">user_essay.pdf</a></p>
+                    <p><a className = "letterLink" id = "letterLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkLetter', 'letterLinkID')}>
+                        letter_of_recommendation.pdf</a></p>
+                    <p><a className = "essayLink" id = "essayLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkEssay', 'essayLinkID')}>
+                        personal_essay.pdf</a></p>
                 </div>
                 <div class="wrapper-admin-feedback">
                     <div class="wrapper-new-comment">
