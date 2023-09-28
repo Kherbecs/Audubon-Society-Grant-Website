@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { NavBar } from "./pages/NavBar.js";
 import { Footer } from './pages/Footer.js';
@@ -26,6 +25,7 @@ import 'firebase/compat/database';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from 'firebase/database';
+import React, { useState, useEffect } from 'react';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -66,11 +66,29 @@ console.log(adminApp);
 const adminAuth = adminApp.auth();
 
 function App() {
+  // Tracking the user authentication
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
+  // Checks the user authentication
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      // Checks if user is logged in or not
+      if (user) {
+        setUserLoggedIn(true);
+      } 
+      
+      else {
+        setUserLoggedIn(false);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <Router>
       <Route
         render={({ location }) =>
-          location.pathname === '/' ||
           location.pathname === '/login' ||
           location.pathname === '/register' ? (
             <NavBar />
@@ -87,6 +105,7 @@ function App() {
       />
       <Switch>
         <Route exact path="/">
+          {userLoggedIn ? <UserNavBar /> : <NavBar />}
           <LandingPage></LandingPage>
         </Route>
         <Route exact path="/login">

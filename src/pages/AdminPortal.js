@@ -62,6 +62,17 @@ const numHitsRef = databaseAdmin.ref("numHits");
     
 
 export function AdminPortal() {
+    const history = useHistory(); 
+
+    function handleLogOut () {
+        // Checks if it's an admin account and if it is, it redirects them to admin login and signs out
+        signOut(adminAuth).then(() => {
+            console.log('Logout success');
+            window.location.href = '/adminlogin';
+        }).catch((error) => {
+            console.error('Logout error:', error);
+        });
+    }
 
  //DYNAMIC SUBMISSIONS AND LOCK STATES
     const [submissions, setSubmissions] = useState([
@@ -187,7 +198,7 @@ export function AdminPortal() {
    
     <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
          
-         <a href="/adminlogin"><button class="logout">Logout</button></a>
+         <a href="/adminlogin"><button class="logout" onClick={handleLogOut}>Logout</button></a>
         <p class="fs-1 adminportal-heading">
             <p class="text-center">Current Applicants</p>
             <p class="text-end">

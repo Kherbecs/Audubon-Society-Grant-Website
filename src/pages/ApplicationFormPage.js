@@ -53,86 +53,175 @@ export function ApplicationFormPage() {
         app.auth().onAuthStateChanged(function(user) {
             if (user) {
                 const uid = user.uid;
-                // get each field's data
-                const fname = document.getElementById('fname').value;
-                const lname = document.getElementById('lname').value;
-                const birthday = document.getElementById('birthday').value;
-                const email = document.getElementById('email').value;
-                const phone = document.getElementById('phone').value;
-                const address = document.getElementById('address').value;
-                const city = document.getElementById('city').value;
-                const state = document.getElementById('state').value;
-                const zip = document.getElementById('zip').value;
-                const q1 = document.getElementById('q1').value;
-                const q2 = document.getElementById('q2').value;
-                const q3 = document.getElementById('q3').value;
-                const q4 = document.getElementById('q4').value;
-                // if the field is not empty, update the database with the information
-                if (fname !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        firstName: fname
-                    })
-                }
-                if (lname !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        lastName: lname
-                    })
-                }
-                if (birthday !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        birthday: birthday
-                    })
-                }
-                if (email !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        email: email
-                    })
-                }
-                if (phone !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        phone: phone
-                    })
-                }
-                if (address !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        address: address
-                    })
-                }
-                if (city !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        city: city
-                    })
-                }
-                if (state !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        state: state
-                    })
-                }
-                if (zip !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        zip: zip
-                    })
-                }
-                if (q1 !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        question1: q1
-                    })
-                }
-                if (q2 !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        question2: q2
-                    })
-                }
-                if (q3 !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        question3: q3
-                    })
-                }
-                if (q4 !== "") {
-                    update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                        question4: q4
-                    })
-                }
+
+                // Check if the user has already submitted a form
+                const userFormRef = ref(database, `users/${uid}/forms/steve_stocking`);
+                get(userFormRef).then((snapshot) => {
+                    if(snapshot.exists()) {
+                        // User has already submitted a form
+                        //alert("You already submitted a form. You can't resubmit. Please contact one of the admins in order to edit your submission.");
+                        document.getElementById('error-message').textContent = "You already submitted a form. You can't resubmit. Please contact one of the admins in order to edit your submission.";
+                        return;
+                    } 
+                    
+                    else {
+                        // get each field's data
+                        const fname = document.getElementById('fname').value;
+                        const lname = document.getElementById('lname').value;
+                        const birthday = document.getElementById('birthday').value;
+                        const email = document.getElementById('email').value;
+                        const phone = document.getElementById('phone').value;
+                        const address = document.getElementById('address').value;
+                        const city = document.getElementById('city').value;
+                        const state = document.getElementById('state').value;
+                        const zip = document.getElementById('zip').value;
+                        const q1 = document.getElementById('q1').value;
+                        const q2 = document.getElementById('q2').value;
+                        const q3 = document.getElementById('q3').value;
+                        const q4 = document.getElementById('q4').value;
+
+                        // Error checking to see if any of the fields are empty
+                        if(!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !q4) {
+                            //alert('Please fill out all fields.');       
+                            document.getElementById('error-message').textContent = 'Please fill out all fields';
+                            return;
+                        }
+
+                        // Check if first name and last name contain only characters
+                        if(!/^[A-Za-z\s]+$/.test(fname) || !/^[A-Za-z\s]+$/.test(lname)) {
+                            //alert('First Name and Last Name should contain only letters.');
+                            document.getElementById('error-message').textContent = 'First Name and Last Name should contain only letters';
+                            return;
+                        }
+
+                        // Check if birthday is in the "xx/xx/xxxx" format
+                        if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(birthday)) {
+                            //alert('Please enter a valid birthday in the format "xx/xx/xxxx".');
+                            document.getElementById('error-message').textContent = 'Please enter a valid birthday in the format "xx/xx/xxxx"';
+                            return;
+                        }
+
+                        // Checks if email is valid
+                        if(!/\S+@\S+\.\S+/.test(email)) {
+                            //alert('Please enter a valid email address.');
+                            document.getElementById('error-message').textContent = 'Please enter a valid email address';
+                            return;
+                        }
+
+                        // Check if home phone number contains only numbers and optional hyphens
+                        if(!/^[0-9-]+$/.test(phone)) {
+                            //alert('Phone number should contain only numbers');
+                            document.getElementById('error-message').textContent = 'Phone number should contain only numbers';
+                            return;
+                        }
+
+                        // Check if city and state contain only characters
+                        if (!/^[A-Za-z\s]+$/.test(city) || !/^[A-Za-z\s]+$/.test(state)) {
+                            //alert('City and State should contain only letters and spaces.');
+                            document.getElementById('error-message').textContent = 'City and State should contain only letters';
+                            return;
+                        }
+                          
+                        // Check if ZIP code contains only numbers
+                        if(!/^\d+$/.test(zip)) {
+                            //alert('ZIP Code should contain only numbers.');
+                            document.getElementById('error-message').textContent = 'ZIP Code should contain only numbers';
+                            return;
+                        }
+
+                        if(q1 === "Select" && q2 === "Select") {
+                            //alert('Please fill out all fields.');       
+                            document.getElementById('error-message').textContent = 'Please select either yes or no in the dropdown menu';
+                            return;
+                        }
+
+                        // Check if the user selected an option for question 1
+                        if(q1 === "Select") {
+                            //alert('Please select if you are a member of the San Joaquin Audubon Society or not.');
+                            document.getElementById('error-message').textContent = 'Please select if you are a member of the San Joaquin Audubon Society or not';
+                            return;
+                        }
+
+                        // Check if the user selected an option for question 2
+                        if(q2 === "Select") {
+                            //alert('Please select if you live in San Joaquin County or not.');
+                            document.getElementById('error-message').textContent = 'Please select if you live in San Joaquin County or not';
+                            return;
+                        }
+
+                        // if the field is not empty, update the database with the information
+                        if (fname !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                firstName: fname
+                            })
+                        }
+                        if (lname !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                lastName: lname
+                            })
+                        }
+                        if (birthday !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                birthday: birthday
+                            })
+                        }
+                        if (email !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                email: email
+                            })
+                        }
+                        if (phone !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                phone: phone
+                            })
+                        }
+                        if (address !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                address: address
+                            })
+                        }
+                        if (city !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                city: city
+                            })
+                        }
+                        if (state !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                state: state
+                            })
+                        }
+                        if (zip !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                zip: zip
+                            })
+                        }
+                        if (q1 !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                question1: q1
+                            })
+                        }
+                        if (q2 !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                question2: q2
+                            })
+                        }
+                        if (q3 !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                question3: q3
+                            })
+                        }
+                        if (q4 !== "") {
+                            update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                                question4: q4
+                            })
+                        }
+
+                        // Successfully submitted
+                        alert('Successfully submitted.');       
+                        window.location.reload();   
+                        return;
+                    }
+                });
             } else {
                 console.log("Not signed in");
             }
@@ -160,8 +249,8 @@ export function ApplicationFormPage() {
                             </div>
                             <div class = "row g-3 row-appform">
                                 <div class = "col-md">
-                                    <label for = "birthday">Birth Date (mm/dd/yy)</label>
-                                    <input type = "text" class = "form-control" id = "birthday" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)"></input>
+                                    <label for = "birthday">Birth Date (mm/dd/yyyy)</label>
+                                    <input type = "text" class = "form-control" id = "birthday" placeholder = "Birth Date (mm/dd/yyyy)" aria-label = "Birth Date (mm/dd/yyyy)"></input>
                                 </div>
                                 <div class = "col-md">
                                     <label for = "email">Email</label>
@@ -196,6 +285,7 @@ export function ApplicationFormPage() {
                         <label for="question1Text" class="form-label-appform1">Are you, or a parent or guardian, a member of the San Joaquin Audubon Society?</label>
                         <div className = "Q1Selection-appform">
                             <select className = "q1select-appform" id = "q1">
+                                <option value = "Select">Select</option>
                                 <option value = "Yes">Yes</option>
                                 <option value = "No">No</option>
                             </select>
@@ -205,6 +295,7 @@ export function ApplicationFormPage() {
                         <label for="question2Text" class="form-label-appform2">Do you live in San Joaquin County?</label>
                         <div className = "Q2Selection-appform">
                             <select className = "q2select-appform" id = "q2">
+                                <option value = "Select">Select</option>
                                 <option value = "Yes">Yes</option>
                                 <option value = "No">No</option>
                             </select>
@@ -231,6 +322,8 @@ export function ApplicationFormPage() {
                     </div>
                     <div className = "uploadButtonEssay-appform">
                         <input type = "file" id = "essayFile" name = "essay"></input>
+                    </div>
+                    <div className="error-message" id="error-message">
                     </div>
                 </div>
                 <div className = "buttonWrapper1-appform">
