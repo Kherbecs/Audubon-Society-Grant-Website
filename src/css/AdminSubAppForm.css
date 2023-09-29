@@ -28,7 +28,9 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
-
+.status-info-hold {
+    text-align: center;
+}
 .questionSection {
     margin:auto;
     margin-bottom: 1rem;
@@ -51,6 +53,10 @@
 
 .user-info-label{
     font-size: 16px;
+}
+.status-current-label{
+    font-size: 16px;
+    text-decoration: underline;
 }
 
 .wrapper-user-answer{
@@ -83,6 +89,14 @@
     margin-bottom: 1rem;
     padding-bottom: 1rem;
     width: 60%;
+}
+.wrapper-status-current{
+    background-color: #F8EDE3;
+    border-radius: 4px;
+    margin: auto;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 20%;
 }
 
 .wrapper-new-comment{
@@ -129,7 +143,7 @@
     overflow-y: scroll;
     height: 10rem;
     width: 95%;
-    text-align: center;
+    
 }
 
 .text-center {

@@ -40,8 +40,7 @@ const adminAuth = adminApp.auth();
 
 // User information for comments
 var userEmail = null;
-const auth = getAuth();
-onAuthStateChanged(auth, (currentUser)=>{
+onAuthStateChanged(adminAuth, (currentUser)=>{
     if(currentUser){
         console.log(currentUser.email);
         userEmail = currentUser.email;
@@ -75,6 +74,22 @@ onAuthStateChanged(adminAuth, (currentUser) => {
   }
   return;
 });
+
+
+const chosenApplication = "";
+
+const dataUp = ref(database,'users'+ '/qyE29ngMhYMQ2vvcpMrBRUtgc2X2' +'/pastsubmissions'+'/submission 1');
+const statusNow = ref(database,'users'+ '/qyE29ngMhYMQ2vvcpMrBRUtgc2X2' +'/pastsubmissions'+'/submission 1'+'/grantStatus');
+var loadStatus ='';
+ 
+        //get current value from database before change 
+        onValue(statusNow, (snapshot) => {
+            loadStatus = snapshot.val();
+            
+            document.getElementById('statusOne').innerHTML = loadStatus;
+            document.getElementById('statusDisplay1').innerHTML= loadStatus;
+        })
+
 
 export function AdminSubAppForm() {
     const getInitialState = () =>{
@@ -128,7 +143,16 @@ export function AdminSubAppForm() {
             }
         });
     }
+        //function that runs when you change status
+        function statusChange(){
+        
 
+            //update to database
+        const newStatus = document.getElementById('floatingSelect1').value;
+        update(dataUp,{grantStatus: newStatus});
+        
+
+    }
     function getComments(){
         const databaseAdmin = firebase.database(adminApp);
 
@@ -186,6 +210,7 @@ export function AdminSubAppForm() {
 
         document.getElementById('addCommmentButton').addEventListener('onClick');
     }
+
 
     return (
         <div className = "wrapper-appform" id="adminSubAppFormWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
@@ -276,6 +301,14 @@ export function AdminSubAppForm() {
                     <p><a className = "essayLink" id = "essayLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkEssay', 'essayLinkID')}>
                         personal_essay.pdf</a></p>
                 </div>
+
+                <div class="wrapper-status-current">
+                    <div class="status-info-hold">
+                    <label class="status-current-label" id= "statusDisplay">Current Status</label>
+                    </div>
+                    <label class="user-info-label" id= "statusDisplay1">Status</label>
+                </div>
+
                 <div class="wrapper-admin-feedback">
                     <div class="wrapper-new-comment">
                         <div class="admin-comments">
@@ -287,10 +320,11 @@ export function AdminSubAppForm() {
                             </div>
                             <div class="wrapper-small-feedback-buttons">
                                 <div class="wrapper-status-button">
-                                    <select class="form-select" id="floatingSelect" aria-label="Filter drop down menu">
-                                        <option selected>Status</option>
-                                        <option value="grant">Under Review</option>
-                                        <option value="grant">Approved</option>
+                                    <select class="form-select" id="floatingSelect1" aria-label="Filter drop down menu" onChange={statusChange}>
+                                        <option selected id="statusOne" >Status</option>
+                                        <option value="Under Review" > Set to Under Review</option>
+                                        <option value="Approved">Set to Approved</option>
+                                        <option value ="Unsatisfactory">Set to Unsatisfactory</option>
                                     </select>
                                 </div>
                                 <div class="wrapper-grade-button">
