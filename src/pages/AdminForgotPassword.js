@@ -7,6 +7,8 @@ import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
 const adminFirebaseConfig = {
@@ -27,17 +29,26 @@ const adminFirebaseConfig = {
   const adminAuth = adminApp.auth();
 
 export function AdminForgotPassword() {
+  const history = useHistory();
+
+  const handleLoginClick = () => {
+    history.push('/adminlogin');
+    window.location.reload();
+  };
+
     function handlePasswordReset() {
         const email = document.getElementById('InputEmail1').value;
         
         if(email.trim() === '') {
-          alert('Please enter your email.');
+          //alert('Please enter your email.');
+          document.getElementById('alert-message').textContent = 'Please enter your email';
           return;
         }
         
         // Checks if email is valid
         if(!/\S+@\S+\.\S+/.test(email)) {
-          alert('Please enter a valid email address.');
+          //alert('Please enter a valid email address.');
+          document.getElementById('alert-message').textContent = 'Please enter a valid email address';
           return;
         }
         
@@ -46,17 +57,19 @@ export function AdminForgotPassword() {
         .then((userCredential) => {
           // Check if email is verified
           if (userCredential && userCredential.user && !userCredential.user.emailVerified) {
-            alert('Email is not found.');
+            document.getElementById('alert-message').textContent = 'Email is not found';
+            //alert('Email is not found.');
             firebase.auth().signOut();
             return;
           }
       
-          // Redirect to home page
-          alert('Reset link sent. Check email');          
+          alert('Reset link sent. Please check your email.');
+          window.location.reload();         
           return;
         })
         .catch((error) => {
-          alert('Account not found.');
+          document.getElementById('alert-message').textContent = 'Account not found';
+          //alert('Account not found.');
           console.error(error);
         });
       }
@@ -79,11 +92,15 @@ export function AdminForgotPassword() {
                 </div>
               </div>
             </div>
+
+            <div className="error-message-pr" id="alert-message">
+            </div>
+
             <div class="containerty">
               <button type="sign in" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={() => handlePasswordReset()}>Submit</button>
             </div>
           <div class="containerty">
-          <a href="/adminlogin" class="links-password ">Back</a>
+          <Link className="links-password" onClick={handleLoginClick}>Back</Link>
           </div>
         
       </div>

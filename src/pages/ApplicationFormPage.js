@@ -1,4 +1,4 @@
-import React from 'react'
+import {React, useEffect} from 'react'
 import '../css/ApplicationFormPage.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -10,6 +10,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Link } from 'react-router-dom';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
@@ -28,28 +29,33 @@ console.log(app);
 const database = getDatabase(app);
 const auth = app.auth();
 const storage = getStorage(app);
-//done is used so that the function can run onLoad but is only used once
-//to check if 
-let done = false;
-onAuthStateChanged(auth, (currentUser) => {
-  if (currentUser && !done) {
-    //user is signed in
-    done = true;
-    return;
-  } 
-  else if(!currentUser && !done) {
-    // User is signed out
-    //hide the webpage if no viable user
-    done = true;
-    document.getElementById('appFormWrapper').style.visibility = "hidden";
-    window.location.href = '/login';
-    console.error(401);
-    return;
-  }
-  return;
-});
 
 export function ApplicationFormPage() {
+    const history = useHistory();
+
+    const handleGrantClick = () => {
+      history.push('/grantselection');
+      window.location.reload();
+    };
+
+    useEffect(() => {
+        let done = false;
+        onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser && !done) {
+                // User is signed in, do nothing
+                done = true;
+            } else if (!currentUser && !done) {
+                // User is signed out
+                done = true;
+                document.getElementById('appFormWrapper').style.visibility = "hidden";
+                history.push('/login'); 
+                window.location.reload();
+                console.error(401);
+                return;
+            }
+        });
+    }, [auth, history]); 
+
     function handleSubmit() {
         app.auth().onAuthStateChanged(function(user) {
             if (user) {
@@ -95,9 +101,9 @@ export function ApplicationFormPage() {
                         const essayFile = essayFileInput.files[0];
 
                         // Error checking to see if any of the fields are empty
-                        if(!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !q4) {
+                        if(!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !letterFile || !essayFile) {
                             //alert('Please fill out all fields.');       
-                            document.getElementById('error-message').textContent = 'Please fill out all fields';
+                            document.getElementById('error-message').textContent = 'Please fill out all fields and make sure you submitted the required files';
                             return;
                         }
 
@@ -288,7 +294,8 @@ export function ApplicationFormPage() {
                                 // All uploads and updates completed successfully
                                 alert('Successfully submitted. You can now view your submission in the Past Submissions.');
                                 // Page reload
-                                window.location.href = '/applicationformpage';
+                                //window.location.href = '/applicationformpage';
+                                window.location.reload();
                             })
                             .catch((error) => {
                                 console.error('Error:', error);
@@ -407,7 +414,7 @@ export function ApplicationFormPage() {
                 </div>
                 <div className = "buttonWrapper2-appform" >
                     <div class="text-center">
-                        <a href="/grantselection"><button class = "button2-appform">Return to Previous Page</button></a>
+                    <Link className="prev-page-link" onClick={handleGrantClick}><button class = "button2-appform">Return to Previous Page</button></Link>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import {React, useState, useEffect} from 'react'
 import '../css/AdminSubAppForm.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -9,7 +9,8 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
 import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth'
-
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
 const adminFirebaseConfig = {
@@ -54,27 +55,6 @@ const app = firebase.initializeApp(firebaseConfig, 'my-app');
 console.log(app);
 const database = getDatabase(app);
 
-//done is used so that the function can run onLoad but is only used once
-//to check if 
-let done = false;
-onAuthStateChanged(adminAuth, (currentUser) => {
-  if (currentUser && !done) {
-    //admin user is signed in
-    done = true;
-    return;
-  } 
-  else if(!currentUser && !done) {
-    // User is signed out
-    //hide the webpage if no viable admin user
-    done = true;
-    document.getElementById('adminSubAppFormWrapper').style.visibility = "hidden";
-    window.location.href = '/';
-    console.error(401);
-    return;
-  }
-  return;
-});
-
 
 const chosenApplication = "";
 
@@ -92,6 +72,41 @@ var loadStatus ='';
 
 
 export function AdminSubAppForm() {
+    const history = useHistory();
+  
+//done is used so that the function can run onLoad but is only used once
+//to check if 
+useEffect(() => {
+    let done = false;
+    const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
+      if (currentUser && !done) {
+        // Admin user is signed in, do nothing
+        done = true;
+      } else if (!currentUser && !done) {
+        // User is signed out
+        done = true;
+        const adminSubAppFormWrapper = document.getElementById('adminSubAppFormWrapper');
+        if (adminSubAppFormWrapper) {
+            adminSubAppFormWrapper.style.visibility = 'hidden';
+          history.push('/');
+          window.location.reload();
+        } else {
+          console.error('Element with ID "adminSubAppFormWrapper" not found.');
+        }
+      }
+    });
+
+    return () => {
+      // Unsubscribe from onAuthStateChanged when the component unmounts
+      unsubscribe();
+    };
+  }, [history]); 
+
+    const handleAdminClick = () => {
+      history.push('/adminportal');
+      window.location.reload();
+    };
+
     const getInitialState = () =>{
         const value = "Grade";
         return value;
@@ -216,7 +231,7 @@ export function AdminSubAppForm() {
         <div className = "wrapper-appform" id="adminSubAppFormWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
             <div className = "form-appform">
                 <div className = "back-button" >
-                    <a class="prev-page-link" href="/adminportal"><button class = "button2">Return to Previous Page</button></a>
+                    <Link className="prev-page-link" onClick={handleAdminClick}><button class = "button2">Return to Previous Page</button></Link>
                 </div>
                 <div className = "grantTitle">
                     <label for = "title" class = "title">Steve Stocking Youth Environmental Scholarship</label>
@@ -349,7 +364,7 @@ export function AdminSubAppForm() {
                     </div>
                 </div>
                 <div class="back-button">
-                    <a class="prev-page-link" href="/adminportal"><button class = "button2">Return to Previous Page</button></a>
+                <Link className="prev-page-link" onClick={handleAdminClick}><button class = "button2">Return to Previous Page</button></Link>
                 </div>
             </div>
         </div>

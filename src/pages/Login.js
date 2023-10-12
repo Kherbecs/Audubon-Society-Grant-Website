@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from 'firebase/database';
+import { Link } from 'react-router-dom';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,22 +37,36 @@ const auth = app.auth();
 
 export function Login() {
   const history = useHistory();
+
+  const handleRegisterClick = () => {
+    history.push('/register');
+    window.location.reload();
+  };
+
+  const handlePasswordClick = () => {
+    history.push('/passwordreset');
+    window.location.reload();
+  };
+
   function handleLogin() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
     if(password.trim() === '' && email.trim() === '') {
-      alert('Please fill out the form.');
+      //alert('Please fill out the form.');
+      document.getElementById('alert-message').textContent = 'Please fill out the form';
       return;
     }
   
     else if(password.trim() === '') {
-      alert('Please enter your password.');
+      //alert('Please enter your password.');
+      document.getElementById('alert-message').textContent = 'Please enter your password';
       return;
     }
   
     else if(email.trim() === '') {
-      alert('Please enter your email.');
+      //alert('Please enter your email.');
+      document.getElementById('alert-message').textContent = 'Please enter your email';
       return;
     }
     
@@ -60,17 +75,20 @@ export function Login() {
     .then((userCredential) => {
       // Check if email is verified
       if (!userCredential.user.emailVerified) {
-        alert('Please verify your email before logging in.');
+        //alert('Please verify your email before logging in.');
+        document.getElementById('alert-message').textContent = 'Verify your email before logging in';
         auth.signOut();
         return;
       }
       
       // Redirect to the grantselection page
-      window.location.href = '/grantselection';
+      history.push('/grantselection');
+      window.location.reload();
     })
     .catch((error) => {
       // Handle incorrect password or email
-      alert('Incorrect email or password.');
+      //alert('Incorrect email or password.');
+      document.getElementById('alert-message').textContent = 'Incorrect email or password';
       console.error(error);
     });
   }
@@ -78,30 +96,36 @@ export function Login() {
   return (
     <html>
       <div className="wrapper-lr wrapper-padding-l">
-        <div className="form-lr">
-          <h2 className="mb-3 h2-lr">Login</h2>
-          <hr className="hr-lr"/>
+        <div className="container">
+          <div className="row justify-content-center">
+              <div className="form-lr">
+                <h2 className="mb-3 h2-lr">Login</h2>
+                <hr className="hr-lr"/>
 
-          <div className="form-floating mb-2">
-            <input type="email" className="form-control form-control-lg" id="email" placeholder="Email Address"></input>
-            <label htmlFor="email">Email Address</label>
-          </div>
+                <div className="form-floating mb-2">
+                  <input type="email" className="form-control form-control-lg" id="email" placeholder="Email Address"></input>
+                  <label htmlFor="email">Email Address</label>
+                </div>
 
-          <div className="form-floating mb-2">
-            <input type="password" className="form-control form-control-lg" id="password" placeholder="Password"></input>
-            <label htmlFor="password">Password</label>
-          </div>
+                <div className="form-floating mb-2">
+                  <input type="password" className="form-control form-control-lg" id="password" placeholder="Password"></input>
+                  <label htmlFor="password">Password</label>
+                </div>
 
-          <div className="link1-lr">
-            <a href="/passwordreset" className="link-lr2">Forgot password?</a>
+                <div className="error-message-lr" id="alert-message">
+                </div>
+
+                <div className="link1-lr">
+                <Link className="link-lr2" onClick={handlePasswordClick}>Forgot password?</Link>
+                </div>
+                <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleLogin}>Sign In</button>
+                <div className="link2-lr">
+                  Need an account? <Link className="link-lr2" onClick={handleRegisterClick}>Sign up</Link>
+                </div>
+              </div>
+            </div>
           </div>
-          <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleLogin}>Sign In</button>
-          <div className="link2-lr">
-            Need an account? <a class="one" href="/register" className="link-lr2">Sign up</a>
-          </div>
-  
-        </div>
-      </div>
+      </div>  
     </html>
   )
 }

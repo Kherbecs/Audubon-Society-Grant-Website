@@ -8,7 +8,8 @@ import 'firebase/compat/database';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from 'firebase/database';
-
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -38,42 +39,41 @@ async function handleRegistration() {
   const confirmPassword = document.getElementById('confirm-password').value;
   const signUpForGrants = document.getElementById('sign-up-for-grants').checked;
 
-  //Checks if email is valid
+
+  if(password.trim() === '' || fullName.trim() === '' || confirmPassword.trim() === '' || email.trim() === '') {
+    //alert('Please fill out the registration form.');
+    document.getElementById('alert-message').textContent = 'Please fill out all fields';
+    return;
+  }
+
+  const fullNameRegex = /^[A-Za-z\s]+$/;
+
+  // Full name can only be using spaces and letters
+  if (!fullNameRegex.test(fullName)) {
+    //alert('Please enter a valid full name with letters and spaces only.');
+    document.getElementById('alert-message').textContent = 'Please enter a valid full name';
+    return;
+  }
+
+  // Checks if email is valid
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)) {
-    alert('Please enter a valid email address.');
+    //alert('Please enter a valid email address.');
+    document.getElementById('alert-message').textContent = 'Please enter a valid email address';
     return;
   }
 
   // Checks if password matches
   if (password !== confirmPassword) {
-    alert('Passwords do not match.');
+    //alert('Passwords do not match.');
+    document.getElementById('alert-message').textContent = 'Passwords do not match';
     return;
   }
 
   // Checks the password requirement
-  else if((password.length < 6 || /\s/.test(password)) && !(password.trim() === '')) {
-    alert('Password must be at least 6 characters long and not contain spaces.');
-    return;
-  }
-
-  else if(password.trim() === '' && fullName.trim() === '' && confirmPassword.trim() === '' && email.trim() === '') {
-    alert('Please fill out the registration form.');
-    return;
-  }
-
-  else if(password.trim() === '') {
-    alert('Please enter your password.');
-    return;
-  }
-
-  else if(email.trim() === '') {
-    alert('Please enter your email.');
-    return;
-  }
-
-  else if (fullName.trim() === '') {
-    alert('Please enter your full name.');
+  if((password.length < 6 || /\s/.test(password)) && !(password.trim() === '')) {
+    //alert('Password must be at least 6 characters long and not contain spaces.');
+    document.getElementById('alert-message').textContent = 'Password must be at least 6 characters long and not contain spaces';
     return;
   }
 
@@ -81,7 +81,8 @@ async function handleRegistration() {
   try {
     const signInMethods = await auth.fetchSignInMethodsForEmail(email);
     if (signInMethods.length > 0) {
-      alert('This email address is already registered.');
+      //alert('This email address is already registered.');
+      document.getElementById('alert-message').textContent = 'This email address is already registered';
       return;
     }
   } catch (error) {
@@ -133,47 +134,61 @@ async function handleRegistration() {
 
 
 export function Register() {
+  const history = useHistory();
+
+  const handleLoginClick = () => {
+    history.push('/login');
+    window.location.reload();
+  };
+
   return (
       <div className="wrapper-lr wrapper-padding-r">
-        <div className="form-lr">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="form-lr">
 
-          <h2 className="mb-3 h2-lr">Register</h2>
-          <hr className="hr-lr"/>
+              <h2 className="mb-3 h2-lr">Register</h2>
+              <hr className="hr-lr"/>
 
-          <div className="form-floating mb-2">
-            <input type="full-name" className="form-control form-control-lg" id="full-name" placeholder="Full Name"></input>
-            <label htmlFor="full-name">Full Name</label>
+              <div className="form-floating mb-2">
+                <input type="full-name" className="form-control form-control-lg" id="full-name" placeholder="Full Name"></input>
+                <label htmlFor="full-name">Full Name</label>
+              </div>
+
+              <div className="form-floating mb-2">
+                <input type="email" className="form-control form-control-lg" id="email" placeholder="Email Address"></input>
+                <label htmlFor="email">Email Address</label>
+              </div>
+
+              <div className="form-floating mb-2">
+                <input type="password" className="form-control form-control-lg" id="password" placeholder="Password"></input>
+                <label htmlFor="password">Password</label>
+                <div id="passwordHelpBlock" class="form-text-lr">
+                  Must be 6 characters long and not contain spaces
+                </div>
+              </div>
+
+              <div className="form-floating mb-2">
+                <input type="password" className="form-control form-control-lg" id="confirm-password" placeholder="Confirm Password"></input>
+                <label htmlFor="confirm-password">Confirm Password</label>
+              </div>
+              
+              <div className="form-group form-check mb-2">
+                <input type="checkbox" className="form-check-input" id="sign-up-for-grants"></input>
+                <label htmlFor="sign-up-for-grants" className="form-check-label-lr">Sign Up for Grant Updates</label>
+              </div>
+
+              <div className="error-message-lr" id="alert-message">
+              </div>
+
+              <button className="btn btn-success btn-lg w-100 block mt-2" onClick={handleRegistration}>Sign Up</button>
+
+              <div className="link2-lr">
+                Already have an account? <Link className="link-lr2" onClick={handleLoginClick}>Sign in</Link>
+              </div>
           </div>
-
-          <div className="form-floating mb-2">
-            <input type="email" className="form-control form-control-lg" id="email" placeholder="Email Address"></input>
-            <label htmlFor="email">Email Address</label>
-          </div>
-
-          <div className="form-floating mb-2">
-            <input type="password" className="form-control form-control-lg" id="password" placeholder="Password"></input>
-            <label htmlFor="password">Password</label>
-            <div id="passwordHelpBlock" class="form-text-lr">
-              Must be 6 characters long and not contain spaces
-            </div>
-          </div>
-
-          <div className="form-floating mb-2">
-            <input type="password" className="form-control form-control-lg" id="confirm-password" placeholder="Confirm Password"></input>
-            <label htmlFor="confirm-password">Confirm Password</label>
-          </div>
-          
-          <div className="form-group form-check mb-2">
-            <input type="checkbox" className="form-check-input" id="sign-up-for-grants"></input>
-            <label htmlFor="sign-up-for-grants" className="form-check-label-lr">Sign Up for Grant Updates</label>
-          </div>
-
-          <button className="btn btn-success btn-lg w-100 block mt-2" onClick={handleRegistration}>Sign Up</button>
-
-          <div className="link2-lr">
-            Already have an account? <a href="/login" className="link-lr2">Sign in</a>
-          </div>
-        </div>
+        </div> 
       </div>
+    </div>
   )
 }

@@ -7,7 +7,8 @@ import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 import { getDatabase } from 'firebase/database';
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
@@ -27,29 +28,38 @@ const  auth= app.auth();
 
 
 export function PasswordReset() {
+  const history = useHistory();
+
+  const handleLoginClick = () => {
+    history.push('/login');
+    window.location.reload();
+  };
+
   function passwordUserReset(){
     
     const userEmail = document.getElementById('InputEmail1').value;
     if(userEmail===''){
-      alert('Enter a vaild email')
+      //alert('Enter a vaild email')
+      document.getElementById('alert-message').textContent = 'Please enter your email';
       return;
     } else if(!/\S+@\S+\.\S+/.test(userEmail)){
-      alert('Enter a vaild email')
+      document.getElementById('alert-message').textContent = 'Please enter a valid email address';
       return;
     }
     sendPasswordResetEmail(auth,userEmail)
     .then((userCredential) => {
       if (userCredential && userCredential.user && !userCredential.user.emailVerified) {
-        alert('Email is not found.');
+        //alert('Email is not found.');
+        document.getElementById('alert-message').textContent = 'Email is not found';
         firebase.auth().signOut();
         return;
       }
-      alert('Reset link sent. Check email');
-      
+      alert('Reset link sent. Please check your email.');
+      window.location.reload();
     })
     .catch((error) => {
-      
-      alert('Account not found.');
+      document.getElementById('alert-message').textContent = 'Account not found';
+      //alert('Account not found.');
       console.error(error);
       
     });
@@ -73,11 +83,15 @@ export function PasswordReset() {
                 </div>
               </div>
             </div>
+
+            <div className="error-message-pr" id="alert-message">
+            </div>
+
             <div class="containerty">
               <a  className="links-password"><button type="sign in" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={()=>passwordUserReset()}>Submit</button></a>
             </div>
           <div class="containerty">
-          <a href="/login" class="links-password ">Back</a>
+          <Link className="links-password" onClick={handleLoginClick}>Back</Link>
           </div>
         
       </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useEffect, useState } from 'react'
 import '../css/SubAppForm.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase, ref, set, child, get, onValue, push, update } from 'firebase/database';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { Link } from 'react-router-dom';
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
@@ -27,28 +28,34 @@ console.log(app);
 const database = getDatabase(app);
 const auth = app.auth();
 
-//done is used so that the function can run onLoad but is only used once
-//to check if 
-let done = false;
-onAuthStateChanged(auth, (currentUser) => {
-  if (currentUser && !done) {
-    //user is signed in
-    done = true;
-    return;
-  } 
-  else if(!currentUser && !done) {
-    // User is signed out
-    //hide the webpage if no viable admin user
-    done = true;
-    document.getElementById('subAppFormWrapper').style.visibility = "hidden";
-    window.location.href = '/login';
-    console.error(401);
-    return;
-  }
-  return;
-});
-
 export function SubAppForm() {
+    const history = useHistory();
+
+    const handlePastClick = () => {
+      history.push('/pastsubmissions');
+      window.location.reload();
+    };
+
+    useEffect(() => {
+        let done = false;
+        onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser && !done) {
+                // User is signed in, do nothing
+                done = true;
+            } else if (!currentUser && !done) {
+                // User is signed out
+                done = true;
+                document.getElementById('subAppFormWrapper').style.visibility = "hidden";
+                history.push('/login'); 
+                window.location.reload();
+                console.error(401);
+                return;
+            }
+        });
+    }, [auth, history]); 
+    
+    const [userID, setUserID] = useState(null); 
+
     // desired field is passed in, linked to appropriate box on submission
     function handleInfoDisplay(field, id) {
         app.auth().onAuthStateChanged((user) => {
@@ -192,7 +199,7 @@ export function SubAppForm() {
                 </div>
                 <div className = "buttonWrapper1-subappform" >
                     <div className="text-center-subappform">
-                        <a href = "/pastsubmissions"><button className = "button1-subappform">Return to Past Submissions</button></a>
+                        <Link onClick={handlePastClick}><button className = "button1-subappform">Return to Past Submissions</button></Link>
                     </div>
                 </div>
             </div>

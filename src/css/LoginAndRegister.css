@@ -100,31 +100,9 @@ a.link-lr2:link, a.link-lr2:visited {
   color: black;
 }
 
-@media screen and (min-height: 1000px) {
-  .wrapper-lr {
-    height: 100vh;
-  }
 
-  .form-lr {
-    width: 80%;
-    max-width: 300px;
-    height: auto;
-    max-height: 90vh;
-  }
-  
-  .h2-lr {
-    font-size: 25px;
-  }
-}
-
-@media screen and (max-width: 412px) and (min-height: 914px) {
-  .wrapper-lr {
-    padding: 20% 5% 20% 5%;
-  }
-}
-
-@media screen and (max-width: 412px) and (min-height: 915px) {
-  .wrapper-lr {
-    padding: 20% 5% 20% 5%;
-  }
+.error-message-lr {
+  color: red;
+  font-size: 15px;
+  text-align: center;
 }

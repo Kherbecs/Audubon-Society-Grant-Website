@@ -5,6 +5,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/analytics';
 import 'firebase/compat/database';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import blackBird from '../assets/black-bird.jpeg'
 import longLeg from '../assets/long-leg-bird.jpeg'
@@ -32,7 +34,13 @@ const db = firebase.database();
 const dbRef = db.ref("numHits");
 
 export function LandingPage() {
+  const history = useHistory();
 
+  const handleRegisterClick = () => {
+    history.push('/register');
+    window.location.reload();
+  };
+  
 const userCookieName = "returningVisitor";
 checkUserCookie(userCookieName);
 
@@ -61,6 +69,7 @@ function createUserCookie(userCookieName){
   expiryDate.setDate(expiryDate.getDate() + userCookieDays);
   document.cookie = userCookieName + "=" + userCookieValue + "; expires=" + expiryDate.toLocaleTimeString() + "path=/";
 }
+
   return (
     <div class="wrapper-landingpage">
       <div class="carousel-div">
@@ -122,7 +131,7 @@ function createUserCookie(userCookieName){
               <div className="my-3 d-grid">
                 <h1 class="font-weight-light">About</h1>
                 <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
-                <Button variant="success" size="lg" href="/register">Sign Up</Button>
+                <Button variant="success" size="lg" onClick={handleRegisterClick}>Sign Up</Button>
               </div>
             </Col>
             <Col lg={3} md={12} sm={12} className="mx-auto px-4 my-5 square border border-dark border-3" >

@@ -1,8 +1,17 @@
-import React from 'react'
+import {React, useEffect} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../css/GrantSelection.css'
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export function GrantSelection(){
+    const history = useHistory();
+
+    const handleApplicationClick = () => {
+      history.push('/applicationformpage');
+      window.location.reload();
+    };
+
     return(
         
         <div className="GrantSelection">
@@ -30,7 +39,7 @@ export function GrantSelection(){
                             Grant funding cannot exceed $1500.00 per applicant.
                         </text>
                         <div className="ApplyButton" container>
-                            <text><a href="/applicationformpage" class="btn btn-success btn-lg apply_1">Apply</a></text>                
+                            <text><Link class="btn btn-success btn-lg apply_1" onClick={handleApplicationClick}>Apply</Link></text>            
                         </div>
                         <p className= "ApplicationSub"><small>
                             Applications should be submitted by February 15, 2024<br></br>
@@ -106,7 +115,7 @@ export function GrantSelection(){
                         live in San Joaquin County, and have a camp or program you want to attend.
                         </div>
                     <div className="ApplyButton" container>
-                        <text><a href="/applicationformpage" class="btn btn-success btn-lg apply_2">Apply</a></text> 
+                        <text><Link class="btn btn-success btn-lg apply_2" onClick={handleApplicationClick}>Apply</Link></text>            
                     </div>
                     <p className= "ApplicationSub"><small>
                         Applications should be submitted by February 15, 2024<br></br>

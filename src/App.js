@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import { NavBar } from "./pages/NavBar.js";
 import { Footer } from './pages/Footer.js';
 import { LandingPage } from './pages/LandingPage.js';

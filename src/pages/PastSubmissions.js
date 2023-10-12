@@ -11,6 +11,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getDatabase, onValue, ref, set, query, orderByChild, equalTo, get, child, DataSnapshot } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { render } from "@testing-library/react";
+import { Link } from 'react-router-dom';
 
 // User database config
 const firebaseConfig = {
@@ -29,29 +30,31 @@ console.log(app);
 const database = getDatabase(app);
 const auth = app.auth();
 
-//done is used so that the function can run onLoad but is only used once
-//to check if 
-let done = false;
-onAuthStateChanged(auth, (currentUser) => {
-  if (currentUser && !done) {
-    //user is signed in
-    done = true;
-    return;
-  } 
-  else if(!currentUser && !done) {
-    // User is signed out
-    //hide the webpage if no viable user
-    done = true;
-    document.getElementById('pastSubmissionsWrapper').style.visibility = "hidden";
-    window.location.href = '/login';
-    console.error(401);
-    return;
-  }
-  return;
-});
-
-
 export function PastSubmissions() {
+    const history = useHistory();
+
+    const handleGrantClick = () => {
+      history.push('/grantselection');
+      window.location.reload();
+    };
+
+    useEffect(() => {
+        let done = false;
+        onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser && !done) {
+                // User is signed in, do nothing
+                done = true;
+            } else if (!currentUser && !done) {
+                // User is signed out
+                done = true;
+                document.getElementById('pastSubmissionsWrapper').style.visibility = "hidden";
+                history.push('/login'); 
+                window.location.reload();
+                console.error(401);
+                return;
+            }
+        });
+    }, [auth, history]); 
     
     const [userID, setUserID] = useState(null); 
 
@@ -188,7 +191,7 @@ function addDummySubmissions() {
     return (
         <div class="flex-wrap page-content" id="pastSubmissionsWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
             <div class="col">
-                <a class="btn btn-nav btn-sm btn-success back-to-grants" href="/grantselection">Back</a>
+                <Link class="btn btn-nav btn-sm btn-success back-to-grants" onClick={handleGrantClick}>Back</Link>
             </div>
 
             <div class="mx-auto text-center page-title">

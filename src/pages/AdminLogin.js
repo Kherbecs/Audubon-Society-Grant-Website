@@ -8,6 +8,7 @@ import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
 import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
+import { Link } from 'react-router-dom';
 
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
 const adminFirebaseConfig = {
@@ -28,22 +29,36 @@ const adminFirebaseConfig = {
 
 export function AdminLogin() {
   const history = useHistory();
+  
+  const handleRegisterClick = () => {
+    history.push('/adminregister');
+    window.location.reload();
+  };
+
+  const handlePasswordClick = () => {
+    history.push('/adminforgotpassword');
+    window.location.reload();
+  };
+
   function handleAdminLogin() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
     if(password.trim() === '' && email.trim() === '') {
-      alert('Please fill out the form.');
+      //alert('Please fill out the form.');
+      document.getElementById('alert-message').textContent = 'Please fill out the form';
       return;
     }
   
     else if(password.trim() === '') {
-      alert('Please enter your password.');
+      //alert('Please enter your password.');
+      document.getElementById('alert-message').textContent = 'Please enter your password';
       return;
     }
   
     else if(email.trim() === '') {
-      alert('Please enter your email.');
+      //alert('Please enter your email.');
+      document.getElementById('alert-message').textContent = 'Please enter your email';
       return;
     }
 
@@ -52,17 +67,20 @@ export function AdminLogin() {
     .then((userCredential) => {
       // Check if email is verified
       if (!userCredential.user.emailVerified) {
-        alert('Please verify your email before logging in.');
+        //alert('Please verify your email before logging in.');
+        document.getElementById('alert-message').textContent = 'Verify your email before logging in';
         firebase.auth().signOut();
         return;
       }
   
       // Redirect to admin page
-      window.location.href = '/adminportal';
+      history.push('/adminportal');
+      window.location.reload();
     })
     .catch((error) => {
       // Handle incorrect password or email
-      alert('Incorrect email or password.');
+      //alert('Incorrect email or password.');
+      document.getElementById('alert-message').textContent = 'Incorrect email or password';
       console.error(error);
     });
   }
@@ -70,30 +88,36 @@ export function AdminLogin() {
   return (
     <html>
       <div className="wrapper-lr wrapper-padding-l">
-        <div className="form-lr">
-          <h2 className="mb-3 h2-lr">Admin Login</h2>
-          <hr className="hr-lr"/>
+        <div className="container">
+          <div className="row justify-content-center">
+              <div className="form-lr">
+                <h2 className="mb-3 h2-lr">Admin Login</h2>
+                <hr className="hr-lr"/>
 
-          <div className="form-floating mb-2">
-            <input type="email" className="form-control form-control-lg" id="email" placeholder="Email Address"></input>
-            <label htmlFor="email">Email Address</label>
-          </div>
+                <div className="form-floating mb-2">
+                  <input type="email" className="form-control form-control-lg" id="email" placeholder="Email Address"></input>
+                  <label htmlFor="email">Email Address</label>
+                </div>
 
-          <div className="form-floating mb-2">
-            <input type="password" className="form-control form-control-lg" id="password" placeholder="Password"></input>
-            <label htmlFor="password">Password</label>
-          </div>
+                <div className="form-floating mb-2">
+                  <input type="password" className="form-control form-control-lg" id="password" placeholder="Password"></input>
+                  <label htmlFor="password">Password</label>
+                </div>
 
-          <div className="link1-lr">
-            <a href="/adminforgotpassword" className="link-lr2">Forgot password?</a>
+                <div className="error-message-alr" id="alert-message">
+                </div>
+
+                <div className="link1-lr">
+                  <Link className="link-lr2" onClick={handlePasswordClick}>Forgot password?</Link>
+                </div>
+                <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleAdminLogin}>Sign In</button>
+                <div className="link2-lr">
+                  Need an account? <Link className="link-lr2" onClick={handleRegisterClick}>Sign up</Link>
+                </div>
+              </div>
+            </div>
           </div>
-          <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleAdminLogin}>Sign In</button>
-          <div className="link2-lr">
-            Need an account? <a class="one" href="/adminregister" className="link-lr2">Sign up</a>
-          </div>
-  
-        </div>
-      </div>
+      </div>  
     </html>
   )
 }

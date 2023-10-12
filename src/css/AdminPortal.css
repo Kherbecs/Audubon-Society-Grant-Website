@@ -76,7 +76,6 @@
     padding-left: 5%;
   }
   .logout {
-    margin-left: 79%;
   }
   .sub{
     width: 85%;
@@ -101,8 +100,7 @@
 .logout {
   border-radius: 4px;
   margin-top: 1%;
-  margin-left: 83%;
-  
+  margin-left: 2%;
   background-color: #BDD2B6;
       border: none;
     color: black;
@@ -129,7 +127,6 @@
 border-radius: 4px;
 margin-top: 5%;
 margin-bottom: 3%;
-margin-left: 78%;
 background-color: #BDD2B6;
      border: none;
   color: black;
@@ -336,4 +333,38 @@ input:checked + .slider:before {
   margin-bottom: 40px;
   text-align: center;
   background-color: #F8EDE3;
+}
+
+.logoutlink, .logoutlink:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.email {
+  border-radius: 4px;
+  margin-top: 1%;
+  margin-left: 2%;
+  background-color: #BDD2B6;
+  border: none;
+  color: black;
+
+  padding-top: .75%;
+  padding-bottom: .75%;
+  padding-right: 1.5%;
+  padding-left: 1.5%;
+
+  font-size: 20px;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.email:hover {
+  background-color: #F8EDE3;
+    color: black; 
+}
+
+.divider {
+  width:1px;
+  height:auto;
+  display:inline-block;
 }
