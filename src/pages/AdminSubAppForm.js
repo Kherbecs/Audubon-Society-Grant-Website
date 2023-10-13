@@ -168,24 +168,28 @@ useEffect(() => {
         
 
     }
-    function getComments(){
+    //Retrieve a snapshot from the firebase database
+    function getComments() {
         const databaseAdmin = firebase.database(adminApp);
-
+    
         var pastComments = databaseAdmin.ref('users/commentHistory');
         pastComments.on('value', (snapshot) => {
             let commentsHTML = '';
             snapshot.forEach((snapshot) => {
                 const commenter = snapshot.val().commenter;
                 const comment = snapshot.val().comment;
-                if (snapshot.val().grade != null){
-                    commentsHTML += commenter + " | Grade : " + snapshot.val().grade + "<br />" + "&emsp;" + comment + "<br />";
-                }else{
-                    commentsHTML += commenter + " | Grade : NONE" + "<br />" + "&emsp;" + comment + "<br />";
+                if (snapshot.val().grade != null) {
+                    commentsHTML += `<div id="comment-text-div">
+                                        ${commenter} | Grade : ${snapshot.val().grade} <br />&emsp;${comment}
+                                    </div>`;
+                } else {
+                    commentsHTML += `<div id="comment-text-div">
+                                        ${commenter} | Grade : NONE <br />&emsp;${comment}
+                                    </div>`;
                 }
-  
-            })
+            });
             updateCommentSection(commentsHTML);
-        })
+        });
     }
 
     function updateCommentSection(commentsHTML) {

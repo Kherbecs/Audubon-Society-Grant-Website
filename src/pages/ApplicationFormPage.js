@@ -244,7 +244,16 @@ export function ApplicationFormPage() {
                         update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
                             _TimeSubmitted: time
                         });
+                        update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                            _GrantName: "Steve Stocking"
+                        });
 
+                        //Automatically set form lock state to "locked"
+                        const stateOfLock = "locked";
+                        update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
+                            lockState : stateOfLock
+                        });
+                     
                 // Upload the letter of recommendation file
                 const fileUploadPromises = [];
 
