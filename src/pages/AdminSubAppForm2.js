@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import { React, useEffect, useState } from 'react'
 import '../css/AdminSubAppForm2.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -55,27 +55,6 @@ const app = firebase.initializeApp(firebaseConfig, 'my-app');
 console.log(app);
 const database = getDatabase(app);
 
-//done is used so that the function can run onLoad but is only used once
-//to check if 
-let done = false;
-onAuthStateChanged(adminAuth, (currentUser) => {
-  if (currentUser && !done) {
-    //admin user is signed in
-    done = true;
-    return;
-  } 
-  else if(!currentUser && !done) {
-    // User is signed out
-    //hide the webpage if no viable admin user
-    done = true;
-    document.getElementById('adminSubAppFormWrapper').style.visibility = "hidden";
-    window.location.href = '/';
-    console.error(401);
-    return;
-  }
-  return;
-});
-
 const chosenApplication = "";
 
 const dataUp = ref(database,'users'+ '/sw6pjwUkORaoJbGSpVt3DVCOf8t2' +'/pastsubmissions'+'/submission 1');
@@ -98,6 +77,34 @@ export function AdminSubAppForm2() {
         history.push('/adminportal');
         window.location.reload();
     };
+
+//done is used so that the function can run onLoad but is only used once
+//to check if 
+useEffect(() => {
+    let done = false;
+    const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
+      if (currentUser && !done) {
+        // Admin user is signed in, do nothing
+        done = true;
+      } else if (!currentUser && !done) {
+        // User is signed out
+        done = true;
+        const adminsubappform2 = document.getElementById('adminsubappform2Wrapper');
+        if (adminsubappform2) {
+            adminsubappform2.style.visibility = 'hidden';
+          history.push('/');
+          window.location.reload();
+        } else {
+          console.error('Element with ID "adminsubappformWrapper2" not found.');
+        }
+      }
+    });
+
+    return () => {
+      // Unsubscribe from onAuthStateChanged when the component unmounts
+      unsubscribe();
+    };
+  }, [history]); 
 
     const getInitialState = () =>{
         const value = "Grade";
@@ -197,7 +204,7 @@ export function AdminSubAppForm2() {
 
 
     return (
-        <div className = "wrapper-appform2" id="appForm2Wrapper">
+        <div className = "wrapper-appform2" id="adminsubappform2Wrapper">
             <div className = "form-appform2">
                 <div class="back-button">
                 <   Link className="prev-page-link" onClick={handleAdminClick}><button class = "button2">Return to Previous Page</button></Link>
