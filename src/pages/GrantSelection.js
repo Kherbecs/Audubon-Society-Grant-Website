@@ -12,6 +12,11 @@ export function GrantSelection(){
       window.location.reload();
     };
 
+    const handleApplication2Click = () => {
+        history.push('/applicationformpage2');
+        window.location.reload();
+      };
+
     return(
         
         <div className="GrantSelection">
@@ -23,10 +28,11 @@ export function GrantSelection(){
             <div className="GrantScholarshipCard" card>    
                 
                 <div className="TopPhoto">
-                    <img className="img_1"src="http://www.sanjoaquinaudubon.org/wp-content/uploads/2022/03/WaldoHoltPic1.jpg" alt="Card cap"></img>
+                    <img className="img_1"src="https://media.discordapp.net/attachments/1069800813507125319/1151759054826393650/AA6FF012-FC1A-4DA7-91B3-D69E68EA0BDB_1_105_c.jpeg?ex=65278b35&is=65151635&hm=cceac45bbcfef16fd270f182929047df285bd5b0fc22106414938b40172717ba&=&width=1570&height=578"
+                     alt="Card cap"></img>
                 </div>  
                     <div className= "GrantHeader" card-header>
-                        <h3>Environmental Education and Conservation</h3>
+                        <h3>Environmental Education and Citizen Science Grants</h3>
                         <hr></hr>
                     </div>
                     <div className="BottomHalf" card-body>
@@ -35,14 +41,15 @@ export function GrantSelection(){
                             willing to work toward a better future. That is why San Joaquin Audubon Society (SJAS) provides
                             grant funds for organizations working to conserve our local environment. We encourage
                             groups to apply that are interested in birding and environmental conservation, restoration, and
-                            education. Grants are funded for projects located within San Joaquin County. <br></br>
+                            education. Grants are funded for projects located within San Joaquin County. This year, San Joaquin Audubon will prioritize Title 1 schools. These grants are made possible by the generous support of the Webster Foundation.
+                            <br></br>
                             Grant funding cannot exceed $1500.00 per applicant.
                         </text>
                         <div className="ApplyButton" container>
-                            <text><Link class="btn btn-success btn-lg apply_1" onClick={handleApplicationClick}>Apply</Link></text>            
+                            <text><Link class="btn btn-success btn-lg apply_1" onClick={handleApplication2Click}>Apply</Link></text>            
                         </div>
                         <p className= "ApplicationSub"><small>
-                            Applications should be submitted by February 15, 2024<br></br>
+                            Applications should be submitted by November 1, 2023<br></br>
                             Applicants will be informed of decisions no later than February 20, 2024
                           </small></p>
                     <div className="DropDowns" accordion id="dropdowns">
@@ -51,21 +58,21 @@ export function GrantSelection(){
                                     <hr></hr>
                                     <button className="ExampleButton" class= "btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#dropdown1-body" 
                                     aria-expanded="false" aria-controls="dropdown1-body">    
-                                        <b>Examples of projects eligible for the grant</b>
+                                        <b>Examples of eligible projects</b>
                                     </button>
                                     <hr></hr>
                                 </h2>
                                 <div id="dropdown1-body" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-dropdown1">
                                     
                                         <div className="ExampleBox" accordion-body>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.sanjoaquinaudubon.org/" target="blank">
-                                                Example 1</a>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.sanjoaquinaudubon.org/" target="blank">
-                                                Example 2</a>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.sanjoaquinaudubon.org/" target="blank">
-                                                Example 3</a>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.sanjoaquinaudubon.org/" target="blank">
-                                                Example 4</a>
+                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://hogisland.audubon.org/programs/mountains-sea-birding-teens" target="blank">
+                                                Hog Island Audubon Camp</a>
+                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://wolf-ridge.org/event/ornithology-field-camp/" target="blank">
+                                                Wolf Ridge Environmental Learn Center</a>
+                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.birdconservancy.org/what-we-do/education/colorado-programs/birdcamps/overnightcamps/" target="blank">
+                                                Bird Conservancy of the Rockies</a>
+                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.aba.org/camps/" target="blank">
+                                                ABA Youth Birding Camps</a>
                                         </div>
                                         <hr></hr>
                                 </div>
@@ -114,9 +121,9 @@ export function GrantSelection(){
                         To be considered, you must be a member (or parent or guardian is a member) of the San Joaquin Audubon Society, 
                         live in San Joaquin County, and have a camp or program you want to attend.
                         </div>
-                    <div className="ApplyButton" container>
-                        <text><Link class="btn btn-success btn-lg apply_2" onClick={handleApplicationClick}>Apply</Link></text>            
-                    </div>
+                        <div className="ApplyButton" container>
+                            <text><Link class="btn btn-success btn-lg apply_1" onClick={handleApplicationClick}>Apply</Link></text>            
+                        </div>
                     <p className= "ApplicationSub"><small>
                         Applications should be submitted by February 15, 2024<br></br>
                         Applicants will be informed of decisions no later than February 20, 2024
@@ -131,7 +138,7 @@ export function GrantSelection(){
                                     <hr></hr>
                                     <button className="ExampleButton" class= "btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#Scholarship-dropdown1-body" 
                                     aria-expanded="false" aria-controls="Scholarship-dropdown1-body">    
-                                        <b>Examples of the camp experiences eligible for the scholarship</b>
+                                        <b>Examples of eligible camp experiences</b>
                                     </button>
                                     <hr></hr>
                                 </h2>
@@ -140,12 +147,12 @@ export function GrantSelection(){
                                         <div className="ExampleBox" accordion-body>
                                             <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://hogisland.audubon.org/programs/mountains-sea-birding-teens" target="blank">
                                                 Hog Island Audubon Camp</a>
-                                        <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://wolf-ridge.org/event/ornithology-field-camp/" target="blank">
-                                            Wolf Ridge Environmental Learn Center</a>
-                                        <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.birdconservancy.org/what-we-do/education/colorado-programs/birdcamps/overnightcamps/" target="blank">
-                                            Bird Conservancy of the Rockies</a>
-                                        <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.aba.org/camps/" target="blank">
-                                            ABA Youth Birding Camps</a>
+                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://wolf-ridge.org/event/ornithology-field-camp/" target="blank">
+                                                Wolf Ridge Environmental Learn Center</a>
+                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.birdconservancy.org/what-we-do/education/colorado-programs/birdcamps/overnightcamps/" target="blank">
+                                                Bird Conservancy of the Rockies</a>
+                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.aba.org/camps/" target="blank">
+                                                ABA Youth Birding Camps</a>
                                         
                                         </div>
                                         <hr></hr>

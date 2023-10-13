@@ -1,0 +1,121 @@
+.organizationName-appform2 {
+    padding: 1%;
+}
+
+.title1-appform2 {
+    padding: 1%;
+}
+.Title1Selection-appform2 {
+    margin:1%;
+    padding:1%;
+    text-align:center;
+}
+
+.questionSection-appform{
+    margin-bottom:1rem;
+}
+
+.row-appform2 {
+    padding: 1%;
+}
+.funding-appform2 {
+    padding: 1%;
+}
+.envEduc-appform2 {
+    padding: 1%;
+}
+.benefit-appform2 {
+    padding: 1%;
+}
+.objectives-appform2 {
+    padding: 1%;
+}
+.projectGoals-appform2 {
+    padding: 1%;
+}
+.fundsExplanation-appform2 {
+    padding: 1%;
+}
+.startEndDates-appform2 {
+    padding: 1%;
+}
+.feedback-appform2 {
+    padding: 1%;
+}
+.text-center-appform2 {
+    margin:1%;
+    text-align:center;
+    padding:1%;
+}
+.infoSectionQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+    text-align:center;
+}
+.organizationQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.title1Q-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.fundingQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.benefitQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.envEducQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.objectivesQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.projectGoalsQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.fundsExplanationQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.startEndDatesQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+.feedbackQ-appform2 {
+    font-size: 20px;
+    text-decoration: underline;
+}
+
+.prev-page-link{
+    color: black;
+    text-decoration: none;
+}
+
+.back-button{
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.wrapper-status-button{
+    margin-right: 5px;
+    margin-left: -10px;
+}
+.back-button{
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.wrapper-status-current{
+    background-color: #F8EDE3;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 20%;
+}

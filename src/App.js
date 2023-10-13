@@ -26,6 +26,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getDatabase } from 'firebase/database';
 import React, { useState, useEffect } from 'react';
+import { AdminSubAppForm2 } from './pages/AdminSubAppForm2.js';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -152,6 +153,9 @@ function App() {
         </Route>
         <Route exact path="/adminforgotpassword">
           <AdminForgotPassword></AdminForgotPassword>
+        </Route>
+        <Route exact path="/adminsubappform2">
+          <AdminSubAppForm2></AdminSubAppForm2>
         </Route>
       </Switch>
       <Route
