@@ -1,5 +1,5 @@
 import react from 'react'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../css/AdminPortal.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -8,10 +8,12 @@ import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
 import { getAnalytics } from 'firebase/analytics';
-import { getDatabase, ref, get, DataSnapshot } from 'firebase/database'; //
+import { getDatabase, get, child, ref} from 'firebase/database';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import emailjs from 'emailjs-com'; // Import the emailjs-com library
 import { Link } from 'react-router-dom';
+import { AdminSubAppForm } from './AdminSubAppForm'; // Import the component
+
 
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
 const adminFirebaseConfig = {
@@ -24,14 +26,18 @@ const adminFirebaseConfig = {
     measurementId: "G-0FLPMK8X2Z"
 };
 
-// Initialize Firebase for admins
+
+ // Initialize Firebase for admins
 const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
 console.log(adminApp);
 const adminAuth = adminApp.auth();
 
 
+
+
 const databaseAdmin = firebase.database(adminApp);
 const numHitsRef = databaseAdmin.ref("numHits");
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyCzdnLMAkegsr-zrw9O63Nlu6Ft_Urdw50",
@@ -41,29 +47,21 @@ const firebaseConfig = {
     messagingSenderId: "129648865838",
     appId: "1:129648865838:web:9713fb401ac09b481e25bf",
     measurementId: "G-6FM488KSS5"
-};
-
-// Initialize Firebase for users
-const app = firebase.initializeApp(firebaseConfig, 'my-app');
-console.log(app);
-const database = firebase.database(app);
-const auth = app.auth();
-
-
-/*
-const submissionData = {
-  'id': 'Submission 6'
-};
-
-databaseAdmin.ref('Submissions/').set(submissionData) //change submission data in db
-*/
+  };
+ 
+  // Initialize Firebase for users
+  const app = firebase.initializeApp(firebaseConfig, 'my-app');
+  console.log(app);
+  const database = firebase.database(app);
+  const auth = app.auth();
 
 
 export function AdminPortal() {
     const history = useHistory();
 
+
 //done is used so that the function can run onLoad but is only used once
-//to check if 
+//to check if
 useEffect(() => {
     let done = false;
     const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
@@ -84,16 +82,24 @@ useEffect(() => {
       }
     });
 
+
     return () => {
       // Unsubscribe from onAuthStateChanged when the component unmounts
       unsubscribe();
     };
-  }, [history]); 
+  }, [history]);
+
 
     const handleSubmissionLink = (submissionId) => {
         history.push(`/adminsubappform/${submissionId}`);
         window.location.reload();
       };
+
+
+
+
+    /* HANDLE LOGOUT AUTHENTICATION */
+
 
     function handleLogOut() {
         // Checks if it's an admin account and if it is, it redirects them to admin login and signs out
@@ -106,38 +112,86 @@ useEffect(() => {
         });
     }
 
-    //DYNAMIC SUBMISSIONS AND LOCK STATES
-    const [submissions, setSubmissions] = useState([
-        { id: 1, name: "Submission 1" }, //dummy submissions
-        { id: 2, name: "Submission 2" },
-        { id: 3, name: "Submission 3" },
-        { id: 4, name: "Tester " },
-        { id: 5, name: "Alex Jackson " },
-        { id: 6, name: "Submission 6" },
-    ]); // List of submissions
+
+    /* RETRIEVING USER IDS AND DATA FROM DB */
 
 
-    const [buttonStates, setButtonStates] = useState([]); // List of button (lock) states
+    const [uids, setUids] = useState([]);
+    const [userData, setUserData] = useState([]);
 
+
+    useEffect(() => {
+        const fetchUids = async () => {
+            try {
+                const snapshot = await database.ref('users').once('value');
+                const uidData = snapshot.val();
+                setUserData(uidData);
+                const id = Object.keys(uidData);
+                setUids(id);
+           
+            } catch(error) {
+                console.error('Could not fetch uids:', error);
+            }
+        }
+        fetchUids();
+    }, []) //empty braces so code runs once
+
+
+    /* SCROLLING AND STORING SELECTED UID */
+
+
+    useEffect(() => {
+        if(displayApp && buttonClicked && searchUsed) {
+            document.getElementById('adminSubAppFormWrapper').scrollIntoView({behavior:'smooth'});
+        }
+    })
+
+
+    //const buttonRef = useRef(null);
+    const [buttonClicked, setButtonClicked] = useState(false);
+
+
+    const [selectedUid, setSelectedUid] = useState(null);
+
+
+    const handleButton = (uid) => {
+        setSelectedUid(uid);
+        setDisplayApp(true);
+        setButtonClicked(true);
+        setSearchUsed(true);
+    }
+   
+    const [appData, setAppData] = useState(null);
+    const [displayApp, setDisplayApp] = useState(false);
+   
+    /* LOCK FUNCTIONALITY */
+
+
+    const [buttonStates, setButtonStates] = useState(); // List of button (lock) states
+     
     const handleCheckbox = (index) => {
-        const lockID = `lock_${submissions[index].id}`;
+        const boxTicked = true;
+        const lockID = `lock_${uids[index]}`;
+
 
         database.ref(`locks/${lockID}`).set({
             state: !buttonStates[index]
         });
 
-        setButtonStates((prevStates) => {
-            const newStates = [...prevStates];
-            newStates[index] = !newStates[index];
-            return newStates;
-        });
-    };
 
+        setButtonStates((prevStates) => {
+        const newStates = [...prevStates];
+        newStates[index] = !newStates[index];
+        return newStates;
+        });
+        setButtonClicked(false);
+    };
+   
     useEffect(() => {
         const getStates = async () => {
             const newButtonStates = await Promise.all(
-                submissions.map(async (submission) => {
-                    const lockID = `lock_${submission.id}`;
+                uids.map(async (uid) => {
+                    const lockID = `lock_${uid}`;
                     const dbStates = await database.ref(`locks/${lockID}`).get();
                     const curStates = dbStates.val();
                     return curStates ? curStates.state : false;
@@ -146,28 +200,31 @@ useEffect(() => {
             setButtonStates(newButtonStates);
         };
         getStates();
-    }, []);
+    }, [uids]);
 
 
     /*-----------UNIQUE VISITOR COUNTER STATES-----------------*/
 
 
+
+
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+
+    useEffect(()=>{
         const fetchData = async () => {
-            try {
+            try{
                 const docRef = numHitsRef;
                 const docSnapshot = await docRef.get();
-                if (docSnapshot.exists) {
+                if(docSnapshot.exists){
                     const data = docSnapshot.val();
                     setData(data);
                     setLoading(false);
-                } else {
+                }else{
                     console.log("No such document dude");
-                }
-            } catch (error) {
+                }  
+            }catch (error){
                 console.error('Error fetching document: ', error);
                 setLoading(false);
             }
@@ -175,69 +232,86 @@ useEffect(() => {
         fetchData();
     }, []);
 
+
     console.log(data);
     /*----------------UNIQUE VISITOR CODE END----------------------*/
 
+
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-    //NOT YET WORKING; CODE FOR HANDLING SEARCHBAR INPUTS
 
-    const [searchResults, setSearchResults] = useState([]);
 
-    useEffect(() => {
-        const fetchAllUsers = async () => {
-            try {
-                const snapshot = await database.ref('users').once('value');
-                const results = [];
-                snapshot.forEach((childSnapshot) => {
-                    const user = childSnapshot.val();
-                    results.push(user);
-                });
-                setSearchResults(results);
-            } catch (error) {
-                console.error('Error fetching all users:', error);
-            }
-        };
 
-        fetchAllUsers();
-    }, []);
 
-    const handleSearch = async (event) => {
-        const input = event.target.value.toLowerCase().trim();
+
+ 
+  //stores search results from db in variable
+  const [searchResults, setSearchResults] = useState([]);
+
+
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const snapshot = await database.ref('users').once('value');
         const results = [];
-
-
-
-        try {
-            const snapshot = await database.ref('users').once('value');
-            snapshot.forEach((childSnapshot) => {
-                const user = childSnapshot.val();
-                console.log(user);
-                // Check if the user's name or grant type contains the input
-                if (user) {
-                    const { fullName, grantType, email } = user;
-                    if (fullName && email) {
-                        if (fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)) {
-                            results.push(user);
-                        }
-                        if (grantType && grantType.toLowerCase().includes(input)) {
-                            results.push(user);
-                        }
-                    }
-
-                }
-            });
-        } catch (error) {
-            console.error('Error searching users:', error);
-        }
-
+        snapshot.forEach((childSnapshot) => {
+          const user = childSnapshot.val();
+          results.push(user);
+        });
         setSearchResults(results);
+      } catch (error) {
+        console.error('Error fetching all users:', error);
+      }
     };
 
-    //REMOVE ${submission.id} FROM SUB BOX TO GET LINK TO SUBAPPFORM WORKING; id is for when there are real submissions to pull forms from
+
+    fetchAllUsers();
+  }, []);
 
 
-    const [users, setUsers] = useState([]);
+  const [searchUsed, setSearchUsed] = useState(false);
+
+
+  /* SEARCH FUNCTION */
+  const handleSearch = async (event) => {
+    const input = event.target.value.toLowerCase().trim();
+    const results = [];
+
+
+    try {
+        const snapshot = await database.ref('users').once('value');
+        snapshot.forEach((childSnapshot) => {
+            const user = childSnapshot.val();
+            console.log(user);
+            // Check if the user's name or grant type contains the input
+            if(user) {
+                const {fullName, grantType, email} = user;
+                if(fullName && email) {
+                    if(fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)){
+                        results.push(user);
+                    }
+                if(grantType && grantType.toLowerCase().includes(input)) {
+                    results.push(user);
+                }
+                }
+           
+            }
+        });
+    } catch (error) {
+        console.error('Error searching users:', error);
+    }
+   
+    setSearchResults(results);
+
+
+    if(searchUsed){
+        setSearchUsed(false);
+    }
+  };
+
+
+  const [users, setUsers] = useState([]);
+
 
     useEffect(() => {
         // Fetch all users from Firebase
@@ -256,24 +330,29 @@ useEffect(() => {
             });
     }, []);
 
+
     // Function to send the email to users who signed up for grant updates
     const sendMail = () => {
-        // Initialize Email.js 
+        // Initialize Email.js
         emailjs.init("ExVfhWJSKY2SPFYqo");
+
 
         // Extract input values
         const sendername = document.querySelector("#sendername").value;
         const subject = document.querySelector("#subject").value;
         const message = document.querySelector("#message").value;
 
+
         const serviceID = "service_3gpojoc"; // Email Service ID
         const templateID = "template_7asx4tu"; // Email Template ID
+
 
         if (!sendername || !subject || !message) {
             // Check if any of the fields are empty
             alert("Please fill in all fields.");
             return;
         }
+
 
         // Iterate through users and send emails if signUpForGrants is true
         users.forEach((user) => {
@@ -285,6 +364,7 @@ useEffect(() => {
                     replyto: user.email, // Set "replyto" to the user's email
                     message,
                 };
+
 
                 // Send the email
                 emailjs.send(serviceID, templateID, params).then((response) => {
@@ -298,13 +378,17 @@ useEffect(() => {
         });
     };
 
+
+
+
     return (
-
-        <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
-
-            <button class="logout" onClick={handleLogOut}><a class="logoutlink">Logout</a></button>
+   
+    <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
+         
+         <button class="logout" onClick={handleLogOut}><a class="logoutlink">Logout</a></button>
             <div class="divider" />
             <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal">Send a Grant Update</button>
+
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -337,6 +421,7 @@ useEffect(() => {
                 </div>
             </div>
 
+
             <p class="fs-1 adminportal-heading">
                 <p class="text-center">Current Applicants</p>
                 <p class="text-end">
@@ -344,6 +429,8 @@ useEffect(() => {
                     </p>
                 </p>
             </p>
+
+
 
 
             <div class="row g-2">
@@ -360,7 +447,9 @@ useEffect(() => {
                     </div>
                 </div>
 
+
                 <div class="col-md col-md-admin2">
+
 
                     <div class="mb-3 search-bar search-admin">
                         <div class="searchField">
@@ -370,47 +459,54 @@ useEffect(() => {
                     </div>
                 </div>
 
-                <div class="search-results">
-                    <div class="search-results-box">
-                        {searchResults.map((user) => (
-                            <div key={user.id}>
-                                <p style={{ fontWeight: 'bold' }}>Full Name: {user.fullName}</p>
-                                <p>Email: {user.email}</p>
-                                <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
-                                <p>Grant Type: {user.grantType ? user.grantType : 'N/A'}</p>
-                            </div>
-                        ))}
-                    </div>
+
+            <div class="search-results">
+                <div class="search-results-box">
+                    {searchResults.map((user) => (
+                        <div key={user.id}>
+                            <p style={{fontWeight: 'bold'}}>Full Name: {user.fullName}</p>
+                            <p>Email: {user.email}</p>
+                            <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
+                            <p>Grant Type: {user.grantType ? user.grantType : 'N/A'}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
-
-            <div className="submissions-box">
-                {submissions.map((submission, index) => (
-                    <div key={index}>
-                        <button className="sub" disabled={buttonStates[index]}>
-                            {buttonStates[index] ? (
-                                <span className="submission-link">Submission</span>
-                            ) : (
-                                <Link className="submission-link" onClick={handleSubmissionLink}>{submission.name}</Link>
-                            )}
-                        </button>
-                        <label className="switch">
-                            <input
-                                type="checkbox"
-                                onChange={() => handleCheckbox(index)}
-                                checked={buttonStates[index]}
-                            />
-                            <span className="slider round"></span>
-                        </label>
-                    </div>
-                ))}
-            </div>
-
-            <div class="hit-counter">
-                {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
-            </div>
-
-
         </div>
+       
+        <div className="submissions-box">
+            {uids.map((uid,index) => (
+                <div key={uid}>
+                    <button className="sub" onClick={() =>{
+                        handleButton(uid);
+                    }}
+                    disabled={buttonStates[index]}>
+                        <span className="submission-link">{userData[uid]?.fullName !== undefined ? userData[uid]?.fullName : 'No Name'}</span>
+                    </button>
+                    <label className="switch">
+                        <input
+                            type="checkbox"
+                            onChange={() => handleCheckbox(index)}
+                            checked={buttonStates[index]}
+                        />
+                        <span className="slider round"></span>
+                    </label>
+                </div>
+            ))}
+        </div>
+
+
+        {/*attempt to display submitted app form */}
+        {displayApp && <AdminSubAppForm uid={selectedUid}/>}
+
+
+        <div class="hit-counter">
+            {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
+        </div>
+
+
+       
+    </div>
     )
+ 
 }
