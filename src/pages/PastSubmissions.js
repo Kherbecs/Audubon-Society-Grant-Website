@@ -11,6 +11,7 @@ import { getAnalytics } from "firebase/analytics";
 import { getDatabase, onValue, ref, set, query, orderByChild, equalTo, get, child, DataSnapshot } from 'firebase/database';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { render } from "@testing-library/react";
+import { SubAppForm } from "./SubAppForm";
 import { Link } from 'react-router-dom';
 
 // User database config
@@ -30,12 +31,39 @@ console.log(app);
 const database = getDatabase(app);
 const auth = app.auth();
 
+//done is used so that the function can run onLoad but is only used once
+//to check if 
+let done = false;
+onAuthStateChanged(auth, (currentUser) => {
+    if (currentUser && !done) {
+        //user is signed in
+        done = true;
+        return;
+    }
+    else if (!currentUser && !done) {
+        // User is signed out
+        //hide the webpage if no viable user
+        done = true;
+        document.getElementById('pastSubmissionsWrapper').style.visibility = "hidden";
+        window.location.href = '/login';
+        console.error(401);
+        return;
+    }
+    return;
+});
+
+
 export function PastSubmissions() {
     const history = useHistory();
 
     const handleGrantClick = () => {
-      history.push('/grantselection');
-      window.location.reload();
+        history.push('/grantselection');
+        window.location.reload();
+    };
+
+    const handleSubAppForm = () => {
+        history.push('/subappform');
+        window.location.reload();
     };
 
     useEffect(() => {
@@ -48,17 +76,17 @@ export function PastSubmissions() {
                 // User is signed out
                 done = true;
                 document.getElementById('pastSubmissionsWrapper').style.visibility = "hidden";
-                history.push('/login'); 
+                history.push('/login');
                 window.location.reload();
                 console.error(401);
                 return;
             }
         });
-    }, [auth, history]); 
-    
-    const [userID, setUserID] = useState(null); 
+    }, [auth, history]);
 
-    useEffect(() => {
+    const [userID, setUserID] = useState(null);
+
+    /*useEffect(() => {
         const nodeRef = ref(database, "users/" + userID + "/pastsubmissions" + "/null");
         let nodeRefArr = [];
         nodeRefArr.push(nodeRef);
@@ -78,24 +106,24 @@ export function PastSubmissions() {
             }).catch((error) => {
                 console.error("Error checking node: " + error);
             }) 
-    }, [userID]);
+    }, [userID]);*/
 
-function addDummySubmissions() {
-    let nodeRefArr = [];
-    nodeRefArr.push(ref(database, "users/" + userID + "/pastsubmissions" + "/submission 1"));
-    nodeRefArr.push(ref(database, "users/" + userID + "/pastsubmissions" + "/submission 2"));
-
-    nodeRefArr.forEach(submissionRef => {
-        set(submissionRef, {
-            grantName: "2",
-            grantStatus: "rejected",
-            dateSubmitted: "1/1/24"
-        })
-    });
-}
+    /*function addDummySubmissions() {
+        let nodeRefArr = [];
+        nodeRefArr.push(ref(database, "users/" + userID + "/pastsubmissions" + "/submission 1"));
+        nodeRefArr.push(ref(database, "users/" + userID + "/pastsubmissions" + "/submission 2"));
+    
+        nodeRefArr.forEach(submissionRef => {
+            set(submissionRef, {
+                grantName: "2",
+                grantStatus: "rejected",
+                dateSubmitted: "1/1/24"
+            })
+        });
+    }*/
 
     function GetUserId() {
-    
+
         useEffect(() => {
             const unsub = auth.onAuthStateChanged((authObj) => {
                 unsub();
@@ -107,7 +135,7 @@ function addDummySubmissions() {
                 }
             });
         }, []);
-    
+
         return (
             <div>
                 <p>User ID: {userID}</p>
@@ -116,11 +144,9 @@ function addDummySubmissions() {
     }
 
     async function parsePastSubmissions() {
-
-         try {
+        try {
             let userSubs = [];
-
-            const nodeRef = ref(database, "users/" + userID + "/pastsubmissions");
+            const nodeRef = ref(database, "users/" + userID + "/forms");
 
             const snapshot = await get(nodeRef);
 
@@ -130,13 +156,14 @@ function addDummySubmissions() {
             });
 
             return userSubs;
-         } catch(error) {
+        } catch (error) {
             console.error("Error getting data: ", error);
             return [];
-         }
+        }
     }
 
-    function PopulateDesktop(category) {
+    function PopulateSubmissions(category) {
+
         const [submissions, setSubmissions] = useState(() => {
             const storedData = localStorage.getItem('submissions');
             return storedData ? JSON.parse(storedData) : [];
@@ -151,43 +178,68 @@ function addDummySubmissions() {
                     setSubmissions(currData);
 
                     localStorage.setItem("submissions", JSON.stringify(currData));
-                } catch(error) {
-                    console.error("Error fetching and setting data: ", error);
+                } catch (error) {
+                    console.error("Error fetching and setting: ", error);
                 }
             };
+            localStorage.clear();
+            if (submissions.length === 0)
+                fetchAndSetData();
+            console.log(localStorage);
+        }, [submissions]);
 
-            fetchAndSetData();
-        }, []);
+        switch (category) {
+            case "applications":
+                return (
+                    <div class="vstack col-xl-12 col-lg-5 col-md-5 col-sm-6 applications-stack">
+                        {submissions.map((app, index) => (
+                            <Link onClick={handleSubAppForm} class="btn btn-success m-2 applications" key={index}>
+                                <div key={index}>{app._GrantName}</div>
+                            </Link>
+                        ))}
 
-        if(category === "applications") {
-            return (
-                <div class="vstack col-xl-12 col-lg-5 col-md-5 col-sm-6 applications-stack">
-                {submissions.map((app, index)=> (
-                    <div class="btn btn-success m-2 applications" key={index}>{app.grantName}</div>
-                ))}
-                </div>
-            );
-        } else if(category === "status") {
-            return (
-                <div class="vstack col-xl-12 col-lg-4 col-md-4 col-sm-3 status-stack">
-                {submissions.map((stat, index)=> (
-                    <div class="btn btn m-2 order-2 disabled app-status" key={index}>{stat.grantStatus}</div>
-                ))}
-                </div>
-            );
-        } else if(category === "submitted") {
-            return (
-                <div class="vstack col-xl-12 col-lg-3 col-md-3 col-sm-3 date-submitted-stack">
-                {submissions.map((sub, index)=> (
-                    <div class="p-1 m-2 disabled date-submitted" key={index}>{sub.dateSubmitted}</div>
-                ))}
-                </div>
-            );
+                    </div>
+                );
+
+            case "status":
+                return (
+                    <div class="vstack col-xl-12 col-lg-4 col-md-4 col-sm-3 status-stack">
+                        {submissions.map((stat, index) => (
+                            <div class="btn btn m-2 order-2 disabled app-status" key={index}>{stat._GrantStatus}</div>
+                        ))}
+                    </div>
+                );
+
+            case "submitted":
+                return (
+                    <div class="vstack col-xl-12 col-lg-3 col-md-3 col-sm-3 date-submitted-stack">
+                        {submissions.map((date, index) => (
+                            <div class="p-1 m-2 disabled date-submitted" key={index}>{date._DateSubmitted}</div>
+                        ))}
+                    </div>
+                );
+
+            case "mobileApplications":
+                return (
+                    <div class="container-fluid card-body row main-card mx-auto mobile-apps btn-toolbar">
+                        {submissions.map((app, index) => (
+                            <Link onClick={handleSubAppForm} class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress" key={index}>
+                                <div key={index}>{app._GrantName}</div>
+                            </Link>
+                        ))}
+                    </div>
+                );
+            default:
+                break;
         }
+
     }
 
     GetUserId();
-    addDummySubmissions();
+    // addDummySubmissions();
+    // window.localStorage.removeItem('submissions'); 
+    // console.log(localStorage);
+    console.log(localStorage);
     return (
         <div class="flex-wrap page-content" id="pastSubmissionsWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
             <div class="col">
@@ -203,46 +255,44 @@ function addDummySubmissions() {
                     <div class="card-body row main-card desktop-apps">
                         <div class="vstack col-xl-6 col-lg-5 col-md-5 col-sm-6 applications-stack">
                             <h4>Applications</h4>
-                            <hr className="hr-past-submissions"/>
-                            {PopulateDesktop("applications")}
+                            <hr className="hr-past-submissions" />
+                            {PopulateSubmissions("applications")}
                         </div>
 
                         <div class="vstack col-xl-4 col-lg-4 col-md-4 col-sm-3  status-stack">
                             <h4 class="mobile-hide">Status</h4>
-                            <hr className="hr-past-submissions mobile-hide"/>
-                            {PopulateDesktop("status")}
+                            <hr className="hr-past-submissions mobile-hide" />
+                            {PopulateSubmissions("status")}
                         </div>
-        
+
                         <div class="vstack col-xl-2 col-lg-3 col-md-3 col-sm-3 date-submitted-stack">
                             <h4 class="mobile-hide">Submitted</h4>
-                            <hr className="hr-past-submissions mobile-hide"/>
-                            {PopulateDesktop("submitted")}
+                            <hr className="hr-past-submissions mobile-hide" />
+                            {PopulateSubmissions("submitted")}
                         </div>
                     </div>
 
                     <div class="container-fluid card-body row main-card mx-auto mobile-apps btn-toolbar">
                         <div class="row justify-content-center">
                             <h4>Applications</h4>
-                            <hr className="mobile-applications-hr"/>
-                            <a href="/subappform" class="btn btn-success m-6 applications col-md-12" role="button">Bird Watching Grant</a>
-                            <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">Review in Progress</div>
-                            <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted 4/17/23</div>
-                            <hr className="mobile-applications-hr"/>
-                            
+                            <hr className="mobile-applications-hr" />
+                            {PopulateSubmissions("mobileApplications")}
+                            <hr className="mobile-applications-hr" />
+
                             <a href="#link" class="btn btn-success m-6 applications" role="button">Bird Watching Grant 2</a>
                             <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">Review in Progress</div>
                             <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted 4/17/23</div>
-                            <hr className="mobile-applications-hr"/>
+                            <hr className="mobile-applications-hr" />
 
                             <a href="#link" class="btn btn-success m-6 applications" role="button">Test</a>
                             <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">Review in Progress</div>
                             <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted 9/31/23</div>
-                            <hr className="mobile-applications-hr"/>
+                            <hr className="mobile-applications-hr" />
 
                             <a href="#link" class="btn btn-success m-6 applications" role="button">Environmental Education and Conservation Youth Scholarship and Birding Summer Camp</a>
                             <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">Review in Progress</div>
                             <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted 6/7/23</div>
-                            <hr className="mobile-applications-hr"/>
+                            <hr className="mobile-applications-hr" />
                         </div>
                     </div>
                 </div>

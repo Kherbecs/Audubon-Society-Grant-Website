@@ -12,6 +12,7 @@ import { getAuth, signOut, onAuthStateChanged } from 'firebase/auth'
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
+
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
 const adminFirebaseConfig = {
     apiKey: "AIzaSyB0pkdIGT5RiCe5jPY2628O27X_sTk3Xn4",
@@ -116,27 +117,22 @@ useEffect(() => {
     const handleChange = (e) => {
         setGrade(e.target.value);
     };
+
     function handleInfoDisplay(field, id) {
-        app.auth().onAuthStateChanged((user) => {
-            if(user) {
-                const uid = user.uid;
-                const dbRef = ref(database);
-                // get data from database as a JSON object, and get each field
-                // path temporarily hardcoded
-                get(child(dbRef, 'users/' + 'sw6pjwUkORaoJbGSpVt3DVCOf8t2' + '/forms/EnvironmentalEducation_CitizenScience')).then((snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        document.getElementById(id).value = data[field];
-                    } else {
-                        console.log("NO DATA");
-                    }
-                }).catch((error) => {
-                    console.error(error);
-                });
+        const dbRef = ref(database);
+        // Replace the hardcoded path with the actual path to the user's data in the database
+        get(child(dbRef, 'users/' + 'sw6pjwUkORaoJbGSpVt3DVCOf8t2' + '/forms/EnvironmentalEducation_CitizenScience')).then((snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                document.getElementById(id).value = data[field];
+            } else {
+                console.log("NO DATA");
             }
+        }).catch((error) => {
+            console.error(error);
         });
     }
-
+    
     //function that runs when you change status
     function statusChange(){
         //update to database

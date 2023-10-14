@@ -157,7 +157,7 @@ export function AdminRegister() {
           <div className="row justify-content-center">
             <div className="form-lr">
 
-              <h2 className="mb-3 h2-lr">Register</h2>
+              <h2 className="mb-3 h2-lr">Admin Register</h2>
               <hr className="hr-lr"/>
 
               <div className="form-floating mb-2">

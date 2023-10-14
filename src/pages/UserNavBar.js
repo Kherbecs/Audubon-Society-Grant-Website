@@ -104,9 +104,9 @@ export function UserNavBar() {
                   <Nav.Item>
                     <Nav.Link onClick={handlePastClick}>PAST SUBMISSIONS</Nav.Link>
                   </Nav.Item>
-                    <li class="nav-item">
-                       <a class="nav-link" onClick={handleLogOut}>LOGOUT</a>
-                    </li>
+                  <Nav.Item>
+                    <Nav.Link onClick={handleLogOut}>LOGOUT</Nav.Link>
+                  </Nav.Item>
                 </ul>
             </div>
         </nav>
