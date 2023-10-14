@@ -29,6 +29,7 @@ import React, { useState, useEffect } from 'react';
 import { AdminSubAppForm2 } from './pages/AdminSubAppForm2.js';
 import { SubAppForm2 } from "./pages/SubAppForm2.js";
 import { ApplicationFormPage2 } from './pages/ApplicationFormPage2.js'; 
+import PageNotFound from './pages/PageNotFound.js'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -165,6 +166,9 @@ function App() {
         <Route exact path="/applicationformpage2">
           <ApplicationFormPage2></ApplicationFormPage2>
         </Route> 
+        <Route exact path ="*">
+          <PageNotFound></PageNotFound>
+        </Route>
       </Switch>
       <Route
         render={({ location }) =>

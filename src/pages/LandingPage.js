@@ -127,23 +127,24 @@ function createUserCookie(userCookieName){
       <div class="info-cards">
         <Container className="my-4">
           <Row className="px-4 my-5">
-            <Col lg={3} md={12} sm={12} className="mx-auto px-4 my-5 square border border-dark border-3" >
+            <Col lg={3} md={12} sm={12} className="mx-auto px-7 my-5 square border border-dark border-3" >
               <div className="my-3 d-grid">
-                <h1 class="font-weight-light">About</h1>
-                <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
+                <h2 class="font-weight-light">About</h2>
+                <p class="mt-4">
+                  Using this site, you can apply directly for any currently available grants offered by the San Joaquin Audubon Society! If you're new here, click sign up! After signing up, navigate to the "Grants and Scholarships" button on the top of your screen to apply for grants! Use the "Past Submissions" button to view your submitted applications!</p>
                 <Button variant="success" size="lg" onClick={handleRegisterClick}>Sign Up</Button>
               </div>
             </Col>
-            <Col lg={3} md={12} sm={12} className="mx-auto px-4 my-5 square border border-dark border-3" >
+            <Col lg={3} md={12} sm={12} className="mx-auto px-7 my-5 square border border-dark border-3" >
               <div className="my-3 d-grid">
-              <h1 class="font-weight-light">Grant 1 Info</h1>
-              <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
+              <h2 class="font-weight-light">Environmental Education and Conservation</h2>
+              <p class="mt-4">San Joaquin Audubon Society (SJAS) provides grant funds for organization working to conserve our local environment. We encourage groups to apply that are interested in birding, conservation, restoration, and environmental literacy. Grants are funded for projects located within San Joaquin County.</p>
               </div>
             </Col>
-            <Col lg={3} md={12} sm={12} className="mx-auto px-4 my-5 square border border-dark border-3" >
+            <Col lg={3} md={12} sm={12} className="mx-auto px-7 my-5 square border border-dark border-3" >
               <div className="my-3 d-grid">
-                <h1 class="font-weight-light">Grant 2 Info</h1>
-                <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut esse, in vero cupiditate beatae quasi nobis corporis maxime inventore sequi praesentium. Officia impedit incidunt repudiandae dignissimos sequi, ipsam numquam. A!</p>
+                <h2 class="font-weight-light">Steve Stocking Youth Environmental Scholarship</h2>
+                <p class="mt-4">The Steve Stocking Youth Environmental Scholarship Fund provides support to send interested youth to environmental camps or programs to foster knowledge and appreciation of nature and the environment. The applicant must be at least 10 years old but under 18 years old and a resident of San Joaquin County at the time of scholarship application and at the time he/she is attending the chosen camp.</p>
               </div>
             </Col>
           </Row>

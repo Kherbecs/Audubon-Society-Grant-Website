@@ -56,17 +56,23 @@ console.log(app);
 const database = getDatabase(app);
 
 
-const chosenApplication = "";
+const chosenApplication = '4Jf4ns3uu6b0IMOGDTvxHY1vhFU2';
 
-const dataUp = ref(database,'users'+ '/qyE29ngMhYMQ2vvcpMrBRUtgc2X2' +'/pastsubmissions'+'/submission 1');
-const statusNow = ref(database,'users'+ '/qyE29ngMhYMQ2vvcpMrBRUtgc2X2' +'/pastsubmissions'+'/submission 1'+'/grantStatus');
+
+const dataUp = ref(database,'users/'+ chosenApplication +'/forms/steve_stocking');
+const statusNow = ref(database,'users/'+ chosenApplication +'/forms/steve_stocking/' + '_GrantStatus');
+
 var loadStatus ='';
  
         //get current value from database before change 
         onValue(statusNow, (snapshot) => {
             loadStatus = snapshot.val();
+            if(snapshot.val() == '' || !snapshot.exists()){
+                loadStatus = 'No Status'
+            }
+            console.log('Load Status: ' + loadStatus)
             
-            document.getElementById('statusOne').innerHTML = loadStatus;
+            //document.getElementById('statusOne').innerHTML = loadStatus;
             document.getElementById('statusDisplay1').innerHTML= loadStatus;
         })
 
@@ -120,7 +126,7 @@ useEffect(() => {
     function handleInfoDisplay(field, id) {
         const dbRef = ref(database);
         // Replace the hardcoded path with the actual path to the user's data in the database
-        get(child(dbRef, 'users/' + 'zPUcMiHBRIeGxQTufE2r66oiyc82' + '/forms/steve_stocking')).then((snapshot) => {
+        get(child(dbRef, 'users/' + chosenApplication + '/forms/steve_stocking')).then((snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 document.getElementById(id).value = data[field];
@@ -135,7 +141,7 @@ useEffect(() => {
     function handleURLDisplay(field, id) {
         const dbRef = ref(database);
         // Replace the hardcoded path with the actual path to the user's data in the database
-        get(child(dbRef, 'users/' + 'zPUcMiHBRIeGxQTufE2r66oiyc82' + '/forms/steve_stocking')).then((snapshot) => {
+        get(child(dbRef, 'users/' + chosenApplication + '/forms/steve_stocking')).then((snapshot) => {
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 document.getElementById(id).href = data[field];
@@ -149,13 +155,18 @@ useEffect(() => {
     }
         //function that runs when you change status
         function statusChange(){
-        
-
-            //update to database
-        const newStatus = document.getElementById('floatingSelect1').value;
-        update(dataUp,{grantStatus: newStatus});
-        
-
+            var curStatus = '';
+            onValue(statusNow, (snapshot) => {
+                curStatus = snapshot.val();
+            })
+            const newStatus = document.getElementById('floatingSelect1').value;
+            if(curStatus == 'Approved' && window.confirm('Application is currently approved, you sure you want to change it?')){
+                update(dataUp,{_GrantStatus: newStatus});
+            }else if(curStatus == 'Approved' && !window.confirm('Application is currently approved, you sure you want to change it?')){
+                // do nothing rah
+            }else{
+                update(dataUp,{_GrantStatus: newStatus});
+            }
     }
     //Retrieve a snapshot from the firebase database
     function getComments() {
@@ -329,7 +340,6 @@ useEffect(() => {
                             <div class="wrapper-small-feedback-buttons">
                                 <div class="wrapper-status-button">
                                     <select class="form-select" id="floatingSelect1" aria-label="Filter drop down menu" onChange={statusChange}>
-                                        <option selected id="statusOne" >Status</option>
                                         <option value="Under Review" > Set to Under Review</option>
                                         <option value="Approved">Set to Approved</option>
                                         <option value ="Unsatisfactory">Set to Unsatisfactory</option>
