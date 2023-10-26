@@ -248,6 +248,9 @@ export function ApplicationFormPage2() {
                         update(ref(database, 'users/' + uid + '/forms/EnvironmentalEducation_CitizenScience'), {
                             _GrantName: _GrantName
                         });
+                        update(ref(database, 'users/' + uid + '/forms/EnvironmentalEducation_CitizenScience'), {
+                            _GrantStatus: "Submitted"
+                        });
                         alert('Successfully submitted. You can now view your submission in the Past Submissions.');
                         window.location.reload();
                     }

@@ -61,10 +61,16 @@ export function PastSubmissions() {
         window.location.reload();
     };
 
-    const handleSubAppForm = () => {
-        history.push('/subappform');
-        window.location.reload();
-    };
+
+    const handleSubAppForm = (applicationName) => {
+        if(applicationName === 'Steve Stocking') {
+            history.push('/subappform');
+            window.location.reload();
+        } else if(applicationName === 'Environmental Education and Citizen Science') {
+            history.push('/subappform2');
+            window.location.reload();
+        }
+    }
 
     useEffect(() => {
         let done = false;
@@ -86,41 +92,6 @@ export function PastSubmissions() {
 
     const [userID, setUserID] = useState(null);
 
-    /*useEffect(() => {
-        const nodeRef = ref(database, "users/" + userID + "/pastsubmissions" + "/null");
-        let nodeRefArr = [];
-        nodeRefArr.push(nodeRef);
-
-        get(nodeRef)
-            .then((snapshot) => {
-                if(snapshot.exists()) {
-                    console.log("Node submissions exists");
-                } else {
-                    console.log("pastsubmissions doesnt exist");
-                    set(nodeRef, {
-                        grantName: "null",
-                        grantStatus: "null",
-                        dateSubmitted: "null"
-                    });
-                }
-            }).catch((error) => {
-                console.error("Error checking node: " + error);
-            }) 
-    }, [userID]);*/
-
-    /*function addDummySubmissions() {
-        let nodeRefArr = [];
-        nodeRefArr.push(ref(database, "users/" + userID + "/pastsubmissions" + "/submission 1"));
-        nodeRefArr.push(ref(database, "users/" + userID + "/pastsubmissions" + "/submission 2"));
-    
-        nodeRefArr.forEach(submissionRef => {
-            set(submissionRef, {
-                grantName: "2",
-                grantStatus: "rejected",
-                dateSubmitted: "1/1/24"
-            })
-        });
-    }*/
 
     function GetUserId() {
 
@@ -193,7 +164,7 @@ export function PastSubmissions() {
                 return (
                     <div class="vstack col-xl-12 col-lg-5 col-md-5 col-sm-6 applications-stack">
                         {submissions.map((app, index) => (
-                            <Link onClick={handleSubAppForm} class="btn btn-success m-2 applications" key={index}>
+                            <Link onClick={() => handleSubAppForm(app._GrantName)}  class="btn btn-success m-2 applications" key={index}>
                                 <div key={index}>{app._GrantName}</div>
                             </Link>
                         ))}
@@ -223,8 +194,19 @@ export function PastSubmissions() {
                 return (
                     <div class="container-fluid card-body row main-card mx-auto mobile-apps btn-toolbar">
                         {submissions.map((app, index) => (
-                            <Link onClick={handleSubAppForm} class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress" key={index}>
+                            <Link onClick={() => handleSubAppForm(app._GrantName)} class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress" key={index}>
                                 <div key={index}>{app._GrantName}</div>
+                            </Link>
+                        ))}
+                    </div>
+                );
+
+                case "mobileStatus":
+                return (
+                    <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">
+                        {submissions.map((app, index) => (
+                            <Link onClick={() => handleSubAppForm(app._GrantStatus)} class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress" key={index}>
+                                <div key={index}>{app._GrantStatus}</div>
                             </Link>
                         ))}
                     </div>
@@ -236,9 +218,6 @@ export function PastSubmissions() {
     }
 
     GetUserId();
-    // addDummySubmissions();
-    // window.localStorage.removeItem('submissions'); 
-    // console.log(localStorage);
     console.log(localStorage);
     return (
         <div class="flex-wrap page-content" id="pastSubmissionsWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">

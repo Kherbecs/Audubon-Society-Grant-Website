@@ -170,7 +170,7 @@ export function SubAppForm2() {
                 </div>
                 <div className = "startEndDates-appform2">
                     <label for = "startEndDates-appform2" class = "startEndDatesQ-appform2">List the start and end date of your project or state "Ongoing" for projects that continue.</label>
-                    <textarea type = "text" value = "Start and End Dates" class = "form-control" id = "startEndDatesQuestion-appform2" placeholder = "Enter dates as: MM/DD/YYYY - MM/DD/YYYY" aria-label = "Enter dates as: MM/DD/YYYY - MM/DD/YYYY" rows = "1" onLoad={handleInfoDisplay('StartEndDates','startEndDatesQuestion-appform2')}  readOnly ></textarea>
+                    <textarea type = "text" value = "Start and End Dates" class = "form-control" id = "startEndDatesQuestion-appform2" placeholder = "Enter dates as: MM/DD/YYYY - MM/DD/YYYY" aria-label = "Enter dates as: MM/DD/YYYY - MM/DD/YYYY" rows = "1" onLoad={handleInfoDisplay('StartAndEndDates','startEndDatesQuestion-appform2')}  readOnly ></textarea>
                 </div>
                 <div className = "feedback-appform2">
                     <label for = "feedback-appform2" class = "feedbackQ-appform2">Do you have any feedback or additional comments to make?</label>
@@ -188,4 +188,3 @@ export function SubAppForm2() {
 
     )
   }
-
