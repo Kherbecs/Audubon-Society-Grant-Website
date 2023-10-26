@@ -71,7 +71,7 @@ var loadStatus ='';
         })
 
 
-export function AdminSubAppForm2() {
+export function AdminSubAppForm2({uid}) {
     const history = useHistory();
 
     const handleAdminClick = () => {
@@ -118,19 +118,30 @@ useEffect(() => {
         setGrade(e.target.value);
     };
 
-    function handleInfoDisplay(field, id) {
+    function handleInfoDisplay(field, id, uid) {
         const dbRef = ref(database);
-        // Replace the hardcoded path with the actual path to the user's data in the database
-        get(child(dbRef, 'users/' + 'sw6pjwUkORaoJbGSpVt3DVCOf8t2' + '/forms/EnvironmentalEducation_CitizenScience')).then((snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                document.getElementById(id).value = data[field];
-            } else {
-                console.log("NO DATA");
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
+        const element = document.getElementById(id);
+
+        if(element){
+            // Replace the hardcoded path with the actual path to the user's data in the database
+            get(child(dbRef, 'users/' + uid + '/forms/EnvironmentalEducation_CitizenScience')).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    if(data && data[field] !== undefined){
+                        console.log("data = " + data);
+                        console.log("field data =" + data[field]);
+                        console.log("id = " + id);
+                        element.value = data[field];
+                    }else{
+                        console.log("Field not found in data");
+                    }
+                } else {
+                    console.log("NO DATA");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
     }
     
     //function that runs when you change status
@@ -214,14 +225,14 @@ useEffect(() => {
                             <div class = "col-md">
                                 <label for = "email">First Name</label>
                                 <input type = "text" class = "form-control" id = "fname-appform2" value = ''
-                                    onLoad = {handleInfoDisplay('firstName', 'fname-appform2')} className = "form-control user-info-field" 
+                                    onLoad = {handleInfoDisplay('firstName', 'fname-appform2', uid)} className = "form-control user-info-field" 
                                     placeholder = "First Name" aria-label= "First Name" readOnly>
                                  </input>
                             </div>
                             <div class = "col-md">
                                 <label for = "homephone">Last Name</label>
                                 <input type = "text" class = "form-control" id = "lname-appform2" value = ''
-                                    onLoad = {handleInfoDisplay("lastName", "lname-appform2")}
+                                    onLoad = {handleInfoDisplay("lastName", "lname-appform2", uid)}
                                     placeholder = "Last Name" aria-label = "Last Name" readOnly>
                                 </input>
                             </div>
@@ -231,14 +242,14 @@ useEffect(() => {
                         <div class = "col-md">
                             <label for = "email-appform2">Email</label>
                             <input type = "text" class = "form-control" id = "email-appform2" value = ''
-                                onLoad = {handleInfoDisplay("email", "email-appform2")}
+                                onLoad = {handleInfoDisplay("email", "email-appform2", uid)}
                                 placeholder = "Email" aria-label = "Email" readOnly>
                             </input>
                         </div>
                         <div class = "col-md">
                             <label for = "phone-appform2">Phone</label>
                             <input type = "text" class = "form-control" id = "phone-appform2" value = ''
-                                onLoad = {handleInfoDisplay("phone", "phone-appform2")}
+                                onLoad = {handleInfoDisplay("phone", "phone-appform2", uid)}
                                 placeholder = "Phone Number" aria-label = "Phone Number" readOnly>
                             </input>
                         </div>
@@ -246,7 +257,7 @@ useEffect(() => {
                     <div className = "organizationName-appform2">
                         <label for = "organizationName-appform2" class = "organizationQ-appform2">What is the name of the organization that will receive the funding?</label>
                         <textarea type = "text" class = "form-control" id = "organization" value = ''
-                            onLoad = {handleInfoDisplay("Organization", "organization")}
+                            onLoad = {handleInfoDisplay("Organization", "organization", uid)}
                             placeholder = "Organization" aria-label = "Organization" rows = "1" readOnly>
                         </textarea>
                     </div>
@@ -254,7 +265,7 @@ useEffect(() => {
                         <label for="title1-appform2" class="title1Q-appform2">Is this organization a Title 1 School?</label>
                         <div className = "Title1Selection-appform2">
                             <input type = "text" className = "title1select-appform2" id = "title1" value = ''
-                                onLoad = {handleInfoDisplay("IsTitle1", "title1")} 
+                                onLoad = {handleInfoDisplay("IsTitle1", "title1", uid)} 
                                 size = '3' readOnly>
                             </input>
                         </div>
@@ -262,28 +273,28 @@ useEffect(() => {
                 <div className = "funding-appform2">
                     <label for = "funding-appform2" class = "fundingQ-appform2">What is the amount of funding requested?</label>
                     <textarea type = "text" class = "form-control" id = "fundingQuestion-appform2" value = ''
-                        onLoad = {handleInfoDisplay("FundingAmount", "fundingQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("FundingAmount", "fundingQuestion-appform2", uid)}
                         placeholder = "Cannot exceed $1,500" aria-label = "Amount Requested" rows = "1" readOnly>
                     </textarea>
                 </div>
                 <div className = "envEduc-appform2">
                     <label for = "envEduc-appform2" class = "envEducQ-appform2">What environmental education is addressed by this project?</label>
                     <textarea type = "text" class = "form-control" id = "envEducQuestion-appform2" 
-                        onLoad = {handleInfoDisplay("EnvironmentalEducationAddressed", "envEducQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("EnvironmentalEducationAddressed", "envEducQuestion-appform2", uid)}
                         placeholder = "..." aria-label = "Environmental Education Addressed" rows = "1" readOnly>
                     </textarea>
                 </div>
                 <div className = "benefit-appform2">
                     <label for = "benefit-appform2" class = "benefitQ-appform2">Who will benefit? (Include information such as grade level(s) or ages, demographics, and number of participants.)</label>
                     <textarea type = "text" class = "form-control" id = "benefitQuestion-appform2" 
-                        onLoad = {handleInfoDisplay("WhoBenefits", "benefitQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("WhoBenefits", "benefitQuestion-appform2", uid)}
                         placeholder = "Please include information such as grade level(s) or ages, demographics, and number of participants." aria-label = "Who will benefit?" rows = "1" readOnly>
                     </textarea>
                 </div>
                 <div className = "objectives-appform2">
                     <label for = "objectives-appform2" class = "objectivesQ-appform2">What are the objectives?</label>
                     <textarea type = "text" class = "form-control" id = "objectivesQuestion-appform2" 
-                        onLoad = {handleInfoDisplay("Objectives", "objectivesQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("Objectives", "objectivesQuestion-appform2", uid)}
                         placeholder = "..." aria-label = "Objectives of the Project" rows = "1" readOnly>                           
                     </textarea>
                 </div>
@@ -291,14 +302,14 @@ useEffect(() => {
                     <label for = "projectGoals-appform2" class = "projectGoalsQ-appform2">How exactly will the project and/or materials contribute to San Joaquin Audubon’s goals of birding, 
                     conservation, restoration, and environmental literacy?</label>
                     <textarea type = "text" class = "form-control" id = "projectGoalsQuestion-appform2" 
-                        onLoad = {handleInfoDisplay("ProjectGoals", "projectGoalsQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("ProjectGoals", "projectGoalsQuestion-appform2", uid)}
                         placeholder = "..." aria-label = "How will the project contribute?" rows = "1" readOnly>
                     </textarea>
                 </div>
                 <div className = "fundsExplanation-appform2">
                     <label for = "fundsExplanation-appform2" class = "fundsExplanationQ-appform2">Please include a brief explanation of how the funds will be used.</label>
                     <textarea type = "text" class = "form-control" id = "fundsExplanationQuestion-appform2" 
-                        onLoad = {handleInfoDisplay("FundsExplanation", "fundsExplanationQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("FundsExplanation", "fundsExplanationQuestion-appform2", uid)}
                         placeholder = "Examples: bus expenses to go on an environmental field trip; binoculars for science camps; materials for building bird boxes and field trip fund to set up the boxes." 
                         aria-label = "Funding Explanation" rows = "1" readOnly>
                     </textarea>
@@ -306,14 +317,14 @@ useEffect(() => {
                 <div className = "startEndDates-appform2">
                     <label for = "startEndDates-appform2" class = "startEndDatesQ-appform2">List the start and end date of your project or state "Ongoing" for projects that continue.</label>
                     <textarea type = "text" class = "form-control" id = "startEndDatesQuestion-appform2" 
-                        onLoad = {handleInfoDisplay("StartAndEndDates", "startEndDatesQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("StartAndEndDates", "startEndDatesQuestion-appform2", uid)}
                         placeholder = "Enter dates as: MM/DD/YYYY - MM/DD/YYYY" aria-label = "Enter dates as: MM/DD/YYYY - MM/DD/YYYY" rows = "1" readOnly>
                     </textarea>
                 </div>
                 <div className = "feedback-appform2">
                     <label for = "feedback-appform2" class = "feedbackQ-appform2">Do you have any feedback or additional comments to make?</label>
                     <textarea type = "text" class = "form-control" id = "feedbackQuestion-appform2" value = '' 
-                        onLoad = {handleInfoDisplay("Feedback", "feedbackQuestion-appform2")}
+                        onLoad = {handleInfoDisplay("Feedback", "feedbackQuestion-appform2", uid)}
                         placeholder = "Feedback or Additional Comments" aria-label = "Feedback or Additional Comments" rows = "1" readOnly>
                     </textarea>
                 </div>

@@ -8,11 +8,13 @@ import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
 import { getAnalytics } from 'firebase/analytics';
-import { getDatabase, get, child, ref } from 'firebase/database';
+import { getDatabase, get, child, ref} from 'firebase/database';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import emailjs from 'emailjs-com'; // Import the emailjs-com library
 import { Link } from 'react-router-dom';
 import { AdminSubAppForm } from './AdminSubAppForm'; // Import the component
+import { AdminSubAppForm2 } from './AdminSubAppForm2';
+
 
 
 /*Login Page for Admins that uses React JS, HTML, CSS, and Bootstrap 5*/
@@ -27,7 +29,9 @@ const adminFirebaseConfig = {
 };
 
 
-// Initialize Firebase for admins
+
+
+ // Initialize Firebase for admins
 const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
 console.log(adminApp);
 const adminAuth = adminApp.auth();
@@ -35,8 +39,14 @@ const adminAuth = adminApp.auth();
 
 
 
+
+
+
+
 const databaseAdmin = firebase.database(adminApp);
 const numHitsRef = databaseAdmin.ref("numHits");
+
+
 
 
 const firebaseConfig = {
@@ -47,58 +57,72 @@ const firebaseConfig = {
     messagingSenderId: "129648865838",
     appId: "1:129648865838:web:9713fb401ac09b481e25bf",
     measurementId: "G-6FM488KSS5"
-};
+  };
+ 
+  // Initialize Firebase for users
+  const app = firebase.initializeApp(firebaseConfig, 'my-app');
+  console.log(app);
+  const database = firebase.database(app);
+  const auth = app.auth();
 
-// Initialize Firebase for users
-const app = firebase.initializeApp(firebaseConfig, 'my-app');
-console.log(app);
-const database = firebase.database(app);
-const auth = app.auth();
+
 
 
 export function AdminPortal() {
     const history = useHistory();
 
 
-    //done is used so that the function can run onLoad but is only used once
-    //to check if
-    useEffect(() => {
-        let done = false;
-        const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
-            if (currentUser && !done) {
-                // Admin user is signed in, do nothing
-                done = true;
-            } else if (!currentUser && !done) {
-                // User is signed out
-                done = true;
-                const adminPortalWrapper = document.getElementById('adminPortalWrapper');
-                if (adminPortalWrapper) {
-                    adminPortalWrapper.style.visibility = 'hidden';
-                    history.push('/');
-                    window.location.reload();
-                } else {
-                    console.error('Element with ID "adminPortalWrapper" not found.');
-                }
-            }
-        });
 
 
-        return () => {
-            // Unsubscribe from onAuthStateChanged when the component unmounts
-            unsubscribe();
-        };
-    }, [history]);
+//done is used so that the function can run onLoad but is only used once
+//to check if
+useEffect(() => {
+    let done = false;
+    const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
+      if (currentUser && !done) {
+        // Admin user is signed in, do nothing
+        done = true;
+      } else if (!currentUser && !done) {
+        // User is signed out
+        done = true;
+        const adminPortalWrapper = document.getElementById('adminPortalWrapper');
+        if (adminPortalWrapper) {
+          adminPortalWrapper.style.visibility = 'hidden';
+          history.push('/');
+          window.location.reload();
+        } else {
+          console.error('Element with ID "adminPortalWrapper" not found.');
+        }
+      }
+    });
+
+
+
+
+    return () => {
+      // Unsubscribe from onAuthStateChanged when the component unmounts
+      unsubscribe();
+    };
+  }, [history]);
+
+
 
 
     const handleSubmissionLink = (submissionId) => {
         history.push(`/adminsubappform/${submissionId}`);
         window.location.reload();
-    };
+      };
+
+
+
+
 
 
 
 
     /* HANDLE LOGOUT AUTHENTICATION */
+
+
 
 
     function handleLogOut() {
@@ -113,11 +137,17 @@ export function AdminPortal() {
     }
 
 
+
+
     /* RETRIEVING USER IDS AND DATA FROM DB */
+
+
 
 
     const [uids, setUids] = useState([]);
     const [userData, setUserData] = useState([]);
+
+
 
 
     useEffect(() => {
@@ -128,8 +158,8 @@ export function AdminPortal() {
                 setUserData(uidData);
                 const id = Object.keys(uidData);
                 setUids(id);
-
-            } catch (error) {
+           
+            } catch(error) {
                 console.error('Could not fetch uids:', error);
             }
         }
@@ -137,94 +167,104 @@ export function AdminPortal() {
     }, []) //empty braces so code runs once
 
 
+    
+
+
     /* SCROLLING AND STORING SELECTED UID */
-
-
     useEffect(() => {
-        if (displayApp && buttonClicked && searchUsed) {
-            document.getElementById('adminSubAppFormWrapper').scrollIntoView({ behavior: 'smooth' });
+        if(displayApp && buttonClicked) {
+            const formName = userData[selectedUid]?.forms?.steve_stocking ? 'steve_stocking' : 'EnvironmentalEducation_CitizenScience';
+            const targetId = formName === 'steve_stocking' ? 'adminSubAppFormWrapper' : 'adminsubappform2Wrapper';
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+            //document.getElementById('adminSubAppFormWrapper').scrollIntoView({behavior:'smooth'});
+                //searchUsed(false);
+                setButtonClicked(false);
         }
-    })
-
+    });
 
     //const buttonRef = useRef(null);
     const [buttonClicked, setButtonClicked] = useState(false);
 
-
     const [selectedUid, setSelectedUid] = useState(null);
-
 
     const handleButton = (uid) => {
         setSelectedUid(uid);
         setDisplayApp(true);
         setButtonClicked(true);
-        setSearchUsed(true);
+        //setSearchUsed(false);
     }
-
+   
     const [appData, setAppData] = useState(null);
     const [displayApp, setDisplayApp] = useState(false);
-
+   
     /* LOCK FUNCTIONALITY */
 
+    const [buttonStates, setButtonStates] = useState({}); // List of button (lock) states
+     
+    const handleCheckbox = (uid) => {
+        console.log("uid = " + uid);
+        //const boxTicked = true;
+        const lockID = `lock_${uid}`;
+        //const appID = userData[uid]?.forms[index]?._AppID;
+        //console.log("user data = " + userData[uid])
+        //console.log("app id = " + appID);
 
-    const [buttonStates, setButtonStates] = useState(); // List of button (lock) states
-
-    const handleCheckbox = (index) => {
-        const boxTicked = true;
-        const lockID = `lock_${uids[index]}`;
 
 
         database.ref(`locks/${lockID}`).set({
-            state: !buttonStates[index]
+            state: !buttonStates[uid]
         });
 
 
         setButtonStates((prevStates) => {
-            const newStates = [...prevStates];
-            newStates[index] = !newStates[index];
-            return newStates;
+        const newStates = { ...prevStates, [uid]: !prevStates[uid] };
+        return newStates;
         });
         setButtonClicked(false);
     };
-
+   
+    //const [lockLoading, setLockLoading] = useState(true);
     useEffect(() => {
         const getStates = async () => {
-            const newButtonStates = await Promise.all(
-                uids.map(async (uid) => {
-                    const lockID = `lock_${uid}`;
-                    const dbStates = await database.ref(`locks/${lockID}`).get();
-                    const curStates = dbStates.val();
-                    return curStates ? curStates.state : false;
-                })
-            );
-            setButtonStates(newButtonStates);
+            try{
+                const newButtonStates = await Promise.all(
+                    uids.map(async (uid) => {
+                        const lockID = `lock_${uid}`;
+                        const dbStates = await database.ref(`locks/${lockID}`).get();
+                        const curStates = dbStates.val();
+                        console.log(`${uid}`+"curState " + curStates.state);
+                        return curStates ? curStates.state : false;
+                    })
+                );
+                setButtonStates(newButtonStates);
+                //setLockLoading(false);
+            }catch(error){
+                console.error('Error fetching lock states',error);
+            }
         };
         getStates();
     }, [uids]);
 
+    
 
     /*-----------UNIQUE VISITOR COUNTER STATES-----------------*/
-
-
-
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
-
-    useEffect(() => {
+    useEffect(()=>{
         const fetchData = async () => {
-            try {
+            try{
                 const docRef = numHitsRef;
                 const docSnapshot = await docRef.get();
-                if (docSnapshot.exists) {
+                if(docSnapshot.exists){
                     const data = docSnapshot.val();
                     setData(data);
                     setLoading(false);
-                } else {
+                }else{
                     console.log("No such document dude");
-                }
-            } catch (error) {
+                }  
+            }catch (error){
                 console.error('Error fetching document: ', error);
                 setLoading(false);
             }
@@ -232,86 +272,85 @@ export function AdminPortal() {
         fetchData();
     }, []);
 
-
     console.log(data);
     /*----------------UNIQUE VISITOR CODE END----------------------*/
 
 
+
+
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
+  //stores search results from db in variable
+  const [searchResults, setSearchResults] = useState([]);
 
-
-
-
-
-
-    //stores search results from db in variable
-    const [searchResults, setSearchResults] = useState([]);
-
-
-    useEffect(() => {
-        const fetchAllUsers = async () => {
-            try {
-                const snapshot = await database.ref('users').once('value');
-                const results = [];
-                snapshot.forEach((childSnapshot) => {
-                    const user = childSnapshot.val();
-                    results.push(user);
-                });
-                setSearchResults(results);
-            } catch (error) {
-                console.error('Error fetching all users:', error);
-            }
-        };
-
-
-        fetchAllUsers();
-    }, []);
-
-
-    const [searchUsed, setSearchUsed] = useState(false);
-
-
-    /* SEARCH FUNCTION */
-    const handleSearch = async (event) => {
-        const input = event.target.value.toLowerCase().trim();
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const snapshot = await database.ref('users').once('value');
         const results = [];
-
-
-        try {
-            const snapshot = await database.ref('users').once('value');
-            snapshot.forEach((childSnapshot) => {
-                const user = childSnapshot.val();
-                console.log(user);
-                // Check if the user's name or grant type contains the input
-                if (user) {
-                    const { fullName, grantType, email } = user;
-                    if (fullName && email) {
-                        if (fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)) {
-                            results.push(user);
-                        }
-                        if (grantType && grantType.toLowerCase().includes(input)) {
-                            results.push(user);
-                        }
-                    }
-
-                }
-            });
-        } catch (error) {
-            console.error('Error searching users:', error);
-        }
-
+        snapshot.forEach((childSnapshot) => {
+          const user = childSnapshot.val();
+          results.push(user);
+        });
         setSearchResults(results);
-
-
-        if (searchUsed) {
-            setSearchUsed(false);
-        }
+      } catch (error) {
+        console.error('Error fetching all users:', error);
+      }
     };
 
+    fetchAllUsers();
+  }, []);
 
-    const [users, setUsers] = useState([]);
+  const [searchUsed, setSearchUsed] = useState(false);
+  const [filteredUids, setFilteredUids] = useState([]);
 
+  /* SEARCH FUNCTION */
+  const handleSearch = async (event) => {
+    const input = event.target.value.toLowerCase().trim();
+    const results = [];
+
+    try {
+        const snapshot = await database.ref('users').once('value');
+        const filteredUids = [];
+        snapshot.forEach((childSnapshot) => {
+            const user = childSnapshot.val();
+            //console.log(user);
+            // Check if the user's name or grant type contains the input
+            if(user) {
+                const {fullName, grantType, email} = user;
+                if(fullName && email) {
+                    if(fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)){
+                        results.push(user);
+                        filteredUids.push(childSnapshot.key);
+                    }
+                }
+                if(grantType && grantType.toLowerCase().includes(input)) {
+                    results.push(user);
+                    filteredUids.push(childSnapshot.key);
+                }
+                
+           
+            }
+        });
+    
+    setSearchResults(results);
+
+    setFilteredUids(filteredUids);
+
+    setSearchUsed(true);
+
+    } catch (error) {
+        console.error('Error searching users:', error);
+    }
+
+   /*
+    if(searchUsed){
+        setSearchUsed(false);
+    }
+    */
+  };
+
+  const [users, setUsers] = useState([]);
 
     useEffect(() => {
         // Fetch all users from Firebase
@@ -330,29 +369,24 @@ export function AdminPortal() {
             });
     }, []);
 
-
     // Function to send the email to users who signed up for grant updates
     const sendMail = () => {
         // Initialize Email.js
         emailjs.init("ExVfhWJSKY2SPFYqo");
-
 
         // Extract input values
         const sendername = document.querySelector("#sendername").value;
         const subject = document.querySelector("#subject").value;
         const message = document.querySelector("#message").value;
 
-
         const serviceID = "service_3gpojoc"; // Email Service ID
         const templateID = "template_7asx4tu"; // Email Template ID
-
 
         if (!sendername || !subject || !message) {
             // Check if any of the fields are empty
             alert("Please fill in all fields.");
             return;
         }
-
 
         // Iterate through users and send emails if signUpForGrants is true
         users.forEach((user) => {
@@ -364,7 +398,6 @@ export function AdminPortal() {
                     replyto: user.email, // Set "replyto" to the user's email
                     message,
                 };
-
 
                 // Send the email
                 emailjs.send(serviceID, templateID, params).then((response) => {
@@ -378,8 +411,8 @@ export function AdminPortal() {
         });
     };
 
-    // Function to send the email to users who signed up for grant updates
-    const sendMailEmail = () => {
+       // Function to send the email to users who signed up for grant updates
+       const sendMailEmail = () => {
         // Initialize Email.js
         emailjs.init("ExVfhWJSKY2SPFYqo");
 
@@ -425,12 +458,11 @@ export function AdminPortal() {
             });
     };
 
-
     return (
-
-        <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
-
-            <button class="logout" onClick={handleLogOut}><a class="logoutlink">Logout</a></button>
+   
+    <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
+         
+         <button class="logout" onClick={handleLogOut}><a class="logoutlink">Logout</a></button>
             <div class="divider" />
             <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal">Send a Grant Update</button>
 
@@ -515,28 +547,10 @@ export function AdminPortal() {
                     </p>
                 </p>
             </p>
-
-
-
-
-            <div class="row g-2">
-                <div class="col-md col-md-admin1">
-                    <div class="form-floating form-floating-custom">
-                        <select class="form-select form-admin" id="floatingSelect" aria-label="Filter drop down menu">
-                            <option selected>Filter by grant, date, read/unread</option>
-                            <option value="grant">grant 1</option>
-                            <option value="grant2">grant 2</option>
-                            <option value="date">date</option>
-                            <option value="read">read</option>
-                            <option value="unread">unread</option>
-                        </select>
-                    </div>
-                </div>
-
-
+        
+            
+    
                 <div class="col-md col-md-admin2">
-
-
                     <div class="mb-3 search-bar search-admin">
                         <div class="searchField">
                             <input type="name" class="form-control" id="searchBar" placeholder="Search for applicants" onChange={handleSearch}></input>
@@ -545,54 +559,70 @@ export function AdminPortal() {
                     </div>
                 </div>
 
-
-                <div class="search-results">
-                    <div class="search-results-box">
-                        {searchResults.map((user) => (
-                            <div key={user.id}>
-                                <p style={{ fontWeight: 'bold' }}>Full Name: {user.fullName}</p>
-                                <p>Email: {user.email}</p>
-                                <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
-                                <p>Grant Type: {user.grantType ? user.grantType : 'N/A'}</p>
-                            </div>
-                        ))}
-                    </div>
+            <div class="search-results">
+                <div class="search-results-box">
+                    {searchResults.map((user) => (
+                        <div key={user.id} class="user-info">
+                            
+                            <div class="user-info-item">
+                    <p style={{fontWeight: 'bold'}}>Full Name: {user.fullName}</p>
+                </div>
+                <div class="user-info-item">
+                    <p>Email: {user.email}</p>
+                </div>
+                <div class="user-info-item">
+                    <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
+                </div>
+                            
+                        </div>
+                    ))}
                 </div>
             </div>
-
+        
+       
+        
             <div className="submissions-box">
-                {uids.map((uid, index) => (
+
+                {(filteredUids.length > 0 ? filteredUids : uids).map((uid) => (
+                   userData[uid]?.forms?.steve_stocking || userData[uid]?.forms?.EnvironmentalEducation_CitizenScience ? ( 
                     <div key={uid}>
-                        <button className="sub" onClick={() => {
-                            handleButton(uid);
-                        }}
-                            disabled={buttonStates[index]}>
-                            <span className="submission-link">{userData[uid]?.fullName !== undefined ? userData[uid]?.fullName : 'No Name'}</span>
-                        </button>
+                        
+                            <button className="sub" onClick={() =>{
+                                handleButton(uid);
+                            }}
+                            disabled={buttonStates[uid]}>
+                                <span className="submission-link">{userData[uid]?.fullName !== undefined ? userData[uid]?.fullName : 'No Name'}</span>
+
+                                {userData[uid]?.forms && (
+                                    <div className="submitted-forms">
+                                        Forms: {Object.keys(userData[uid]?.forms).join(', ')}
+                                    </div>
+                                )}
+
+                            </button>
+                        
                         <label className="switch">
                             <input
                                 type="checkbox"
-                                onChange={() => handleCheckbox(index)}
-                                checked={buttonStates[index]}
+                                onChange={() => handleCheckbox(uid)}
+                                checked={buttonStates[uid]}
                             />
                             <span className="slider round"></span>
                         </label>
                     </div>
+                ) : null
                 ))}
             </div>
+            
+        {console.log("Sel uid = " + selectedUid)}
+        {/*attempt to display submitted app form */}
+        {displayApp && userData[selectedUid]?.forms?.steve_stocking && <AdminSubAppForm uid={selectedUid}/>}
+        {displayApp && userData[selectedUid]?.forms?.EnvironmentalEducation_CitizenScience && <AdminSubAppForm2 uid={selectedUid}/>} {/* May need form2 versions of variables, not sure yet */}
 
-
-            {/*attempt to display submitted app form */}
-            {displayApp && <AdminSubAppForm uid={selectedUid} />}
-
-
-            <div class="hit-counter">
-                {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
-            </div>
-
-
-
+        <div class="hit-counter">
+            {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
         </div>
+    </div>
     )
-
+ 
 }
