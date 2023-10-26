@@ -8,7 +8,7 @@ import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
 import { getAnalytics } from 'firebase/analytics';
-import { getDatabase, get, child, ref} from 'firebase/database';
+import { getDatabase, get, child, ref } from 'firebase/database';
 import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import emailjs from 'emailjs-com'; // Import the emailjs-com library
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ const adminFirebaseConfig = {
 };
 
 
- // Initialize Firebase for admins
+// Initialize Firebase for admins
 const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
 console.log(adminApp);
 const adminAuth = adminApp.auth();
@@ -47,53 +47,53 @@ const firebaseConfig = {
     messagingSenderId: "129648865838",
     appId: "1:129648865838:web:9713fb401ac09b481e25bf",
     measurementId: "G-6FM488KSS5"
-  };
- 
-  // Initialize Firebase for users
-  const app = firebase.initializeApp(firebaseConfig, 'my-app');
-  console.log(app);
-  const database = firebase.database(app);
-  const auth = app.auth();
+};
+
+// Initialize Firebase for users
+const app = firebase.initializeApp(firebaseConfig, 'my-app');
+console.log(app);
+const database = firebase.database(app);
+const auth = app.auth();
 
 
 export function AdminPortal() {
     const history = useHistory();
 
 
-//done is used so that the function can run onLoad but is only used once
-//to check if
-useEffect(() => {
-    let done = false;
-    const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
-      if (currentUser && !done) {
-        // Admin user is signed in, do nothing
-        done = true;
-      } else if (!currentUser && !done) {
-        // User is signed out
-        done = true;
-        const adminPortalWrapper = document.getElementById('adminPortalWrapper');
-        if (adminPortalWrapper) {
-          adminPortalWrapper.style.visibility = 'hidden';
-          history.push('/');
-          window.location.reload();
-        } else {
-          console.error('Element with ID "adminPortalWrapper" not found.');
-        }
-      }
-    });
+    //done is used so that the function can run onLoad but is only used once
+    //to check if
+    useEffect(() => {
+        let done = false;
+        const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
+            if (currentUser && !done) {
+                // Admin user is signed in, do nothing
+                done = true;
+            } else if (!currentUser && !done) {
+                // User is signed out
+                done = true;
+                const adminPortalWrapper = document.getElementById('adminPortalWrapper');
+                if (adminPortalWrapper) {
+                    adminPortalWrapper.style.visibility = 'hidden';
+                    history.push('/');
+                    window.location.reload();
+                } else {
+                    console.error('Element with ID "adminPortalWrapper" not found.');
+                }
+            }
+        });
 
 
-    return () => {
-      // Unsubscribe from onAuthStateChanged when the component unmounts
-      unsubscribe();
-    };
-  }, [history]);
+        return () => {
+            // Unsubscribe from onAuthStateChanged when the component unmounts
+            unsubscribe();
+        };
+    }, [history]);
 
 
     const handleSubmissionLink = (submissionId) => {
         history.push(`/adminsubappform/${submissionId}`);
         window.location.reload();
-      };
+    };
 
 
 
@@ -128,8 +128,8 @@ useEffect(() => {
                 setUserData(uidData);
                 const id = Object.keys(uidData);
                 setUids(id);
-           
-            } catch(error) {
+
+            } catch (error) {
                 console.error('Could not fetch uids:', error);
             }
         }
@@ -141,8 +141,8 @@ useEffect(() => {
 
 
     useEffect(() => {
-        if(displayApp && buttonClicked && searchUsed) {
-            document.getElementById('adminSubAppFormWrapper').scrollIntoView({behavior:'smooth'});
+        if (displayApp && buttonClicked && searchUsed) {
+            document.getElementById('adminSubAppFormWrapper').scrollIntoView({ behavior: 'smooth' });
         }
     })
 
@@ -160,15 +160,15 @@ useEffect(() => {
         setButtonClicked(true);
         setSearchUsed(true);
     }
-   
+
     const [appData, setAppData] = useState(null);
     const [displayApp, setDisplayApp] = useState(false);
-   
+
     /* LOCK FUNCTIONALITY */
 
 
     const [buttonStates, setButtonStates] = useState(); // List of button (lock) states
-     
+
     const handleCheckbox = (index) => {
         const boxTicked = true;
         const lockID = `lock_${uids[index]}`;
@@ -180,13 +180,13 @@ useEffect(() => {
 
 
         setButtonStates((prevStates) => {
-        const newStates = [...prevStates];
-        newStates[index] = !newStates[index];
-        return newStates;
+            const newStates = [...prevStates];
+            newStates[index] = !newStates[index];
+            return newStates;
         });
         setButtonClicked(false);
     };
-   
+
     useEffect(() => {
         const getStates = async () => {
             const newButtonStates = await Promise.all(
@@ -212,19 +212,19 @@ useEffect(() => {
     const [loading, setLoading] = useState(true);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchData = async () => {
-            try{
+            try {
                 const docRef = numHitsRef;
                 const docSnapshot = await docRef.get();
-                if(docSnapshot.exists){
+                if (docSnapshot.exists) {
                     const data = docSnapshot.val();
                     setData(data);
                     setLoading(false);
-                }else{
+                } else {
                     console.log("No such document dude");
-                }  
-            }catch (error){
+                }
+            } catch (error) {
                 console.error('Error fetching document: ', error);
                 setLoading(false);
             }
@@ -244,73 +244,73 @@ useEffect(() => {
 
 
 
- 
-  //stores search results from db in variable
-  const [searchResults, setSearchResults] = useState([]);
+
+    //stores search results from db in variable
+    const [searchResults, setSearchResults] = useState([]);
 
 
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const snapshot = await database.ref('users').once('value');
+    useEffect(() => {
+        const fetchAllUsers = async () => {
+            try {
+                const snapshot = await database.ref('users').once('value');
+                const results = [];
+                snapshot.forEach((childSnapshot) => {
+                    const user = childSnapshot.val();
+                    results.push(user);
+                });
+                setSearchResults(results);
+            } catch (error) {
+                console.error('Error fetching all users:', error);
+            }
+        };
+
+
+        fetchAllUsers();
+    }, []);
+
+
+    const [searchUsed, setSearchUsed] = useState(false);
+
+
+    /* SEARCH FUNCTION */
+    const handleSearch = async (event) => {
+        const input = event.target.value.toLowerCase().trim();
         const results = [];
-        snapshot.forEach((childSnapshot) => {
-          const user = childSnapshot.val();
-          results.push(user);
-        });
+
+
+        try {
+            const snapshot = await database.ref('users').once('value');
+            snapshot.forEach((childSnapshot) => {
+                const user = childSnapshot.val();
+                console.log(user);
+                // Check if the user's name or grant type contains the input
+                if (user) {
+                    const { fullName, grantType, email } = user;
+                    if (fullName && email) {
+                        if (fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)) {
+                            results.push(user);
+                        }
+                        if (grantType && grantType.toLowerCase().includes(input)) {
+                            results.push(user);
+                        }
+                    }
+
+                }
+            });
+        } catch (error) {
+            console.error('Error searching users:', error);
+        }
+
         setSearchResults(results);
-      } catch (error) {
-        console.error('Error fetching all users:', error);
-      }
+
+
+        if (searchUsed) {
+            setSearchUsed(false);
+        }
     };
 
 
-    fetchAllUsers();
-  }, []);
-
-
-  const [searchUsed, setSearchUsed] = useState(false);
-
-
-  /* SEARCH FUNCTION */
-  const handleSearch = async (event) => {
-    const input = event.target.value.toLowerCase().trim();
-    const results = [];
-
-
-    try {
-        const snapshot = await database.ref('users').once('value');
-        snapshot.forEach((childSnapshot) => {
-            const user = childSnapshot.val();
-            console.log(user);
-            // Check if the user's name or grant type contains the input
-            if(user) {
-                const {fullName, grantType, email} = user;
-                if(fullName && email) {
-                    if(fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)){
-                        results.push(user);
-                    }
-                if(grantType && grantType.toLowerCase().includes(input)) {
-                    results.push(user);
-                }
-                }
-           
-            }
-        });
-    } catch (error) {
-        console.error('Error searching users:', error);
-    }
-   
-    setSearchResults(results);
-
-
-    if(searchUsed){
-        setSearchUsed(false);
-    }
-  };
-
-
-  const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
 
 
     useEffect(() => {
@@ -378,14 +378,59 @@ useEffect(() => {
         });
     };
 
+    // Function to send the email to users who signed up for grant updates
+    const sendMailEmail = () => {
+        // Initialize Email.js
+        emailjs.init("ExVfhWJSKY2SPFYqo");
 
+        // Extract input values
+        const sendername2 = document.querySelector("#sendername2").value;
+        const to = document.querySelector("#to").value;
+        const subject2 = document.querySelector("#subject2").value;
+        const replyto = document.querySelector("#replyto").value;
+        const message2 = document.querySelector("#message2").value;
+
+        // Email.js parameters
+        const params = {
+            sendername2,
+            to,
+            subject2,
+            replyto,
+            message2,
+        };
+
+        const serviceID = "service_r5sydhn"; // Email Service ID
+        const templateID = "template_dp0perq"; // Email Template ID
+
+        if (!sendername2 || !to || !subject2 || !replyto || !message2) {
+            // Check if any of the fields are empty
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        // Check if "to" and "replyto" emails are in the proper format
+        if (!emailFormat.test(to) || !emailFormat.test(replyto)) {
+            alert("Please enter valid email addresses.");
+            return;
+        }
+
+        // Send the email
+        emailjs.send(serviceID, templateID, params).then((response) => {
+            //alert("Email sent successfully!");
+            window.location.reload();
+        })
+            .catch((error) => {
+                console.error("Email sending error", error);
+            });
+    };
 
 
     return (
-   
-    <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
-         
-         <button class="logout" onClick={handleLogOut}><a class="logoutlink">Logout</a></button>
+
+        <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
+
+            <button class="logout" onClick={handleLogOut}><a class="logoutlink">Logout</a></button>
             <div class="divider" />
             <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal">Send a Grant Update</button>
 
@@ -421,6 +466,47 @@ useEffect(() => {
                 </div>
             </div>
 
+            <div class="divider" />
+            <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal2">Email</button>
+
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Email</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="sender-name" class="col-form-label">Sender Name:</label>
+                                    <input type="text" class="form-control" id="sendername2"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject-name" class="col-form-label">To:</label>
+                                    <input type="text" class="form-control" id="to"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject-name" class="col-form-label">Subject:</label>
+                                    <input type="text" class="form-control" id="subject2"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="subject-name" class="col-form-label">Reply To:</label>
+                                    <input type="text" class="form-control" id="replyto"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message-text" class="col-form-label">Message:</label>
+                                    <textarea class="form-control" id="message2"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" onClick={sendMailEmail}>Send message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <p class="fs-1 adminportal-heading">
                 <p class="text-center">Current Applicants</p>
@@ -460,53 +546,53 @@ useEffect(() => {
                 </div>
 
 
-            <div class="search-results">
-                <div class="search-results-box">
-                    {searchResults.map((user) => (
-                        <div key={user.id}>
-                            <p style={{fontWeight: 'bold'}}>Full Name: {user.fullName}</p>
-                            <p>Email: {user.email}</p>
-                            <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
-                            <p>Grant Type: {user.grantType ? user.grantType : 'N/A'}</p>
-                        </div>
-                    ))}
+                <div class="search-results">
+                    <div class="search-results-box">
+                        {searchResults.map((user) => (
+                            <div key={user.id}>
+                                <p style={{ fontWeight: 'bold' }}>Full Name: {user.fullName}</p>
+                                <p>Email: {user.email}</p>
+                                <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
+                                <p>Grant Type: {user.grantType ? user.grantType : 'N/A'}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
+
+            <div className="submissions-box">
+                {uids.map((uid, index) => (
+                    <div key={uid}>
+                        <button className="sub" onClick={() => {
+                            handleButton(uid);
+                        }}
+                            disabled={buttonStates[index]}>
+                            <span className="submission-link">{userData[uid]?.fullName !== undefined ? userData[uid]?.fullName : 'No Name'}</span>
+                        </button>
+                        <label className="switch">
+                            <input
+                                type="checkbox"
+                                onChange={() => handleCheckbox(index)}
+                                checked={buttonStates[index]}
+                            />
+                            <span className="slider round"></span>
+                        </label>
+                    </div>
+                ))}
+            </div>
+
+
+            {/*attempt to display submitted app form */}
+            {displayApp && <AdminSubAppForm uid={selectedUid} />}
+
+
+            <div class="hit-counter">
+                {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
+            </div>
+
+
+
         </div>
-       
-        <div className="submissions-box">
-            {uids.map((uid,index) => (
-                <div key={uid}>
-                    <button className="sub" onClick={() =>{
-                        handleButton(uid);
-                    }}
-                    disabled={buttonStates[index]}>
-                        <span className="submission-link">{userData[uid]?.fullName !== undefined ? userData[uid]?.fullName : 'No Name'}</span>
-                    </button>
-                    <label className="switch">
-                        <input
-                            type="checkbox"
-                            onChange={() => handleCheckbox(index)}
-                            checked={buttonStates[index]}
-                        />
-                        <span className="slider round"></span>
-                    </label>
-                </div>
-            ))}
-        </div>
-
-
-        {/*attempt to display submitted app form */}
-        {displayApp && <AdminSubAppForm uid={selectedUid}/>}
-
-
-        <div class="hit-counter">
-            {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}
-        </div>
-
-
-       
-    </div>
     )
- 
+
 }

@@ -1,4 +1,4 @@
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, BrowserRouter as BrowserRouterRouter, Switch, Route } from "react-router-dom";
 import { NavBar } from "./pages/NavBar.js";
 import { Footer } from './pages/Footer.js';
 import { LandingPage } from './pages/LandingPage.js';
@@ -90,15 +90,8 @@ function App() {
   }, []);
 
   return (
+    <div>
     <Router>
-      <Route
-        render={({ location }) =>
-          location.pathname === '/login' ||
-          location.pathname === '/register' ? (
-            <NavBar />
-          ) : null
-        }
-      />
       <Route
         render={({ location }) =>
           location.pathname === '/pastsubmissions' ||
@@ -113,9 +106,11 @@ function App() {
           <LandingPage></LandingPage>
         </Route>
         <Route exact path="/login">
+          {userLoggedIn ? <UserNavBar /> : <NavBar />}
           <Login></Login>
         </Route>
         <Route exact path="/register">
+          {userLoggedIn ? <UserNavBar /> : <NavBar />}
           <Register></Register>
         </Route>
         <Route exact path="/passwordreset">
@@ -182,6 +177,13 @@ function App() {
         }
       />
     </Router>
+    <BrowserRouterRouter>
+          <Switch>
+            <Route exact path ="*">
+            </Route>
+          </Switch>
+        </BrowserRouterRouter>
+    </div>
   );
 }
 
