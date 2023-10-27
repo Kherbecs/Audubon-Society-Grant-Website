@@ -57,26 +57,28 @@ console.log(app);
 const database = getDatabase(app);
 
 
-const chosenApplication = '4Jf4ns3uu6b0IMOGDTvxHY1vhFU2';
-
-const dataUp = ref(database,'users/'+ chosenApplication +'/forms/steve_stocking');
-const statusNow = ref(database,'users/'+ chosenApplication +'/forms/steve_stocking/' + '_GrantStatus');
-
-var loadStatus ='';
-        //get current value from database before change 
-        onValue(statusNow, async (snapshot) => {
-            loadStatus = snapshot.val();
-            if(snapshot.val() == '' || !snapshot.exists()){
-                loadStatus = 'No Status'
-            }
-            console.log('Load Status: ' + loadStatus)
-            //document.getElementById('statusOne').innerHTML = loadStatus;
-            document.getElementById('statusDisplay1').innerHTML= loadStatus;
-        })
-
-
 export function AdminSubAppForm({uid}) {
     const history = useHistory();
+
+     //Path references for steve_stocking application and _GrantStatus
+     const dataUp = ref(database,'users/'+ uid +'/forms/steve_stocking');
+     const statusNow = ref(database,'users/'+ uid +'/forms/steve_stocking/' + '_GrantStatus');
+    
+     //holds the value of _GrantStatus from the database
+     var loadStatus ='';
+     //get current value of grant status
+     onValue(statusNow, (snapshot) => {
+         loadStatus = snapshot.val();
+         if(snapshot.val() == '' || !snapshot.exists()){
+             loadStatus = 'No Status'
+         }
+         console.log('Load Current Status: ' + loadStatus)
+         //document.getElementById('statusOne').innerHTML = loadStatus;
+         document.getElementById('statusDisplay1').innerHTML= loadStatus;
+         document.getElementById('floatingSelect1').value = loadStatus;
+
+     })
+    
     //done is used so that the function can run onLoad but is only used once
     //to check if 
     useEffect(() => {
@@ -123,32 +125,8 @@ export function AdminSubAppForm({uid}) {
     const handleChange = (e) => {
         setGrade(e.target.value);
     };
-    /*
-    function handleInfoDisplay(field, id) {
-        app.auth().onAuthStateChanged((user) => {
-            console.log(user);
-            if(user) {
-                const uid = user.uid;
-                const dbRef = ref(database);
-                // get data from database as a JSON object, and get each field
-                // path temporarily hardcoded
-                get(child(dbRef, 'users/' + 'zPUcMiHBRIeGxQTufE2r66oiyc82' + '/forms/steve_stocking')).then((snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        console.log(data);
-                        document.getElementById(id).value = data[field];
-                    } else {
-                        console.log("NO DATA");
-                    }
-                }).catch((error) => {
-                    console.error(error);
-                });
-            }else{
-                console.log("User is not authenticated");
-            }
-        });
-    }
-    *///auth was interfering with user data display
+
+    //auth was interfering with user data display
    function handleInfoDisplay(field,id,uid){
     //const uid = user.uid;
     const dbRef = ref(database);
@@ -205,6 +183,7 @@ export function AdminSubAppForm({uid}) {
             }else{
                 update(dataUp,{_GrantStatus: newStatus});
             }
+
     }
     //Retrieve a snapshot from the firebase database
     function getComments(uid) {
@@ -374,6 +353,7 @@ export function AdminSubAppForm({uid}) {
                             <div class="wrapper-small-feedback-buttons">
                                 <div class="wrapper-status-button">
                                     <select class="form-select" id="floatingSelect1" aria-label="Filter drop down menu" onChange={statusChange}>
+                                        <option selected id="statusOne" >Status</option>
                                         <option value="Under Review" > Set to Under Review</option>
                                         <option value="Approved">Set to Approved</option>
                                         <option value ="Unsatisfactory">Set to Unsatisfactory</option>

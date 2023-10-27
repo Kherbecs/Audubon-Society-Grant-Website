@@ -56,23 +56,22 @@ const app = firebase.initializeApp(firebaseConfig, 'my-app');
 console.log(app);
 const database = getDatabase(app);
 
-const chosenApplication = "";
-
-const dataUp = ref(database,'users'+ '/sw6pjwUkORaoJbGSpVt3DVCOf8t2' +'/pastsubmissions'+'/submission 1');
-const statusNow = ref(database,'users'+ '/sw6pjwUkORaoJbGSpVt3DVCOf8t2' +'/pastsubmissions'+'/submission 1'+'/grantStatus');
-var loadStatus ='';
- 
-        //get current value from database before change 
-        onValue(statusNow, (snapshot) => {
-            loadStatus = snapshot.val();
-            
-            document.getElementById('statusTwo').innerHTML = loadStatus;
-            document.getElementById('statusDisplay2').innerHTML= loadStatus;
-        })
-
 
 export function AdminSubAppForm2({uid}) {
     const history = useHistory();
+
+    //Path references for EnvironmentalEducation_CitizenScience application and _GrantStatus
+    const dataUp = ref(database,'users/'+ uid +'/forms/EnvironmentalEducation_CitizenScience');
+    const statusNow = ref(database,'users/'+ uid +'/forms/EnvironmentalEducation_CitizenScience/_GrantStatus');
+        
+    //holds the value of _GrantStatus from the database
+    var loadStatus ='';
+    //get current value of grant status
+    onValue(statusNow, (snapshot) => {
+        loadStatus = snapshot.val();
+        document.getElementById('statusDisplay2').innerHTML= loadStatus;
+        document.getElementById('floatingSelect2').value = loadStatus;
+    })
 
     const handleAdminClick = () => {
         history.push('/adminportal');
@@ -113,6 +112,7 @@ useEffect(() => {
     }
 
     const [grade, setGrade] = useState(getInitialState);
+    const [status, setStatus] = useState(statusNow);
 
     const handleChange = (e) => {
         setGrade(e.target.value);
@@ -148,8 +148,23 @@ useEffect(() => {
     function statusChange(){
         //update to database
         const newStatus = document.getElementById('floatingSelect2').value;
-        update(dataUp,{grantStatus: newStatus});  
+        update(dataUp,{_GrantStatus: newStatus});  
     }
+
+    //function that runs when you change status
+        function statusChange(){
+            onValue(statusNow, (snapshot) => {
+                setStatus(snapshot.val());
+            })
+            const newStatus = document.getElementById('floatingSelect2').value;
+            if(status == 'Approved' && window.confirm('Application is currently approved, you sure you want to change it?')){
+                update(dataUp,{_GrantStatus: newStatus});
+            }else if(status == 'Approved' && !window.confirm('Application is currently approved, you sure you want to change it?')){
+                    
+            }else{
+                update(dataUp,{_GrantStatus: newStatus});
+            }
+        }
 
     function getComments(uid) {
         const databaseAdmin = firebase.database(adminApp);
