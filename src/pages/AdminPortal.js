@@ -204,15 +204,15 @@ useEffect(() => {
     const handleCheckbox = (uid) => {
         console.log("uid = " + uid);
         //const boxTicked = true;
-        const lockID = `lock_${uid}`;
+        //const lockID = `lock_${uid}`;
         //const appID = userData[uid]?.forms[index]?._AppID;
         //console.log("user data = " + userData[uid])
         //console.log("app id = " + appID);
 
 
 
-        database.ref(`locks/${lockID}`).set({
-            state: !buttonStates[uid]
+        database.ref(`users/${uid}/forms`).update({
+            _LockStatus: !buttonStates[uid]
         });
 
 
@@ -229,13 +229,17 @@ useEffect(() => {
             try{
                 const newButtonStates = await Promise.all(
                     uids.map(async (uid) => {
-                        const lockID = `lock_${uid}`;
-                        const dbStates = await database.ref(`locks/${lockID}`).get();
-                        const curStates = dbStates.val();
-                        console.log(`${uid}`+"curState " + curStates.state);
-                        return curStates ? curStates.state : false;
+                        if(uid){
+                            console.log("getStates uid = " + uid);
+                            //const lockID = `lock_${uid}`;
+                            const dbStates = await database.ref(`users/${uid}/forms`).get();
+                            const curStates = dbStates.val();
+                            console.log(`Lock state for ${uid}:`, curStates ? curStates.state : 'Not found');
+                            return curStates ? curStates._LockStatus : false;
+                        }
                     })
                 );
+                console.log("new button states: " + newButtonStates);
                 setButtonStates(newButtonStates);
                 //setLockLoading(false);
             }catch(error){
@@ -595,7 +599,9 @@ useEffect(() => {
 
                                 {userData[uid]?.forms && (
                                     <div className="submitted-forms">
-                                        Forms: {Object.keys(userData[uid]?.forms).join(', ')}
+                                        Forms: {Object.keys(userData[uid]?.forms)
+                                        .filter(form => form != '_LockStatus')
+                                        .join(', ')}
                                     </div>
                                 )}
 
