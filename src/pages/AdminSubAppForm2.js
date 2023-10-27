@@ -66,8 +66,8 @@ var loadStatus ='';
         onValue(statusNow, (snapshot) => {
             loadStatus = snapshot.val();
             
-            document.getElementById('statusOne').innerHTML = loadStatus;
-            document.getElementById('statusDisplay1').innerHTML= loadStatus;
+            document.getElementById('statusTwo').innerHTML = loadStatus;
+            document.getElementById('statusDisplay2').innerHTML= loadStatus;
         })
 
 
@@ -147,42 +147,45 @@ useEffect(() => {
     //function that runs when you change status
     function statusChange(){
         //update to database
-        const newStatus = document.getElementById('floatingSelect1').value;
+        const newStatus = document.getElementById('floatingSelect2').value;
         update(dataUp,{grantStatus: newStatus});  
     }
 
-    function getComments(){
+    function getComments(uid) {
         const databaseAdmin = firebase.database(adminApp);
-
-        var pastComments = databaseAdmin.ref('users/commentHistory');
+    
+        var pastComments = databaseAdmin.ref('users/' + uid + '/forms/EnvironmentalEducation_CitizenScience/comments');
         pastComments.on('value', (snapshot) => {
             let commentsHTML = '';
             snapshot.forEach((snapshot) => {
                 const commenter = snapshot.val().commenter;
                 const comment = snapshot.val().comment;
-                if (snapshot.val().grade != null){
-                    commentsHTML += commenter + " | Grade : " + snapshot.val().grade + "<br />" + "&emsp;" + comment + "<br />";
-                }else{
-                    commentsHTML += commenter + " | Grade : NONE" + "<br />" + "&emsp;" + comment + "<br />";
+                if (snapshot.val().grade != null) {
+                    commentsHTML += `<div id="comment-text-div">
+                                        ${commenter} | Grade : ${snapshot.val().grade} <br />&emsp;${comment}
+                                    </div>`;
+                } else {
+                    commentsHTML += `<div id="comment-text-div">
+                                        ${commenter} | Grade : NONE <br />&emsp;${comment}
+                                    </div>`;
                 }
-  
-            })
+            });
             updateCommentSection(commentsHTML);
-        })
+        });
     }
 
     function updateCommentSection(commentsHTML) {
-        var prevComments = document.getElementById("prev-comments");
+        var prevComments = document.getElementById("prev-comments2");
         prevComments.innerHTML = commentsHTML;
     }
-    getComments();
+   getComments(uid);
+
 
     function postComment(){
-        var newComment = document.getElementById("new-comment").value;
-        document.getElementById("addCommmentButton").id = "addCommmentButton";
+        var newComment = document.getElementById("new-comment2").value;
+        document.getElementById("addCommmentButton2").id = "addCommmentButton2";
 
         const databaseAdmin = firebase.database(adminApp);
-       // const userId = user.uid;
        var pastComments = null;
        if(grade != "Grade"){
             var pastComments = {
@@ -197,25 +200,22 @@ useEffect(() => {
             alert("A grade must be chosen.");
             return;
        }
-        databaseAdmin.ref('users/commentHistory').push(pastComments)
+        databaseAdmin.ref('users/' + uid + '/forms/EnvironmentalEducation_CitizenScience/comments').push(pastComments)
           .then(() => {
           console.log('Data successfully written to the database');
-          window.location.reload();
+          //window.location.reload();
         })
         .catch((error) => {
           console.error('Error writing data to the database: ', error);
         });
 
-        document.getElementById('addCommmentButton').addEventListener('onClick');
+        document.getElementById('addCommmentButton2').addEventListener('onClick');
     }
 
 
     return (
         <div className = "wrapper-appform2" id="adminsubappform2Wrapper">
             <div className = "form-appform2">
-                <div class="back-button">
-                <   Link className="prev-page-link" onClick={handleAdminClick}><button class = "button2">Return to Previous Page</button></Link>
-                </div>
                 <div className = "grantTitle-appform">
                     <label for = "title-appform" class = "title-appform">Environmental Education and Citizen Science Grant</label>
                 </div>
@@ -334,23 +334,23 @@ useEffect(() => {
                     <div class="status-info-hold">
                         <label class="status-current-label" id= "statusDisplay">Current Status</label>
                     </div>
-                    <label class="user-info-label" id= "statusDisplay1">Status</label>
+                    <label class="user-info-label" id= "statusDisplay2">Status</label>
                 </div>
 
              
                 <div class="wrapper-admin-feedback">
                     <div class="wrapper-new-comment">
                         <div class="admin-comments">
-                            <textarea type="answer" class="form-control admin-comment-box" id="new-comment" aria-describedby="answerHelp" rows = "4"></textarea>
+                            <textarea type="answer" class="form-control admin-comment-box" id="new-comment2" aria-describedby="answerHelp" rows = "4"></textarea>
                         </div>
                         <div class="wrapper-feedback-buttons"> 
                             <div class="wrapper-comment-button">
-                                <button onClick={postComment} id="addCommmentButton" class="add-comment-button" >Add Comment</button>
+                                <button onClick={postComment} id="addCommmentButton2" class="add-comment-button" >Add Comment</button>
                             </div>
                             <div class="wrapper-small-feedback-buttons">
                                 <div class="wrapper-status-button">
-                                    <select class="form-select" id="floatingSelect1" aria-label="Filter drop down menu" onChange={statusChange}>
-                                        <option selected id="statusOne" >Status</option>
+                                    <select class="form-select" id="floatingSelect2" aria-label="Filter drop down menu" onChange={statusChange}>
+                                        <option selected id="statusTwo" >Status</option>
                                         <option value="Under Review" > Set to Under Review</option>
                                         <option value="Approved">Set to Approved</option>
                                         <option value ="Unsatisfactory">Set to Unsatisfactory</option>
@@ -374,11 +374,8 @@ useEffect(() => {
                             </div>
                         </div>
                     </div>
-                    <div class="wrapper-previous-comments" id="prev-comments">
+                    <div class="wrapper-previous-comments" id="prev-comments2">
                     </div>
-                </div>
-                <div class="back-button">
-                <Link className="prev-page-link" onClick={handleAdminClick}><button class = "button2">Return to Previous Page</button></Link>
                 </div>
             </div>
         </div>

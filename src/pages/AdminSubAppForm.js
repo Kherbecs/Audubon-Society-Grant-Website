@@ -61,10 +61,10 @@ const chosenApplication = '4Jf4ns3uu6b0IMOGDTvxHY1vhFU2';
 
 const dataUp = ref(database,'users/'+ chosenApplication +'/forms/steve_stocking');
 const statusNow = ref(database,'users/'+ chosenApplication +'/forms/steve_stocking/' + '_GrantStatus');
+
 var loadStatus ='';
- 
         //get current value from database before change 
-        onValue(statusNow, (snapshot) => {
+        onValue(statusNow, async (snapshot) => {
             loadStatus = snapshot.val();
             if(snapshot.val() == '' || !snapshot.exists()){
                 loadStatus = 'No Status'
@@ -77,7 +77,6 @@ var loadStatus ='';
 
 export function AdminSubAppForm({uid}) {
     const history = useHistory();
-
     //done is used so that the function can run onLoad but is only used once
     //to check if 
     useEffect(() => {
@@ -118,6 +117,8 @@ export function AdminSubAppForm({uid}) {
     }
 
     const [grade, setGrade] = useState(getInitialState);
+    const [status, setStatus] = useState(statusNow);
+
 
     const handleChange = (e) => {
         setGrade(e.target.value);
@@ -190,26 +191,26 @@ export function AdminSubAppForm({uid}) {
             //}
         
     }
+
         //function that runs when you change status
         function statusChange(){
-            var curStatus = '';
             onValue(statusNow, (snapshot) => {
-                curStatus = snapshot.val();
+                setStatus(snapshot.val());
             })
             const newStatus = document.getElementById('floatingSelect1').value;
-            if(curStatus == 'Approved' && window.confirm('Application is currently approved, you sure you want to change it?')){
+            if(status == 'Approved' && window.confirm('Application is currently approved, you sure you want to change it?')){
                 update(dataUp,{_GrantStatus: newStatus});
-            }else if(curStatus == 'Approved' && !window.confirm('Application is currently approved, you sure you want to change it?')){
+            }else if(status == 'Approved' && !window.confirm('Application is currently approved, you sure you want to change it?')){
                 // do nothing rah
             }else{
                 update(dataUp,{_GrantStatus: newStatus});
             }
     }
     //Retrieve a snapshot from the firebase database
-    function getComments() {
+    function getComments(uid) {
         const databaseAdmin = firebase.database(adminApp);
     
-        var pastComments = databaseAdmin.ref('users/commentHistory');
+        var pastComments = databaseAdmin.ref('users/' + uid + '/forms/steve_stocking/comments');
         pastComments.on('value', (snapshot) => {
             let commentsHTML = '';
             snapshot.forEach((snapshot) => {
@@ -233,21 +234,13 @@ export function AdminSubAppForm({uid}) {
         var prevComments = document.getElementById("prev-comments");
         prevComments.innerHTML = commentsHTML;
     }
-    getComments();
-
-
-    function updateCommentSection(commentsHTML) {
-        var prevComments = document.getElementById("prev-comments");
-        prevComments.innerHTML = commentsHTML;
-    }
-    getComments();
+    getComments(uid);
 
     function postComment(){
         var newComment = document.getElementById("new-comment").value;
         document.getElementById("addCommmentButton").id = "addCommmentButton";
 
         const databaseAdmin = firebase.database(adminApp);
-       // const userId = user.uid;
        var pastComments = null;
        if(grade != "Grade"){
             var pastComments = {
@@ -262,10 +255,10 @@ export function AdminSubAppForm({uid}) {
             alert("A grade must be chosen.");
             return;
        }
-        databaseAdmin.ref('users/commentHistory').push(pastComments)
+        databaseAdmin.ref('users/' + uid + '/forms/steve_stocking/comments').push(pastComments)
           .then(() => {
           console.log('Data successfully written to the database');
-          window.location.reload();
+          //window.location.reload();
         })
         .catch((error) => {
           console.error('Error writing data to the database: ', error);
@@ -278,9 +271,6 @@ export function AdminSubAppForm({uid}) {
     return (
         <div className = "wrapper-appform" id="adminSubAppFormWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
             <div className = "form-appform">
-                <div className = "back-button" >
-                    <Link className="prev-page-link" onClick={handleAdminClick}><button class = "button2">Return to Previous Page</button></Link>
-                </div>
                 <div className = "grantTitle">
                     <label for = "title" class = "title">Steve Stocking Youth Environmental Scholarship</label>
                 </div>
@@ -384,7 +374,6 @@ export function AdminSubAppForm({uid}) {
                             <div class="wrapper-small-feedback-buttons">
                                 <div class="wrapper-status-button">
                                     <select class="form-select" id="floatingSelect1" aria-label="Filter drop down menu" onChange={statusChange}>
-                                        <option selected id="statusOne" >Status</option>
                                         <option value="Under Review" > Set to Under Review</option>
                                         <option value="Approved">Set to Approved</option>
                                         <option value ="Unsatisfactory">Set to Unsatisfactory</option>
@@ -410,9 +399,6 @@ export function AdminSubAppForm({uid}) {
                     </div>
                     <div class="wrapper-previous-comments" id="prev-comments">
                     </div>
-                </div>
-                <div className = "back-button" >
-                    <Link className="prev-page-link" onClick={handleAdminClick}><button class = "button2">Return to Previous Page</button></Link>
                 </div>
             </div>
         </div>
