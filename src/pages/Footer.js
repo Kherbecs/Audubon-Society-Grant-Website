@@ -8,8 +8,8 @@ export function Footer() {
                 <h2>San Joaquin Audubon Society</h2>
             </div>
             <div class="footer-description">
-                <p>We foster environmental awareness and conservation 
-                    ethics among our citizens; protects county birds and other animals and plants.
+                <p>Promotes the understanding, conservation, and enjoyment of birds, other 
+                wildlife, and their habitats through observation, outreach, science, and education.
                 </p>
             </div>
             <div class="social-links">
