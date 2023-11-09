@@ -4,7 +4,6 @@
 .grantTitle {
     text-align:center;
     margin:auto;
-    width:60%;
     padding:1%;
     color:black;
 }
@@ -12,7 +11,8 @@
     font-size: 40px;
     background:#F8EDE3;
     padding:1%;
-    margin:1%;
+    margin:auto;
+    width:66.4%;
     border-radius: 4px;
     text-align: center;
 }
@@ -252,11 +252,9 @@ html {
 }
 
 @media screen and (max-width: 1024px) {
-    .grantTitle{
-        width: 75%;
-    }
     .title{
         font-size: 30px;
+        width:71%;
     }
     .q4Wrapper-appform{
         padding-top: 5%;

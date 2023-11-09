@@ -32,10 +32,6 @@
     display:flex;
     flex:44%;
   }
-  
-  .search-admin {
-    margin-right: 10%;
-  }
 
   .form-admin {
     margin-top:8%;
@@ -69,9 +65,7 @@
     display:flex;
     flex:44%;
   }
-  .search-admin  {
-    margin-right: 20%;
-  }
+
   .submissions-box {
     padding-left: 5%;
   }
@@ -147,10 +141,6 @@ background-color: #BDD2B6;
 .form-admin  {
   width: 90%;
 }
-
-.search-admin  {
-  margin-left: 10%;
-}
 .submissions-box {
   padding-left: 10%;
 }
@@ -222,8 +212,9 @@ background-color: rgba(97, 135, 110, 1);
 .user-info {
   display: flex;
   margin-bottom: 10px;
-  margin-left:5%;
-  
+  margin-left: 5%;
+  justify-content: center; 
+  width: 90%; 
 }
 
 .user-info-item {

@@ -85,7 +85,7 @@ export function AdminForgotPassword() {
         
             <div class="wrapper-password-reset">
               <div class="containerty">
-              <p className="head-text-password">Please enter the email associated with your account. You will get a link to reset your password</p>
+              <p className="head-text-password">Please enter the email associated with your account. You will get a link to reset your password.</p>
                 <div class="form-group w-100" >
                 <input type="email" class="form-control justify-content-center" id="InputEmail1" aria-describedby="emailHelp" placeholder="Enter email"></input>
                 

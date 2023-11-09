@@ -197,20 +197,23 @@ useEffect(() => {
 
 
     function postComment(){
-        var newComment = document.getElementById("new-comment2").value;
+        var newComment2 = document.getElementById("new-comment2").value;
         document.getElementById("addCommmentButton2").id = "addCommmentButton2";
 
         const databaseAdmin = firebase.database(adminApp);
        var pastComments = null;
+       
+       if(newComment2 == ""){
+        alert("Comment cannot be blank.");
+        return;
+       }
+       
        if(grade != "Grade"){
             var pastComments = {
                 commenter: userEmail,
-                comment: newComment,
+                comment: newComment2,
                 grade: grade
             }
-       }else if(newComment == null){
-            alert("Comment cannot be blank.");
-            return;
        }else{
             alert("A grade must be chosen.");
             return;
@@ -344,7 +347,7 @@ useEffect(() => {
                     </textarea>
                 </div>
             </div>   
-            
+            <div class="divider" />
                 <div class="wrapper-status-current">
                     <div class="status-info-hold">
                         <label class="status-current-label" id= "statusDisplay">Current Status</label>

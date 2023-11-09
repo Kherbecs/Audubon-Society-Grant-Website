@@ -119,3 +119,9 @@
     text-align: center;
     width: 20%;
 }
+
+.divider2 {
+    width:1px;
+    height:auto;
+    display:inline-block;
+  }

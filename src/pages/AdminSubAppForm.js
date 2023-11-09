@@ -221,15 +221,18 @@ export function AdminSubAppForm({uid}) {
 
         const databaseAdmin = firebase.database(adminApp);
        var pastComments = null;
+
+       if(newComment == ""){
+        alert("Comment cannot be blank.");
+        return;
+       }
+
        if(grade != "Grade"){
             var pastComments = {
                 commenter: userEmail,
                 comment: newComment,
                 grade: grade
             }
-       }else if(newComment == null){
-            alert("Comment cannot be blank.");
-            return;
        }else{
             alert("A grade must be chosen.");
             return;

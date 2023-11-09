@@ -263,8 +263,8 @@ export function ApplicationFormPage2() {
     return (
         <div className = "wrapper-appform2" id="appFormApplication2Wrapper">
             <div className = "form-appform2">
-                <div className = "grantTitle-appform">
-                    <label for = "title-appform" class = "title-appform">Environmental Education and Citizen Science Grant</label>
+                <div className = "grantTitle-appform2">
+                    <label for = "title-appform" class = "title-appform2">Environmental Education and Citizen Science Grant</label>
                 </div>
                 <div className = "questionSection-appform">
                     <div className = "infoSection-appform2">
