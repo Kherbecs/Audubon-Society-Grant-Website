@@ -74,29 +74,43 @@
     font-size: 16px;
 }
 
+.file-status-wrapper{
+    display: flex;
+}
+
 .file-div{
     background-color: #F8EDE3;
     border-radius: 4px;
-    margin: auto;
+    margin-left: auto;
+    margin-right: .5%;
     margin-bottom: 1rem;
     text-align: center;
-    width: 20%;
+    width: 32%;
+}
+
+.file-text{
+    margin-top: 2%;
+}
+
+.current-status-adminsubappform1{
+    background-color: #F8EDE3;
+    border-radius: 4px;
+    margin-left: .5%;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    text-align: center;
+    width: 32%;
 }
 
 .wrapper-admin-feedback{
     background-color: #F8EDE3;
-    margin: auto;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    width: 60%;
-}
-.wrapper-status-current{
-    background-color: #F8EDE3;
     border-radius: 4px;
     margin: auto;
     margin-bottom: 1rem;
-    text-align: center;
-    width: 20%;
+    padding-bottom: 1rem;
+    width: 65%;
 }
 
 .wrapper-new-comment{
@@ -104,7 +118,7 @@
 }
 .admin-comments{
     width: 70%;
-    margin-left: 1rem;
+    margin-left: 2rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
@@ -112,7 +126,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 1rem;
-    margin-right: 1rem;
+    margin-right: 1.5rem;
     width:30%;
 }
 .wrapper-small-feedback-buttons{
@@ -122,6 +136,7 @@
 .wrapper-comment-button{
     margin-top: 1rem;
     height: 4rem;
+    padding-right: 2%;
 }
 .wrapper-status-button{
     margin-top: .5rem; 
@@ -132,6 +147,7 @@
 
 .wrapper-grade-button{
     margin-top: .5rem; 
+    margin-right: 2%;
     height: 3rem;
     width: 50%;
 }
@@ -141,7 +157,7 @@
     margin: auto;
     margin-bottom: 1rem;
     overflow-y: scroll;
-    height: 10rem;
+    height: 11.5rem;
     width: 95%;
     border-radius: .5rem;
 }
@@ -278,6 +294,10 @@ html {
     .file-div{
         width: 60%;
     }
+    .current-status-adminsubappform1{
+        padding-top: 2%;
+        padding-bottom: 2%;
+    }
     .wrapper-admin-feedback{
         width: 90%;
     }
@@ -300,4 +320,15 @@ html {
 
 .q2select-appform {
     font-size: 16px;
+}
+
+.form-divider{
+    background-color: rgb(26, 110, 53);
+    border: none;
+    height: 5px;
+    width: 90%;
+    margin-top: 2%;
+    margin-right: auto;
+    margin-left: auto;
+    opacity: 1;
 }

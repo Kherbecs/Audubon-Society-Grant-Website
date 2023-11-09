@@ -105,7 +105,6 @@
 
 .wrapper-status-button{
     margin-right: 5px;
-    margin-left: -10px;
 }
 .back-button{
     margin-left: 5px;
@@ -115,9 +114,13 @@
 .wrapper-status-current{
     background-color: #F8EDE3;
     border-radius: 4px;
+    margin: auto;
+    margin-top: 1rem;
     margin-bottom: 1rem;
+    padding-top: 1%;
+    padding-bottom: 1%;
     text-align: center;
-    width: 20%;
+    width: 32%;
 }
 
 .divider2 {

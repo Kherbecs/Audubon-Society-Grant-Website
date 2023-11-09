@@ -252,6 +252,7 @@ export function AdminSubAppForm({uid}) {
 
     return (
         <div className = "wrapper-appform" id="adminSubAppFormWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
+            <hr class="form-divider"></hr>
             <div className = "form-appform">
                 <div className = "grantTitle">
                     <label for = "title" class = "title">Steve Stocking Youth Environmental Scholarship</label>
@@ -330,20 +331,21 @@ export function AdminSubAppForm({uid}) {
                         </div> 
                     </div>
                 </div>
-                <div class="file-div">
-                    <p><a className = "letterLink" id = "letterLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkLetter', 'letterLinkID', uid)}>
-                        letter_of_recommendation.pdf</a></p>
-                    <p><a className = "essayLink" id = "essayLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkEssay', 'essayLinkID', uid)}>
-                        personal_essay.pdf</a></p>
-                </div>
-
-                <div class="wrapper-status-current">
-                    <div class="status-info-hold">
-                    <label class="status-current-label" id= "statusDisplay">Current Status</label>
+                <div class="file-status-wrapper">
+                    <div class="file-div">
+                        <p class='file-text'><a className = "letterLink" id = "letterLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkLetter', 'letterLinkID', uid)}>
+                            letter_of_recommendation.pdf</a></p>
+                        <p><a className = "essayLink" id = "essayLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkEssay', 'essayLinkID', uid)}>
+                            personal_essay.pdf</a></p>
                     </div>
-                    <label class="user-info-label" id= "statusDisplay1">Status</label>
-                </div>
 
+                    <div class="current-status-adminsubappform1">
+                        <div class="status-info-hold">
+                        <label class="status-current-label" id= "statusDisplay">Current Status</label>
+                        </div>
+                        <label class="user-info-label" id= "statusDisplay1">Status</label>
+                    </div>
+                </div>
                 <div class="wrapper-admin-feedback">
                     <div class="wrapper-new-comment">
                         <div class="admin-comments">
@@ -384,6 +386,7 @@ export function AdminSubAppForm({uid}) {
                     </div>
                 </div>
             </div>
+            <hr class="form-divider"></hr>
         </div>
     )
 }
