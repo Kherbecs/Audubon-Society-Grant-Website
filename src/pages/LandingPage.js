@@ -8,12 +8,10 @@ import 'firebase/compat/database';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
-import blackBird from '../assets/black-bird.jpeg'
-import longLeg from '../assets/long-leg-bird.jpeg'
+import bird1 from '../assets/bird_1.jpg'
+import bird2 from '../assets/bird_2.jpg'
 import groupPhoto from '../assets/group-photo.jpeg'
-import eagle from '../assets/oil-scouter.jpeg'
-import pelicanCousin from '../assets/pelican-cousin.jpeg'
-import smallBird from '../assets/smol-bird.jpeg'
+import landscape from '../assets/landscape_1.jpg'
 
 
 import { Col, Row, Container, Button, Carousel } from 'react-bootstrap'
@@ -85,7 +83,7 @@ function createUserCookie(userCookieName){
             <Carousel.Item interval={6000}>
               <div class="d-flex justify-content-center">
                 <img
-                  src={blackBird}
+                  src={bird1}
                   alt="Second slide"
                 />
               </div>
@@ -93,7 +91,7 @@ function createUserCookie(userCookieName){
             <Carousel.Item interval={6000}>
               <div class="d-flex justify-content-center">
                 <img
-                  src={longLeg}
+                  src={bird2}
                   alt="Third slide"
                 />
               </div>
@@ -101,23 +99,7 @@ function createUserCookie(userCookieName){
             <Carousel.Item interval={6000}>
               <div class="d-flex justify-content-center">
                 <img
-                  src={eagle}
-                  alt="Third slide"
-                />
-              </div>
-            </Carousel.Item>
-            <Carousel.Item interval={6000}>
-              <div class="d-flex justify-content-center">
-                <img
-                  src={pelicanCousin}
-                  alt="Third slide"
-                />
-              </div>
-            </Carousel.Item>
-            <Carousel.Item interval={6000}>
-              <div class="d-flex justify-content-center">
-                <img
-                  src={smallBird}
+                  src={landscape}
                   alt="Third slide"
                 />
               </div>

@@ -461,6 +461,18 @@ useEffect(() => {
             });
     };
 
+    function getForms(uid){
+        var str = "";
+        Object.keys(userData[uid]?.forms).forEach(key => {
+            if(key == "EnvironmentalEducation_CitizenScience"){
+                str += "Environmental Education and Citizen Science Grant | ";
+            }else if(key == "steve_stocking"){
+                str += "Steve Stocking Youth Environmental Scholarship";
+            }
+        })
+        return str;
+    }
+
     //console.log("button States: " + buttonStates);
     return (
    
@@ -598,9 +610,7 @@ useEffect(() => {
 
                                 {userData[uid]?.forms && (
                                     <div className="submitted-forms">
-                                        Forms: {Object.keys(userData[uid]?.forms)
-                                            .filter(form => form != '_LockStatus')
-                                            .join(', ')}
+                                        Forms: {getForms(uid)}
                                     </div>
                                 )}
 
