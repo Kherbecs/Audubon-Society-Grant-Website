@@ -389,61 +389,51 @@ export function SubAppForm() {
          return updatePass;
      }
     
- 
      function handleEditClick(){
-         app.auth().onAuthStateChanged((user) => {
-             if(user) {
-                 const uid = user.uid;
-                 const dbRef = ref(database);
-                 const elementTest =  document.getElementsByClassName('form-control');
-                 const elTest = document.querySelectorAll('input');
-                 
-                 // get data from database as a JSON object, and get each field
-                 get(child(dbRef, 'users/' + uid + '/forms/steve_stocking')).then((snapshot) => {
-                     if (snapshot.exists()) {
-                         const data = snapshot.val();
-                         //document.getElementById(id).value = data[field];
- 
-                         //check lock status
+        app.auth().onAuthStateChanged((user) => {
+            if(user) {
+                const uid = user.uid;
+                const dbRef = ref(database);
+                const elementTest =  document.getElementsByClassName('form-control');
+                const elTest = document.querySelectorAll('input');
+                
+                // get data from database as a JSON object, and get each field
+                get(child(dbRef, 'users/' + uid + '/forms')).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        //document.getElementById(id).value = data[field];
 
-                        const database = firebase.database(app);
-                        const lockState = database.ref('users/' + uid + '/forms/steve_stocking/lockState');
-                        lockState.on('value', (snapshot) => {
-                            const data = snapshot.val();
-                            
-                            if (data === 'unlocked') {
-                                //change  button text based on the past
-                                
-                                if (document.getElementById('editButton').value == "Resubmit") {
-                                    handleUpdateApp();
-    
-                                    
-                                } else {
-                                   document.getElementById('editButton').value = "Resubmit";
-                                    
-                                   document.getElementById('editButton').textContent = "Resubmit"; 
-                                   disableReadOnly();
-                                   alert('You can now edit your Application. Click resubmit button when you are done making changes.');
-                                   showFileUpload();
-                                }
-                                
+                        //check lock status
+                        if (!data["_LockStatus"]) {
+                            //change  button text based on the past
+                               
+                            if (document.getElementById('editButton').value == "Resubmit") {
+                                handleUpdateApp();
+   
+                                   
                             } else {
-                                alert('Application is locked');
-                                document.getElementById('editButton').textContent = "Application Locked";
-                                document.getElementById('editButton').disabled = true;
+                                document.getElementById('editButton').value = "Resubmit";
+                                   
+                                document.getElementById('editButton').textContent = "Resubmit"; 
+                                disableReadOnly();
+                                alert('You can now edit your Application. Click resubmit button when you are done making changes.');
+                                showFileUpload();
                             }
-                        });
-
-                         
-                     } else {
-                         console.log("NO DATA");
-                     }
-                 }).catch((error) => {
-                     console.error(error);
-                 });
-             }
-         });
-     }
+                               
+                        } else {
+                            alert('Application is locked');
+                            document.getElementById('editButton').textContent = "Application Locked";
+                            document.getElementById('editButton').disabled = true;
+                        }                      
+                    } else {
+                        console.log("NO DATA");
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        });
+    }
 
         // //Check user database for the lock state of the submission
         // function checkLockState(){
@@ -494,7 +484,7 @@ export function SubAppForm() {
                             <div className = "row g-3 row-appform">
                                 <div className = "col-md">
                                     <label for = "birthday">Birth Date (mm/dd/yy)</label>
-                                    <input type = "text" id = 'birthday' onLoad = {handleInfoDisplay('birthday', 'birthday')} className = "form-control user-info-field user-input" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)" readOnly></input>
+                                    <input type = "text" id = 'birthday' onLoad = {handleInfoDisplay('birthday', 'birthday')} className = "form-control user-info-field user-input" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yyyy)" readOnly></input>
                                 </div>
                                 <div className = "col-md">
                                     <label for = "email">Email</label>

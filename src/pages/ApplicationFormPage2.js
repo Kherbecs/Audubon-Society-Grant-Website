@@ -251,6 +251,11 @@ export function ApplicationFormPage2() {
                         update(ref(database, 'users/' + uid + '/forms/EnvironmentalEducation_CitizenScience'), {
                             _GrantStatus: "Submitted"
                         });
+                        //Automatically set form lock state to "locked"
+                        const stateOfLock = true;
+                        update(ref(database, 'users/' + uid + '/forms'), {
+                            _LockStatus: stateOfLock
+                        }); 
                         alert('Successfully submitted. You can now view your submission in the Past Submissions.');
                         window.location.reload();
                     }

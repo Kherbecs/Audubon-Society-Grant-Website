@@ -291,13 +291,13 @@ export function SubAppForm2() {
                 const elTest = document.querySelectorAll('input');
                 
                 // get data from database as a JSON object, and get each field
-                get(child(dbRef, 'users/' + uid + '/forms/EnvironmentalEducation_CitizenScience')).then((snapshot) => {
+                get(child(dbRef, 'users/' + uid + '/forms')).then((snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         //document.getElementById(id).value = data[field];
 
                         //check lock status
-                        if (data["Lockstatus"]) {
+                        if (!data["_LockStatus"]) {
                             //change  button text based on the past
                             
                             if (document.getElementById('editButton').value == "Resubmit") {
@@ -330,10 +330,10 @@ export function SubAppForm2() {
     return (
         <div className = "wrapper-appform2" id="appForm2Wrapper">
         <div className = "form-appform2">
-            <div className = "grantTitle-appform">
-                <label for = "title-appform" class = "title-appform">Environmental Education and Citizen Science Grant</label>
+            <div className = "grantTitle-subappform2">
+                <label for = "title-appform" class = "title-appform2">Environmental Education and Citizen Science Grant</label>
             </div>
-            <div className = "questionSection-appform">
+            <div className = "questionSection-subappform2">
                 <div className = "infoSection-appform2">
                     <label for = "infoSection-appform2" class = "infoSectionQ-appform2">Please enter the requested information in the boxes below.</label>
                     <div className = "row g-2 row-appform2">

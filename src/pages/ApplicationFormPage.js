@@ -252,10 +252,10 @@ export function ApplicationFormPage() {
                         });
 
                         //Automatically set form lock state to "locked"
-                        const stateOfLock = "locked";
-                        update(ref(database, 'users/' + uid + '/forms/steve_stocking'), {
-                            lockState: stateOfLock
-                        });
+                        const stateOfLock = true;
+                        update(ref(database, 'users/' + uid + '/forms'), {
+                            _LockStatus: stateOfLock
+                        }); 
 
                         // Validate file types
                         const allowedFileTypes = ['application/pdf'];
