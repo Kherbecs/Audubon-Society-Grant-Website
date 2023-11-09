@@ -58,21 +58,21 @@ export function GrantSelection(){
                                     <hr></hr>
                                     <button className="ExampleButton" class= "btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#dropdown1-body" 
                                     aria-expanded="false" aria-controls="dropdown1-body">    
-                                        <b>Examples of eligible projects</b>
+                                        <b>Projects that previously received grants</b>
                                     </button>
                                     <hr></hr>
                                 </h2>
                                 <div id="dropdown1-body" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-dropdown1">
                                     
                                         <div className="ExampleBox" accordion-body>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://hogisland.audubon.org/programs/mountains-sea-birding-teens" target="blank">
-                                                Hog Island Audubon Camp</a>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://wolf-ridge.org/event/ornithology-field-camp/" target="blank">
-                                                Wolf Ridge Environmental Learn Center</a>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.birdconservancy.org/what-we-do/education/colorado-programs/birdcamps/overnightcamps/" target="blank">
-                                                Bird Conservancy of the Rockies</a>
-                                            <a className="Scholarship-example" class="btn btn-outline-success btn-sm" href="https://www.aba.org/camps/" target="blank">
-                                                ABA Youth Birding Camps</a>
+                                            <p style={{fontWeight: 'bold'}} className="Scholarship-example" target="blank">
+                                                Binoculars for classrooms or nature centers</p>
+                                            <p style={{fontWeight: 'bold'}} className="Scholarship-example" target="blank">
+                                                Native plant garden at school, nature center, or community center</p>
+                                            <p style={{fontWeight: 'bold'}} className="Scholarship-example" target="blank">
+                                                Bat houses or bluebird houses</p>
+                                            <p style={{fontWeight: 'bold'}} className="Scholarship-example" target="blank">
+                                                Science equipment or classroom research</p>
                                         </div>
                                         <hr></hr>
                                 </div>

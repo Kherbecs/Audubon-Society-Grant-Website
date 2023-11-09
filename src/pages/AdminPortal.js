@@ -113,13 +113,6 @@ useEffect(() => {
         window.location.reload();
       };
 
-
-
-
-
-
-
-
     /* HANDLE LOGOUT AUTHENTICATION */
 
 
@@ -169,8 +162,9 @@ useEffect(() => {
 
     
 
-
+    
     /* SCROLLING AND STORING SELECTED UID */
+    
     useEffect(() => {
         if(displayApp && buttonClicked) {
             const formName = userData[selectedUid]?.forms?.steve_stocking ? 'steve_stocking' : 'EnvironmentalEducation_CitizenScience';
@@ -181,6 +175,7 @@ useEffect(() => {
                 setButtonClicked(false);
         }
     });
+    
 
     //const buttonRef = useRef(null);
     const [buttonClicked, setButtonClicked] = useState(false);
@@ -200,27 +195,24 @@ useEffect(() => {
     /* LOCK FUNCTIONALITY */
 
     const [buttonStates, setButtonStates] = useState({}); // List of button (lock) states
-     
-    const handleCheckbox = (uid) => {
-        console.log("uid = " + uid);
-        //const boxTicked = true;
-        //const lockID = `lock_${uid}`;
-        //const appID = userData[uid]?.forms[index]?._AppID;
-        //console.log("user data = " + userData[uid])
-        //console.log("app id = " + appID);
+    const [lockStates, setLockStates] = useState({});
 
-
-
-        database.ref(`users/${uid}/forms`).update({
-            _LockStatus: !buttonStates[uid]
-        });
-
-
-        setButtonStates((prevStates) => {
-        const newStates = { ...prevStates, [uid]: !prevStates[uid] };
-        return newStates;
-        });
-        setButtonClicked(false);
+    const handleCheckbox = async (uid) => {
+        try {
+    
+            setLockStates((prevStates) => ({
+                ...prevStates,
+                [uid]: !prevStates[uid]
+            }));
+    
+            database.ref(`users/${uid}/forms`).update({
+                _LockStatus: !lockStates[uid]
+            });
+    
+            setButtonClicked(false);
+        } catch (error) {
+            console.error('Error handling checkbox', error);
+        }
     };
    
     //const [lockLoading, setLockLoading] = useState(true);
@@ -230,18 +222,25 @@ useEffect(() => {
                 const newButtonStates = await Promise.all(
                     uids.map(async (uid) => {
                         if(uid){
-                            console.log("getStates uid = " + uid);
+                            //console.log("getStates uid = " + uid);
                             //const lockID = `lock_${uid}`;
                             const dbStates = await database.ref(`users/${uid}/forms`).get();
                             const curStates = dbStates.val();
-                            console.log(`Lock state for ${uid}:`, curStates ? curStates.state : 'Not found');
-                            return curStates ? curStates._LockStatus : false;
+                            console.log(`Lock state for ${uid}:`, curStates ? curStates._LockStatus : 'Not found');
+                            //return curStates ? curStates._LockStatus : false;
+                            return {uid, lockStatus: curStates ? curStates._LockStatus : false};
                         }
                     })
                 );
-                console.log("new button states: " + newButtonStates);
-                setButtonStates(newButtonStates);
-                //setLockLoading(false);
+
+                const updatedLockStates = newButtonStates.reduce((acc, {uid, lockStatus}) => {
+                    if(uid){
+                        acc[uid] = lockStatus;
+                    }
+                    return acc;
+                }, {});
+                console.log("new lock states: " + updatedLockStates);
+                setLockStates(updatedLockStates);
             }catch(error){
                 console.error('Error fetching lock states',error);
             }
@@ -462,6 +461,7 @@ useEffect(() => {
             });
     };
 
+    //console.log("button States: " + buttonStates);
     return (
    
     <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
@@ -575,7 +575,7 @@ useEffect(() => {
                     <p>Email: {user.email}</p>
                 </div>
                 <div class="user-info-item">
-                    <p>Signed up for Grant: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
+                    <p>Signed up for Grant Updates: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
                 </div>
                             
                         </div>
@@ -593,34 +593,34 @@ useEffect(() => {
                         
                             <button className="sub" onClick={() =>{
                                 handleButton(uid);
-                            }}
-                            disabled={buttonStates[uid]}>
+                            }}>
                                 <span className="submission-link">{userData[uid]?.fullName !== undefined ? userData[uid]?.fullName : 'No Name'}</span>
 
                                 {userData[uid]?.forms && (
                                     <div className="submitted-forms">
                                         Forms: {Object.keys(userData[uid]?.forms)
-                                        .filter(form => form != '_LockStatus')
-                                        .join(', ')}
+                                            .filter(form => form != '_LockStatus')
+                                            .join(', ')}
                                     </div>
                                 )}
 
                             </button>
-                        
-                        <label className="switch">
+                            <label className="switch">
                             <input
                                 type="checkbox"
                                 onChange={() => handleCheckbox(uid)}
-                                checked={buttonStates[uid]}
+                                checked={lockStates[uid] || false}
                             />
                             <span className="slider round"></span>
                         </label>
+
+
                     </div>
                 ) : null
                 ))}
             </div>
             
-        {console.log("Sel uid = " + selectedUid)}
+        {/*console.log("Sel uid = " + selectedUid)*/}
         {/*attempt to display submitted app form */}
         {displayApp && userData[selectedUid]?.forms?.steve_stocking && <AdminSubAppForm uid={selectedUid}/>}
         {displayApp && userData[selectedUid]?.forms?.EnvironmentalEducation_CitizenScience && <AdminSubAppForm2 uid={selectedUid}/>} {/* May need form2 versions of variables, not sure yet */}

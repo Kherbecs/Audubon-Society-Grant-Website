@@ -97,23 +97,23 @@
 }
 
 .ApplyButton {
-  display: flex;
-  justify-content: center;
+  /*display: flex;
+  justify-content: center;*/
   padding: 0% 2.5% 0% 0%;
 }
 
 
 .apply_1{
-  padding: 15% 30% 15% 30%;
+  /*padding: 15% 30% 15% 30%;*/
+  margin-left: 1.75%;
 }
 .apply_2{
-  padding: 15% 30% 15% 30%;
+  /*padding: 15% 30% 15% 30%;*/
+  margin-left: 1.75%
 }
 
 .ExampleBox{
   text-align: center;
-  padding: 0% 0% 2% 0%;
-
 }
 
 
@@ -125,4 +125,5 @@
   text-align: left;
   padding-left: 0%;
 }
+
 
