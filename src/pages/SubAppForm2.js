@@ -81,7 +81,7 @@ export function SubAppForm2() {
         });
     }
     function handleSelectionDisplay(field, id){
-        const holdSelect = document.getElementById(id);
+
         app.auth().onAuthStateChanged((user) => {
             if(user) {
                 const uid = user.uid;
@@ -91,8 +91,15 @@ export function SubAppForm2() {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
                         document.getElementById(id).innerHTML = data[field];
-                        holdSelect.setAttribute('disabled', 'disabled');
-                        //document.getElementById(id).setAttribute('disabled', 'disabled');
+                        document.getElementById(id).value = data[field];
+                        if (document.getElementById(id).value == 'Yes'){
+                            document.getElementById('YOrNSelect2').innerHTML = 'No';
+                            document.getElementById('YOrNSelect2').value = 'No';
+                        } else {
+                            document.getElementById('YOrNSelect2').innerHTML = 'Yes';
+                            document.getElementById('YOrNSelect2').value = 'Yes';
+                        }
+
                     } else {
                         console.log("NO DATA");
                     }
@@ -365,9 +372,9 @@ export function SubAppForm2() {
                     <label for="title1-appform2" class="title1Q-appform2">Is this organization a Title 1 School?</label>
                     <div className = "Title1Selection-appform2">
                         <select className = "title1select-appform2" id = "title1"  onLoad={handleSelectionDisplay('IsTitle1','YOrNSelect')} disabled>
-                            <option value = "Select" id="YOrNSelect"  > Select</option>
-                            <option value = "Yes">Yes</option>
-                            <option value = "No">No</option>
+                            <option value = "Select" id="YOrNSelect" > Select</option>
+                            <option value = "Yes" id = "YOrNSelect2">Yes</option>
+
                         </select>
                     </div>
                 </div>

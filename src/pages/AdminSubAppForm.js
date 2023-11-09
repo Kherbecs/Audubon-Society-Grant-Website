@@ -273,7 +273,7 @@ export function AdminSubAppForm({uid}) {
                             </div>
                             <div class = "row g-3 row-appform">
                                 <div class = "col-md col-md-form">
-                                    <label class="user-info-label" for = "birthday">Birth Date (mm/dd/yy)</label>
+                                    <label class="user-info-label" for = "birthday">Birth Date (mm/dd/yyyy)</label>
                                     <input type = "text" id = 'birthday' value = '' onLoad = {handleInfoDisplay('birthday', 'birthday', uid)} className = "form-control user-info-field" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
