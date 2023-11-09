@@ -80,6 +80,28 @@ export function SubAppForm() {
         });
     }
 
+    function handleSelectionDisplay(field, id){
+        const holdSelect = document.getElementById(id);
+        app.auth().onAuthStateChanged((user) => {
+            if(user) {
+                const uid = user.uid;
+                const dbRef = ref(database);
+                // get data from database as a JSON object, and get each field
+                get(child(dbRef, 'users/' + uid + '/forms/steve_stocking')).then((snapshot) => {
+                    if (snapshot.exists()) {
+                        const data = snapshot.val();
+                        document.getElementById(id).innerHTML = data[field];
+                        holdSelect.setAttribute('disabled', 'disabled');
+                    } else {
+                        console.log("NO DATA");
+                    }
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
+        });
+    }
+
     function handleURLDisplay(field, id) {
         app.auth().onAuthStateChanged((user) => {
             if(user) {
@@ -102,8 +124,8 @@ export function SubAppForm() {
     }
 
     function disableReadOnly(){
-        // document.getElementsByClassName('form-control').removeAttribute('readOnly');
-         //document.getElementById('fname-appform2').removeAttribute('readOnly');
+         document.getElementById('q1').removeAttribute('disabled');
+         document.getElementById('q2').removeAttribute('disabled');
          const enableTest = document.getElementsByClassName('user-input');
         for (let index = 0; index < enableTest.length; index++) {
          enableTest[index].removeAttribute('readOnly');
@@ -111,9 +133,6 @@ export function SubAppForm() {
         }
      }
      function enableReadOnly() {
-         //const enableSelect = document.getElementsByClassName('')
-        // document.getElementById('fname-appform2').setAttribute('readOnly', true);
-        //document.getElementsByClassName('form-control').setAttribute('readOnly', true);
         const enableTest = document.getElementsByClassName('user-input');
         for (let index = 0; index < enableTest.length; index++) {
          enableTest[index].setAttribute('readOnly', true);
@@ -170,75 +189,75 @@ export function SubAppForm() {
                          // Error checking to see if any of the fields are empty
                          if(!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !q4) {
                              //alert('Please fill out all fields.');       
-                             document.getElementById('error-message').textContent = 'Please fill out all fields';
+                             document.getElementById('error-messageSS').textContent = 'Please fill out all fields';
                              return;
                          }
  
                          // Check if first name and last name contain only characters
                          if(!/^[A-Za-z\s]+$/.test(fname) || !/^[A-Za-z\s]+$/.test(lname)) {
                              //alert('First Name and Last Name should contain only letters.');
-                             document.getElementById('error-message').textContent = 'First Name and Last Name should contain only letters';
+                             document.getElementById('error-messageSS').textContent = 'First Name and Last Name should contain only letters';
                              return;
                          }
 
                          if(!/^\d{2}\/\d{2}\/\d{4}$/.test(birthday)){
                             //alert('Please enter a valid birthday: MM/DD/YYYY.');
-                            document.getElementById('error-message').textContent = 'Please enter a valid birthday: MM/DD/YYYY';
+                            document.getElementById('error-messageSS').textContent = 'Please enter a valid birthday: MM/DD/YYYY';
                             return;
                          }
  
                          //Check if email is valid
                          if(!/\S+@\S+\.\S+/.test(email)) {
                              //alert('Please enter a valid email address.');
-                             document.getElementById('error-message').textContent = 'Please enter a valid email address';
+                             document.getElementById('error-messageSS').textContent = 'Please enter a valid email address';
                              return;
                          }
  
                          // Check if home phone number contains only numbers and optional hyphens
                          if(!/^[0-9-]+$/.test(phone)) {
                              //alert('Phone number should contain only numbers');
-                             document.getElementById('error-message').textContent = 'Phone number should contain only numbers';
+                             document.getElementById('error-messageSS').textContent = 'Phone number should contain only numbers';
                              return;
                          }
                         
                          //Check if address contains only letters and numbers
                          if(!/^[A-Za-z0-9\s]+$/.test(address)){
                             //alert('Address should only contain letters and numbers');
-                            document.getElementById('error-message').textContent = 'Address should only contain letters and numbers';
+                            document.getElementById('error-messageSS').textContent = 'Address should only contain letters and numbers';
                             return;
                          }
 
                          //Check if city and state only contain letters
                          if(!/^[A-Za-z\s]+$/.test(city) || !/^[A-Za-z\s]+$/.test(state)){
                             //alert('Check if city and/or state contain only letters.');
-                            document.getElementById('error-message').textContent = 'Check if city and/or state contain only letters.';
+                            document.getElementById('error-messageSS').textContent = 'Check if city and/or state contain only letters.';
                             return;
                          }
 
                          //Check if zip code only contains numbers
                          if(!/^[0-9]+$/.test(zip)){
                             //alert('Zip code should only contain numbers');
-                            document.getElementById('error-message').textContent = 'Zip code should only contain numbers.';
+                            document.getElementById('error-messageSS').textContent = 'Zip code should only contain numbers.';
                             return;
                          }
 
                          if(q1 === "Select" && q2 === "Select") {
                             //alert('Please fill out all fields.');       
-                            document.getElementById('error-message').textContent = 'Please select either yes or no in the dropdown menu';
+                            document.getElementById('error-messageSS').textContent = 'Please select either Yes or No';
                             return;
                         }
-
+                        
                         // Check if the user selected an option for question 1
-                        if(q1 === "Select") {
+                        if(q1 !== "Yes" && q1 !== "No") {
                             //alert('Please select if you are a member of the San Joaquin Audubon Society or not.');
-                            document.getElementById('error-message').textContent = 'Please select if you are a member of the San Joaquin Audubon Society or not';
+                            document.getElementById('error-messageSS').textContent = 'Please select Yes or No if you, or a parent or guardian, a member of the San Joaquin Audubon Society';
                             return;
                         }
 
                         // Check if the user selected an option for question 2
-                        if(q2 === "Select") {
+                        if(q2 !== "Yes" && q2 !== "No") {
                             //alert('Please select if you live in San Joaquin County or not.');
-                            document.getElementById('error-message').textContent = 'Please select if you live in San Joaquin County or not';
+                            document.getElementById('error-messageSS').textContent = 'Please select Yes or No for if you live in San Joaquin County';
                             return;
                         }
 
@@ -356,9 +375,7 @@ export function SubAppForm() {
                         Promise.all(fileUploadPromises)
                             .then(() => {
                                 // All uploads and updates completed successfully
-                                alert('Successfully submitted. You can now view your submission in the Past Submissions.');
-                                // Page reload
-                                //window.location.href = '/applicationformpage';
+                                //alert('Successfully submitted. You can now view your submission in the Past Submissions.');
                                 window.location.reload();
                             })
                             .catch((error) => {
@@ -367,17 +384,18 @@ export function SubAppForm() {
                          
                          alert('Your Application has been Updated');
                          enableReadOnly();
+                         /*
                          console.log(updatePass);
                          updatePass = true;
-                         console.log(updatePass);
+                         console.log(updatePass);*/
                          document.getElementById('error-message').textContent = '';
                          window.location.reload();
-                         return updatePass;
+                         //return updatePass;
                          
                         
                      } else {
                          console.log("NO DATA");
-                         return updatePass;
+                         //return updatePass;
                         
                      }
                  }).catch((error) => {
@@ -385,10 +403,11 @@ export function SubAppForm() {
                  });
              }
          });
-         console.log(updatePass);
-         return updatePass;
+         //console.log(updatePass);
+         //return updatePass;
      }
     
+ 
      function handleEditClick(){
         app.auth().onAuthStateChanged((user) => {
             if(user) {
@@ -483,8 +502,8 @@ export function SubAppForm() {
                             </div>
                             <div className = "row g-3 row-appform">
                                 <div className = "col-md">
-                                    <label for = "birthday">Birth Date (mm/dd/yy)</label>
-                                    <input type = "text" id = 'birthday' onLoad = {handleInfoDisplay('birthday', 'birthday')} className = "form-control user-info-field user-input" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yyyy)" readOnly></input>
+                                    <label for = "birthday">Birth Date (mm/dd/yyyy)</label>
+                                    <input type = "text" id = 'birthday' onLoad = {handleInfoDisplay('birthday', 'birthday')} className = "form-control user-info-field user-input" placeholder = "Birth Date (mm/dd/yy)" aria-label = "Birth Date (mm/dd/yy)" readOnly></input>
                                 </div>
                                 <div className = "col-md">
                                     <label for = "email">Email</label>
@@ -516,16 +535,25 @@ export function SubAppForm() {
                         </div>
                     </div>
                     <div className = "q1-subappform">
-                        <label for="question1Text" className="form-label-subappform2">Are you, or a parent or guardian, a member of the San Joaquin Audubon Society?</label>
+                        <label for="q1-subappform" className="form-label-subappform2">Are you, or a parent or guardian, a member of the San Joaquin Audubon Society?</label>
                         <div className = "Q1Selection-subappform">
-                            <input type = 'text' className = "q1select-subappform user-input" id = 'q1' onLoad = {handleInfoDisplay('question1', 'q1')} size = '2' readOnly></input>
+                            <select className = "q1Select-subappform" id="q1" onLoad={handleSelectionDisplay('question1','YOrNQ1')} disabled>
+                                <option id="YOrNQ1"> Select</option>
+                                <option value = "Yes">Yes</option>
+                                <option value = "No">No</option>
+                            </select>
                         </div>
                     </div>
                     <div className = "q2-subappform">
                         <label for="question2Text" className="form-label-subappform2">Do you live in San Joaquin County?</label>
                         <div className = "Q1Selection-subappform">
-                            <input type = 'text'  className = "q2select-subappform user-input" id = 'q2' onLoad = {handleInfoDisplay('question2', 'q2')} size = '2' readOnly></input>
-                        </div>                        
+                            <select className = "q2Select-subappform" id="q2" onLoad={handleSelectionDisplay('question2','YOrNQ2')} disabled>
+                                <option id="YOrNQ2"> Select</option>
+                                <option value = "Yes">Yes</option>
+                                <option value = "No">No</option>
+                            </select>
+                        </div>
+
                     </div>
                     <div className = "q3-subappform">
                         <label for="question3Text" className="form-label-subappform2">Which camp or program do you want to attend?</label>
@@ -540,10 +568,11 @@ export function SubAppForm() {
                         <textarea className="form-control user-input" id = 'q4' rows="4" onLoad = {handleInfoDisplay('question4', 'q4')} readOnly>
                         </textarea>       
                         </div> 
-                    </div>
+                    </div>                  
                     <div className = "q5-subappform">
                         <label for="question5Text" className="form-label-appform5">Please submit a letter of recommendation from a teacher, parent, or adult friend that should cover what they know about your interest in learning about the environment, nature, or birds.</label>
                     </div>
+
                     <div className = "uploadButtonLetterOfRec-appform" id='letterDiv'>
                         <input type = "file" id = "letterFile" name = "letter"></input>
                     </div>
@@ -564,6 +593,8 @@ export function SubAppForm() {
                         <a className = "essayLink" id = "essayLinkID" href='#' target = "blank" onLoad = {handleURLDisplay('urlLinkEssay', 'essayLinkID')}>
                             personal_essay.pdf</a>
                     </div>
+                    <div className="error-message" id="error-messageSS">
+                    </div>  
                 </div>
                 <div className="text-center-appform2" >
                     <button className = "button1-subappform" id='editButton' value="Edit Application" onClick={handleEditClick}>Edit Application</button>
