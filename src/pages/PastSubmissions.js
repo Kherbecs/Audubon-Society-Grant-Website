@@ -120,10 +120,12 @@ export function PastSubmissions() {
             const nodeRef = ref(database, "users/" + userID + "/forms");
 
             const snapshot = await get(nodeRef);
-
+    
             snapshot.forEach((childSnapshot) => {
-                const childData = childSnapshot.val();
-                userSubs.push(childData);
+                if(childSnapshot.key !== "_LockStatus") {
+                    const childData = childSnapshot.val();
+                    userSubs.push(childData);
+                }
             });
 
             return userSubs;
@@ -136,7 +138,9 @@ export function PastSubmissions() {
     function PopulateSubmissions(category) {
 
         const [submissions, setSubmissions] = useState(() => {
+
             const storedData = localStorage.getItem('submissions');
+            console.log("testing data:" + storedData);
             return storedData ? JSON.parse(storedData) : [];
         });
 
@@ -162,55 +166,46 @@ export function PastSubmissions() {
         switch (category) {
             case "applications":
                 return (
-                    <div class="vstack col-xl-12 col-lg-5 col-md-5 col-sm-6 applications-stack">
-                        {submissions.map((app, index) => (
-                            <Link onClick={() => handleSubAppForm(app._GrantName)}  class="btn btn-success m-2 applications" key={index}>
-                                <div key={index}>{app._GrantName}</div>
-                            </Link>
-                        ))}
-
-                    </div>
+                    submissions.map((app, index) => (
+                        <Link onClick={() => handleSubAppForm(app._GrantName)}  class="btn btn-success m-2 applications" key={index}>
+                            <div key={index}>{app._GrantName}</div>
+                        </Link>
+                    ))
                 );
 
             case "status":
                 return (
-                    <div class="vstack col-xl-12 col-lg-4 col-md-4 col-sm-3 status-stack">
-                        {submissions.map((stat, index) => (
-                            <div class="btn btn m-2 order-2 disabled app-status" key={index}>{stat._GrantStatus}</div>
-                        ))}
-                    </div>
+                    submissions.map((stat, index) => (
+                        <div class="btn btn m-2 order-2 disabled app-status" key={index}>{stat._GrantStatus}</div>
+                    ))
                 );
 
             case "submitted":
                 return (
-                    <div class="vstack col-xl-12 col-lg-3 col-md-3 col-sm-3 date-submitted-stack">
-                        {submissions.map((date, index) => (
-                            <div class="p-1 m-2 disabled date-submitted" key={index}>{date._DateSubmitted}</div>
-                        ))}
-                    </div>
+                    submissions.map((date, index) => (
+                        <div class="p-1 m-2 disabled date-submitted" key={index}>{date._DateSubmitted}</div>
+                    ))
                 );
 
             case "mobileApplications":
                 return (
-                    <div class="container-fluid card-body row main-card mx-auto mobile-apps btn-toolbar">
-                        {submissions.map((app, index) => (
-                            <Link onClick={() => handleSubAppForm(app._GrantName)} class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress" key={index}>
-                                <div key={index}>{app._GrantName}</div>
+
+                    submissions.map((app, index) => (
+                        <div key={index} class="row justify-content-center">
+                            <Link onClick={() => handleSubAppForm(app._GrantName)} class="btn btn-success m-6 applications" key={index}>
+                            <div key={index}>{app._GrantName}</div>
                             </Link>
-                        ))}
-                    </div>
+
+                            <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress" key={index}>{app._GrantStatus}</div>
+
+                            <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted {app._DateSubmitted}
+                            </div>
+                            <hr className="mobile-applications-hr" />
+                        </div>
+
+                    ))
                 );
 
-                case "mobileStatus":
-                return (
-                    <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">
-                        {submissions.map((app, index) => (
-                            <Link onClick={() => handleSubAppForm(app._GrantStatus)} class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress" key={index}>
-                                <div key={index}>{app._GrantStatus}</div>
-                            </Link>
-                        ))}
-                    </div>
-                );
             default:
                 break;
         }
@@ -221,14 +216,13 @@ export function PastSubmissions() {
     console.log(localStorage);
     return (
         <div class="flex-wrap page-content" id="pastSubmissionsWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
-            <div class="col">
-                <Link class="btn btn-nav btn-sm btn-success back-to-grants" onClick={handleGrantClick}>Back</Link>
-            </div>
 
             <div class="mx-auto text-center page-title">
                 <h1 class="past-submissions-title">Past Submissions</h1>
             </div>
-
+            <div class="col">
+                <Link class="btn btn-nav btn-sm btn-success back-to-grants" onClick={handleGrantClick}>Back</Link>
+            </div>
             <div class="container-fluid container-content">
                 <div class="col-8 card submission-body">
                     <div class="card-body row main-card desktop-apps">
@@ -252,27 +246,9 @@ export function PastSubmissions() {
                     </div>
 
                     <div class="container-fluid card-body row main-card mx-auto mobile-apps btn-toolbar">
-                        <div class="row justify-content-center">
-                            <h4>Applications</h4>
-                            <hr className="mobile-applications-hr" />
-                            {PopulateSubmissions("mobileApplications")}
-                            <hr className="mobile-applications-hr" />
-
-                            <a href="#link" class="btn btn-success m-6 applications" role="button">Bird Watching Grant 2</a>
-                            <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">Review in Progress</div>
-                            <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted 4/17/23</div>
-                            <hr className="mobile-applications-hr" />
-
-                            <a href="#link" class="btn btn-success m-6 applications" role="button">Test</a>
-                            <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">Review in Progress</div>
-                            <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted 9/31/23</div>
-                            <hr className="mobile-applications-hr" />
-
-                            <a href="#link" class="btn btn-success m-6 applications" role="button">Environmental Education and Conservation Youth Scholarship and Birding Summer Camp</a>
-                            <div class="btn btn m-2 disabled app-status col-md-4 col-sm-4 mobile-progress">Review in Progress</div>
-                            <div class="m-2 disabled app-status col-md-4 col-sm-4 date-submitted">Submitted 6/7/23</div>
-                            <hr className="mobile-applications-hr" />
-                        </div>
+                        <h4>Applications</h4>
+                        <hr className="mobile-applications-hr" />
+                        {PopulateSubmissions("mobileApplications")}
                     </div>
                 </div>
             </div>
