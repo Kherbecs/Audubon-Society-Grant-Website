@@ -473,6 +473,121 @@ useEffect(() => {
         return str;
     }
 
+    async function handleAdminRegistration() {
+        const fullName = document.getElementById('full-name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        
+        if(password.trim() === '' && fullName.trim() === '' && confirmPassword.trim() === '' && email.trim() === '') {
+          //alert('Please fill out the registration form.');
+          document.getElementById('alert-message').textContent = 'Please fill out all fields';
+          return;
+        }
+      
+        const fullNameRegex = /^[A-Za-z\s]+$/;
+      
+        // Full name can only be using spaces and letters
+        if (!fullNameRegex.test(fullName)) {
+          //alert('Please enter a valid full name with letters and spaces only.');
+          document.getElementById('alert-message').textContent = 'Please enter a valid full name';
+          return;
+        }
+      
+        if (fullName.trim() === '') {
+          //alert('Please enter your full name.');
+          document.getElementById('alert-message').textContent = 'Please enter your full name';
+          return;
+        }
+      
+        if(email.trim() === '') {
+          //alert('Please enter your email.');
+          document.getElementById('alert-message').textContent = 'Please enter your email';
+          return;
+        }
+      
+        if(password.trim() === '') {
+          //alert('Please enter your password.');
+          document.getElementById('alert-message').textContent = 'Please enter your password';
+          return;
+        }
+      
+        //Checks if email is valid
+        const emailRegex = /\S+@\S+\.\S+/;
+        if (!emailRegex.test(email)) {
+          //alert('Please enter a valid email address.');
+          document.getElementById('alert-message').textContent = 'Please enter a valid email address';
+          return;
+        }
+      
+        // Checks if password matches
+        if (password !== confirmPassword) {
+          //alert('Passwords do not match.');
+          document.getElementById('alert-message').textContent = 'Passwords do not match';
+          return;
+        }
+      
+        // Checks the password requirement
+        if((password.length < 6 || /\s/.test(password)) && !(password.trim() === '')) {
+          //alert('Password must be at least 6 characters long and not contain spaces.');
+          document.getElementById('alert-message').textContent = 'Password must be at least 6 characters long and not contain spaces';
+          return;
+        }
+      
+        // Checks if the email is used 
+        try {
+          const signInMethods = await adminApp.auth().fetchSignInMethodsForEmail(email);
+          if (signInMethods.length > 0) {
+            //alert('This email address is already registered.');
+            document.getElementById('alert-message').textContent = 'This email address is already registered';
+            return;
+          }
+        } catch (error) {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage);
+        }
+        
+        // firebase creates the acc with the email and password
+        adminAuth.createUserWithEmailAndPassword(email, password)
+          .then(async (userCredential) => {
+            // Signed up
+            const user = userCredential.user;
+            console.log(user);
+            alert('Account successfully created! Please check your email for verification.');
+            try {
+              await adminAuth.currentUser.sendEmailVerification();
+              // Email verification sent
+              console.log('Email verification sent');
+      
+              // Write registration data to the Realtime Database
+              const databaseAdmin = firebase.database(adminApp);
+              const userId = user.uid;
+              const userData = {
+                fullName: fullName,
+                email: email
+              };
+              databaseAdmin.ref('users/' + userId).set(userData)
+                .then(() => {
+                console.log('Data successfully written to the database');
+                window.location.reload();
+              })
+              .catch((error) => {
+                console.error('Error writing data to the database: ', error);
+              });
+            } catch (error) {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              console.log(errorMessage);
+            }
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorMessage);
+          });
+      }
+
     //console.log("button States: " + buttonStates);
     return (
    
@@ -508,7 +623,7 @@ useEffect(() => {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" onClick={sendMail}>Send message</button>
+                            <button type="button" class="btn btn-success" onClick={handleAdminRegistration}>Send message</button>
                         </div>
                     </div>
                 </div>
@@ -551,6 +666,46 @@ useEffect(() => {
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-success" onClick={sendMailEmail}>Send message</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider" />
+            <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal3">Register an Admin Account</button>
+            
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Register an Admin Account</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="full-name" class="col-form-label">Full Name:</label>
+                                    <input type="text" class="form-control" id="full-name"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="col-form-label">Email Address:</label>
+                                    <input type="text" class="form-control" id="email"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="col-form-label">Password:</label>
+                                    <input type="password" className="form-control form-control-lg" id="password"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="repeat-password" class="col-form-label">Repeat Password:</label>
+                                    <input type="password" className="form-control form-control-lg" id="confirm-password"></input>
+                                </div>
+                                <div className="error-message-ar" id="alert-message">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" onClick={handleAdminRegistration}>Create Account</button>
                         </div>
                     </div>
                 </div>

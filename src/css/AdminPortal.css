@@ -379,3 +379,9 @@ input:checked + .slider:before {
   height:auto;
   display:inline-block;
 }
+
+.error-message-ar {
+  color: red;
+  font-size: 18px;
+  text-align: center;
+}
