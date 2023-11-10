@@ -5,7 +5,6 @@ import { LandingPage } from './pages/LandingPage.js';
 import { Login } from './pages/Login.js';
 import { Register } from './pages/Register';
 import { PasswordReset } from './pages/PasswordReset.js';
-import { ResetSuccess } from './pages/ResetSuccess.js';
 import { GrantSelection } from './pages/GrantSelection.js';
 import { AdminPortal } from './pages/AdminPortal.js';
 import { ApplicationFormPage } from './pages/ApplicationFormPage.js';
@@ -113,9 +112,6 @@ function App() {
         <Route exact path="/passwordreset">
           <PasswordReset></PasswordReset>
         </Route>
-        <Route exact path="/resetsuccess">
-          <ResetSuccess></ResetSuccess>
-        </Route>
         <Route exact path="/grantselection">
           <GrantSelection></GrantSelection>
         </Route>
@@ -128,7 +124,7 @@ function App() {
         <Route exact path="/pastsubmissions">
           <PastSubmissions></PastSubmissions>
         </Route>
-        <Route exact path="/adminsubappform">
+        <Route exact path="/h_59G0s9m_ftZZFqhTF2UwcnyDkNX4L3Z909CutD88">
           <AdminSubAppForm></AdminSubAppForm>
         </Route>
         <Route exact path="/subappform">
@@ -140,7 +136,7 @@ function App() {
         <Route exact path="/adminforgotpassword">
           <AdminForgotPassword></AdminForgotPassword>
         </Route>
-        <Route exact path="/adminsubappform2">
+        <Route exact path="/4Bz2idqfUTyg9nVXPUqCxdyZ1ri3MiZZMtiQf">
           <AdminSubAppForm2></AdminSubAppForm2>
         </Route>
         <Route exact path="/subappform2">

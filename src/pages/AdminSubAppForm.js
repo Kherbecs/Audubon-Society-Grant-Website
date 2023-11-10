@@ -386,7 +386,6 @@ export function AdminSubAppForm({uid}) {
                     </div>
                 </div>
             </div>
-            <hr class="form-divider"></hr>
         </div>
     )
 }

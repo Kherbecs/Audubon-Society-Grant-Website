@@ -233,6 +233,7 @@ useEffect(() => {
 
     return (
         <div className = "wrapper-appform2" id="adminsubappform2Wrapper">
+            <hr class="form-divider"></hr>
             <div className = "form-appform2">
                 <div className = "grantTitle-appform">
                     <label for = "title-appform" class = "title-appform">Environmental Education and Citizen Science Grant</label>
