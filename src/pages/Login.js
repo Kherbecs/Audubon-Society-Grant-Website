@@ -43,6 +43,11 @@ export function Login() {
     window.location.reload();
   };
 
+  const handleAdminLoginClick = () => {
+    history.push('/adminlogin');
+    window.location.reload();
+  };
+
   const handlePasswordClick = () => {
     history.push('/passwordreset');
     window.location.reload();
@@ -121,6 +126,9 @@ export function Login() {
                 <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleLogin}>Sign In</button>
                 <div className="link2-lr">
                   Need an account? <Link className="link-lr2" onClick={handleRegisterClick}>Sign up</Link>
+                </div>
+                <div className="link2-lr">
+                  <Link className="link-lr2" onClick={handleAdminLoginClick}>Admin Login</Link>
                 </div>
               </div>
             </div>

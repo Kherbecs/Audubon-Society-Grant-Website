@@ -49,8 +49,8 @@ export function GrantSelection(){
                             <text><Link class="btn btn-success btn-lg apply_1" onClick={handleApplication2Click}>Apply</Link></text>            
                         </div>
                         <p className= "ApplicationSub"><small>
-                            Applications should be submitted by November 1, 2023<br></br>
-                            Applicants will be informed of decisions no later than February 20, 2024
+                            Applications should be submitted by November 30, 2023<br></br>
+                            Applicants will be informed of decisions no later than April 1, 2024
                           </small></p>
                     <div className="DropDowns" accordion id="dropdowns">
                             <div className="DropDownItem" accordion-item>

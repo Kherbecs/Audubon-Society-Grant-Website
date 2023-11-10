@@ -30,8 +30,8 @@ const adminFirebaseConfig = {
 export function AdminLogin() {
   const history = useHistory();
   
-  const handleRegisterClick = () => {
-    history.push('/adminregister');
+  const handleLoginClick = () => {
+    history.push('/login');
     window.location.reload();
   };
 
@@ -111,8 +111,8 @@ export function AdminLogin() {
                   <Link className="link-lr2" onClick={handlePasswordClick}>Forgot password?</Link>
                 </div>
                 <button type="button" className="btn btn-lr btn-success btn-lg w-100 block mt-2" onClick={handleAdminLogin}>Sign In</button>
-                <div className="link2-lr">
-                  Need an account? <Link className="link-lr2" onClick={handleRegisterClick}>Sign up</Link>
+                <div className="link2-lra">
+                  Not an admin? <Link className="link-lr2" onClick={handleLoginClick}>User Login</Link>
                 </div>
               </div>
             </div>

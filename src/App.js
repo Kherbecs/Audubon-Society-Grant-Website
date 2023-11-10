@@ -10,13 +10,10 @@ import { GrantSelection } from './pages/GrantSelection.js';
 import { AdminPortal } from './pages/AdminPortal.js';
 import { ApplicationFormPage } from './pages/ApplicationFormPage.js';
 import { PastSubmissions } from './pages/PastSubmissions.js';
-import { PasswordChange } from './pages/PasswordChange.js';
-import { PasswordFullReset } from './pages/PasswordFullReset.js';
 import { SubAppForm } from './pages/SubAppForm.js';
 import { AdminSubAppForm } from './pages/AdminSubAppForm.js';
 import { UserNavBar } from './pages/UserNavBar.js';
 import { AdminLogin } from './pages/AdminLogin.js';
-import { AdminRegister } from './pages/AdminRegister.js';
 import { AdminForgotPassword } from './pages/AdminForgotPassword.js';
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
@@ -134,20 +131,11 @@ function App() {
         <Route exact path="/adminsubappform">
           <AdminSubAppForm></AdminSubAppForm>
         </Route>
-        <Route exact path="/passwordchange">
-          <PasswordChange></PasswordChange>
-        </Route>
-        <Route exact path="/passwordfullreset">
-          <PasswordFullReset></PasswordFullReset>
-        </Route>
         <Route exact path="/subappform">
           <SubAppForm></SubAppForm>
         </Route>
         <Route exact path="/adminlogin">
           <AdminLogin></AdminLogin>
-        </Route>
-        <Route exact path="/adminregister">
-          <AdminRegister></AdminRegister>
         </Route>
         <Route exact path="/adminforgotpassword">
           <AdminForgotPassword></AdminForgotPassword>
