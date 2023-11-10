@@ -163,6 +163,23 @@ export function PastSubmissions() {
             console.log(localStorage);
         }, [submissions]);
 
+        const statusNow = ref(database,'users/'+ userID +'/forms/steve_stocking/' + '_GrantStatus');
+        console.log("UserID: " + userID);
+        var originalVal;
+        onValue(statusNow, (snapshot) => {
+            var newVal = snapshot.val();
+            submissions.map((stat) => (
+                originalVal = stat._GrantStatus
+            ));
+
+            if (originalVal != null && originalVal != newVal){
+                window.location.reload();
+            }
+
+        })
+    
+
+
         switch (category) {
             case "applications":
                 return (
@@ -214,6 +231,11 @@ export function PastSubmissions() {
 
     GetUserId();
     console.log(localStorage);
+
+
+
+
+
     return (
         <div class="flex-wrap page-content" id="pastSubmissionsWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
 
