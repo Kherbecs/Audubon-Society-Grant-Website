@@ -163,16 +163,31 @@ export function PastSubmissions() {
             console.log(localStorage);
         }, [submissions]);
 
-        const statusNow = ref(database,'users/'+ userID +'/forms/steve_stocking/' + '_GrantStatus');
+        const steveStockingStatus = ref(database,'users/'+ userID +'/forms/steve_stocking/' + '_GrantStatus');
         console.log("UserID: " + userID);
         var originalVal;
-        onValue(statusNow, (snapshot) => {
+        onValue(steveStockingStatus, (snapshot) => {
             var newVal = snapshot.val();
             submissions.map((stat) => (
                 originalVal = stat._GrantStatus
             ));
 
-            if (originalVal != null && originalVal != newVal){
+            if (originalVal != null && originalVal != newVal && newVal != null){
+                window.location.reload();
+            }
+
+        })
+
+        const environEducStatus = ref(database,'users/'+ userID +'/forms/EnvironmentalEducation_CitizenScience/' + '_GrantStatus');
+        console.log("UserID: " + userID);
+        var originalVal;
+        onValue(environEducStatus, (snapshot) => {
+            var newVal = snapshot.val();
+            submissions.map((stat) => (
+                originalVal = stat._GrantStatus
+            ));
+
+            if (originalVal != null && originalVal != newVal && newVal != null){
                 window.location.reload();
             }
 
