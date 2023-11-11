@@ -163,36 +163,36 @@ export function PastSubmissions() {
             console.log(localStorage);
         }, [submissions]);
 
-        const steveStockingStatus = ref(database,'users/'+ userID +'/forms/steve_stocking/' + '_GrantStatus');
-        console.log("UserID: " + userID);
-        var originalVal;
-        onValue(steveStockingStatus, (snapshot) => {
-            var newVal = snapshot.val();
-            submissions.map((stat) => (
-                originalVal = stat._GrantStatus
-            ));
+        // stores original statuses of the applications before any changes
+        // everything is remapped on function call (every time page is refreshed)
+        var originalStatuses = [];
+        submissions.map((app, key) => (
+            // INDEX 0 IS ENVIRON EDUCATIONAL APP, 1 IS STEVE STOCKING
+            originalStatuses[key] = app._GrantStatus
+        ));
 
-            if (originalVal != null && originalVal != newVal && newVal != null){
-                window.location.reload();
-            }
-
-        })
-
+        // creates listeners for both grant statuses, and refreshes the pages if the value is changed accordingly
+        // quality of life feature for the user
+        
         const environEducStatus = ref(database,'users/'+ userID +'/forms/EnvironmentalEducation_CitizenScience/' + '_GrantStatus');
-        console.log("UserID: " + userID);
-        var originalVal;
         onValue(environEducStatus, (snapshot) => {
+            var originalVal = originalStatuses[0];
             var newVal = snapshot.val();
-            submissions.map((stat) => (
-                originalVal = stat._GrantStatus
-            ));
-
-            if (originalVal != null && originalVal != newVal && newVal != null){
+            if (originalVal != null && newVal != null && originalVal != newVal){
                 window.location.reload();
+            }
+        })
+
+        const steveStockingStatus = ref(database,'users/'+ userID +'/forms/steve_stocking/' + '_GrantStatus');
+        onValue(steveStockingStatus, (snapshot) => {
+            var originalVal = originalStatuses[1];
+            var newVal = snapshot.val();
+            if (originalVal != null && newVal != null && originalVal != newVal ){
+               window.location.reload();
             }
 
         })
-    
+
 
 
         switch (category) {
@@ -246,10 +246,6 @@ export function PastSubmissions() {
 
     GetUserId();
     console.log(localStorage);
-
-
-
-
 
     return (
         <div class="flex-wrap page-content" id="pastSubmissionsWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">
