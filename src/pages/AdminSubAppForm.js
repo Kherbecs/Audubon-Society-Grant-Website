@@ -278,7 +278,7 @@ export function AdminSubAppForm({uid}) {
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "email">Email</label>
-                                    <input type = "text" id = 'email' value = '' onLoad = {handleInfoDisplay('email', 'email', uid)} className = "form-control user-info-field" placeholder = "Email" aria-label = "Email" readOnly></input>
+                                    <input type = "text" id = 'email-appform' value = '' onLoad = {handleInfoDisplay('email', 'email-appform', uid)} className = "form-control user-info-field" placeholder = "Email" aria-label = "Email" readOnly></input>
                                 </div>
                                 <div class = "col-md col-md-form">
                                     <label class="user-info-label" for = "homephone">Home Phone</label>
