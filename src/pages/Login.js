@@ -82,7 +82,7 @@ export function Login() {
       if (!userCredential.user.emailVerified) {
         //alert('Please verify your email before logging in.');
         document.getElementById('alert-message').textContent = 'Verify your email before logging in';
-        auth.signOut();
+        //auth.signOut();
         return;
       }
       

@@ -39,21 +39,23 @@ export function SubAppForm2() {
 
     useEffect(() => {
         let done = false;
-        onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser && !done) {
-                // User is signed in, do nothing
-                done = true;
-            } else if (!currentUser && !done) {
-                // User is signed out
-                done = true;
-                document.getElementById('appForm2Wrapper').style.visibility = "hidden";
-                history.push('/login'); 
-                window.location.reload();
-                console.error(401);
-                return;
+        onAuthStateChanged(auth, (user) => {
+          if (user && !done) {
+            // Check if the user's email is verified
+            if (user.emailVerified) {
+              // Email is verified, user can access this part of the app
+              done = true;
+            } else {
+              history.push('/login');
+              window.location.reload();
             }
+          } else if (!user && !done) {
+            // User is not authenticated, redirect to login
+            history.push('/login');
+            window.location.reload();
+          }
         });
-    }, [auth, history]); 
+      }, [auth, history]);
     
     const [userID, setUserID] = useState(null); 
 

@@ -85,6 +85,22 @@ function App() {
     return unsubscribe;
   }, []);
 
+  const [emailVerified, setEmailVerified] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserLoggedIn(true);
+        setEmailVerified(user.emailVerified); // Set email verified state
+      } else {
+        setUserLoggedIn(false);
+        setEmailVerified(false);
+      }
+    });
+  
+    return unsubscribe;
+  }, []);
+
   return (
     <div>
     <Router>
@@ -98,15 +114,15 @@ function App() {
       />
       <Switch>
         <Route exact path="/">
-          {userLoggedIn ? <UserNavBar /> : <NavBar />}
+          {(userLoggedIn && emailVerified) ? <UserNavBar /> : <NavBar />}
           <LandingPage></LandingPage>
         </Route>
         <Route exact path="/login">
-          {userLoggedIn ? <UserNavBar /> : <NavBar />}
+          {(userLoggedIn && emailVerified) ? <UserNavBar /> : <NavBar />}
           <Login></Login>
         </Route>
         <Route exact path="/register">
-          {userLoggedIn ? <UserNavBar /> : <NavBar />}
+          {(userLoggedIn && emailVerified) ? <UserNavBar /> : <NavBar />}
           <Register></Register>
         </Route>
         <Route exact path="/passwordreset">

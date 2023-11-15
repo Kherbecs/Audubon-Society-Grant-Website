@@ -73,40 +73,25 @@ export function AdminPortal() {
 
 
 
-
-//done is used so that the function can run onLoad but is only used once
-//to check if
-useEffect(() => {
-    let done = false;
-    const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
-      if (currentUser && !done) {
-        // Admin user is signed in, do nothing
-        done = true;
-      } else if (!currentUser && !done) {
-        // User is signed out
-        done = true;
-        const adminPortalWrapper = document.getElementById('adminPortalWrapper');
-        if (adminPortalWrapper) {
-          adminPortalWrapper.style.visibility = 'hidden';
-          history.push('/');
-          window.location.reload();
-        } else {
-          console.error('Element with ID "adminPortalWrapper" not found.');
-        }
-      }
-    });
-
-
-
-
-    return () => {
-      // Unsubscribe from onAuthStateChanged when the component unmounts
-      unsubscribe();
-    };
-  }, [history]);
-
-
-
+    useEffect(() => {
+        let done = false;
+        onAuthStateChanged(adminAuth, (user) => {
+          if (user && !done) {
+            // Check if the user's email is verified
+            if (user.emailVerified) {
+              // Email is verified, user can access this part of the app
+              done = true;
+            } else {
+              history.push('/adminlogin');
+              window.location.reload();
+            }
+          } else if (!user && !done) {
+            // User is not authenticated, redirect to login
+            history.push('/adminlogin');
+            window.location.reload();
+          }
+        });
+      }, [adminAuth, history]);
 
     const handleSubmissionLink = (submissionId) => {
         history.push(`/adminsubappform/${submissionId}`);

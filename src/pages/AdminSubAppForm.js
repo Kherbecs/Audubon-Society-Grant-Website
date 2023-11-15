@@ -83,29 +83,23 @@ export function AdminSubAppForm({uid}) {
     //to check if 
     useEffect(() => {
         let done = false;
-        const unsubscribe = onAuthStateChanged(adminAuth, (currentUser) => {
-        if (currentUser && !done) {
-            // Admin user is signed in, do nothing
-            done = true;
-        } else if (!currentUser && !done) {
-            // User is signed out
-            done = true;
-            const adminSubAppFormWrapper = document.getElementById('adminSubAppFormWrapper');
-            if (adminSubAppFormWrapper) {
-                adminSubAppFormWrapper.style.visibility = 'hidden';
-            history.push('/');
-            window.location.reload();
+        onAuthStateChanged(adminAuth, (user) => {
+          if (user && !done) {
+            // Check if the user's email is verified
+            if (user.emailVerified) {
+              // Email is verified, user can access this part of the app
+              done = true;
             } else {
-            console.error('Element with ID "adminSubAppFormWrapper" not found.');
+              history.push('/adminlogin');
+              window.location.reload();
             }
-        }
+          } else if (!user && !done) {
+            // User is not authenticated, redirect to login
+            history.push('/adminlogin');
+            window.location.reload();
+          }
         });
-
-        return () => {
-        // Unsubscribe from onAuthStateChanged when the component unmounts
-        unsubscribe();
-        };
-    }, [history]); 
+      }, [adminAuth, history]);
 
         const handleAdminClick = () => {
         history.push('/adminportal');

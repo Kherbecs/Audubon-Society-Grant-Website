@@ -69,7 +69,7 @@ export function AdminLogin() {
       if (!userCredential.user.emailVerified) {
         //alert('Please verify your email before logging in.');
         document.getElementById('alert-message').textContent = 'Verify your email before logging in';
-        firebase.auth().signOut();
+        //firebase.auth().signOut();
         return;
       }
   
