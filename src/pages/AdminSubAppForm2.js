@@ -213,7 +213,6 @@ export function AdminSubAppForm2({uid}) {
         databaseAdmin.ref('users/' + uid + '/forms/EnvironmentalEducation_CitizenScience/comments').push(pastComments)
           .then(() => {
           console.log('Data successfully written to the database');
-          //window.location.reload();
         })
         .catch((error) => {
           console.error('Error writing data to the database: ', error);

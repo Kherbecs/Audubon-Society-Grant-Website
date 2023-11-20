@@ -40,14 +40,12 @@ export function AdminForgotPassword() {
         const email = document.getElementById('InputEmail1').value;
         
         if(email.trim() === '') {
-          //alert('Please enter your email.');
           document.getElementById('alert-message').textContent = 'Please enter your email';
           return;
         }
         
         // Checks if email is valid
         if(!/\S+@\S+\.\S+/.test(email)) {
-          //alert('Please enter a valid email address.');
           document.getElementById('alert-message').textContent = 'Please enter a valid email address';
           return;
         }
@@ -58,7 +56,6 @@ export function AdminForgotPassword() {
           // Check if email is verified
           if (userCredential && userCredential.user && !userCredential.user.emailVerified) {
             document.getElementById('alert-message').textContent = 'Email is not found';
-            //alert('Email is not found.');
             firebase.auth().signOut();
             return;
           }
@@ -69,7 +66,6 @@ export function AdminForgotPassword() {
         })
         .catch((error) => {
           document.getElementById('alert-message').textContent = 'Account not found';
-          //alert('Account not found.');
           console.error(error);
         });
       }

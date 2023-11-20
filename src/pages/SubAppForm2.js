@@ -124,7 +124,6 @@ export function SubAppForm2() {
     
 
     function handleUpdateApp() {
-        //let updatePass = false;
         app.auth().onAuthStateChanged((user) => {
             if(user) {
                 const uid = user.uid;
@@ -158,21 +157,18 @@ export function SubAppForm2() {
 
                         // Check if first name and last name contain only characters
                         if(!/^[A-Za-z\s]+$/.test(fname) || !/^[A-Za-z\s]+$/.test(lname)) {
-                            //alert('First Name and Last Name should contain only letters.');
                             document.getElementById('error-message').textContent = 'First Name and Last Name should contain only letters';
                             return;
                         }
 
                         //Check if email is valid
                         if(!/\S+@\S+\.\S+/.test(email)) {
-                            //alert('Please enter a valid email address.');
                             document.getElementById('error-message').textContent = 'Please enter a valid email address';
                             return;
                         }
 
                         // Check if home phone number contains only numbers and optional hyphens
                         if(!/^[0-9-]+$/.test(phone)) {
-                            //alert('Phone number should contain only numbers');
                             document.getElementById('error-message').textContent = 'Phone number should contain only numbers';
                             return;
                         }
@@ -190,7 +186,6 @@ export function SubAppForm2() {
                         }
 
                         if(title1 == "Select") {
-                            //alert('Please fill out all fields.');       
                             document.getElementById('error-message').textContent = 'Please select either yes or no in the dropdown menu';
                             return;
                         }
@@ -268,17 +263,12 @@ export function SubAppForm2() {
                         }
                         
                         alert('Your Application has been Updated');
-                        //console.log(updatePass);
-                        //updatePass = true;
-                        //console.log(updatePass);
                         document.getElementById('error-message').textContent = '';
                         window.location.reload();
-                       // return updatePass;
                         
                        
                     } else {
                         console.log("NO DATA");
-                        //return updatePass;
                        
                     }
                 }).catch((error) => {
@@ -286,8 +276,6 @@ export function SubAppForm2() {
                 });
             }
         });
-       // console.log(updatePass);
-        //return updatePass;
     }
    
 
@@ -303,7 +291,6 @@ export function SubAppForm2() {
                 get(child(dbRef, 'users/' + uid + '/forms')).then((snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
-                        //document.getElementById(id).value = data[field];
 
                         //check lock status
                         if (!data["_LockStatus"]) {
@@ -311,7 +298,6 @@ export function SubAppForm2() {
                             
                             if (document.getElementById('editButton').value == "Resubmit") {
                                 handleUpdateApp();
-
                                 
                             } else {
                                 document.getElementById('editButton').value = "Resubmit";

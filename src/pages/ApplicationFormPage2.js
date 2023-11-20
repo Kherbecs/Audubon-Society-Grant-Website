@@ -123,28 +123,24 @@ export function ApplicationFormPage2() {
 
                         // Error checking to see if any of the fields are empty
                         if(!fname || !lname || !email || !phone || !organization || !title1 || !funding || !envEduc || !benefit || !objectives || !projectGoals || !fundsExplanation || !startEndDates || !feedback) {
-                            //alert('Please fill out all fields.');       
                             document.getElementById('error-message').textContent = 'Please fill out all fields';
                             return;
                         }
 
                         // Check if first name and last name contain only characters
                         if(!/^[A-Za-z\s]+$/.test(fname) || !/^[A-Za-z\s]+$/.test(lname)) {
-                            //alert('First Name and Last Name should contain only letters.');
                             document.getElementById('error-message').textContent = 'First Name and Last Name should contain only letters';
                             return;
                         }
 
                         //Check if email is valid
                         if(!/\S+@\S+\.\S+/.test(email)) {
-                            //alert('Please enter a valid email address.');
                             document.getElementById('error-message').textContent = 'Please enter a valid email address';
                             return;
                         }
 
                         // Check if home phone number contains only numbers and optional hyphens
                         if(!/^[0-9-]+$/.test(phone)) {
-                            //alert('Phone number should contain only numbers');
                             document.getElementById('error-message').textContent = 'Phone number should contain only numbers';
                             return;
                         }
@@ -161,8 +157,7 @@ export function ApplicationFormPage2() {
                             return
                         }
 
-                        if(title1 == "Select") {
-                            //alert('Please fill out all fields.');       
+                        if(title1 == "Select") {    
                             document.getElementById('error-message').textContent = 'Please select either yes or no in the dropdown menu';
                             return;
                         }
