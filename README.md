@@ -206,10 +206,10 @@ This section will show how we test our website
 	* Answer the next two questions with “**N**” and then hit Enter.
 	* Prepare the application by using the command: ***npm run build***
 
-###Manual Testing:
+### Manual Testing:
 1. Serve the application locally to test: ***npx firebase serve***
 
-###Automated Cypress Testing and Unit Testing:
+### Automated Cypress Testing and Unit Testing:
 1. Serve the application locally: ***npx firebase serve***
 2. In a separate terminal, open Cypress: ***npx cypress open***
 3. Navigate to “**e2e testing**”, choose the browser you want, and select the desired .cy.js file(s) for automated tests.
@@ -217,7 +217,7 @@ This section will show how we test our website
 <a name="Deployment"></a>
 ## Run and Deploy
 
-###Run
+### Run
 To set up and run the Bird Watcher Grant Website locally:
 1. Clone the project from Github to your local machine using the following command: ***git clone https://github.com/kaaiiy/Bird-Watcher-Grant-Website.git***
 2. After cloning, navigate to the main directory of the project: ***cd Bird-Watcher-Grant-Website***
