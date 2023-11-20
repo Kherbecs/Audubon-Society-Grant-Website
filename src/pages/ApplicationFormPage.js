@@ -68,7 +68,6 @@ export function ApplicationFormPage() {
                 get(userFormRef).then((snapshot) => {
                     if (snapshot.exists()) {
                         // User has already submitted a form
-                        //alert("You already submitted a form. You can't resubmit. Please contact one of the admins in order to edit your submission.");
                         document.getElementById('error-message').textContent = "You already submitted a form. You can't resubmit. Please contact one of the admins in order to edit your submission.";
                         return;
                     }
@@ -103,70 +102,60 @@ export function ApplicationFormPage() {
                         const essayFile = essayFileInput.files[0];
 
                         // Error checking to see if any of the fields are empty
-                        if (!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !letterFile || !essayFile) {
-                            //alert('Please fill out all fields.');       
+                        if (!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !letterFile || !essayFile) {   
                             document.getElementById('error-message').textContent = 'Please fill out all fields and make sure you submitted the required files';
                             return;
                         }
 
                         // Check if first name and last name contain only characters
                         if (!/^[A-Za-z\s]+$/.test(fname) || !/^[A-Za-z\s]+$/.test(lname)) {
-                            //alert('First Name and Last Name should contain only letters.');
                             document.getElementById('error-message').textContent = 'First Name and Last Name should contain only letters';
                             return;
                         }
 
                         // Check if birthday is in the "xx/xx/xxxx" format
                         if (!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(birthday)) {
-                            //alert('Please enter a valid birthday in the format "xx/xx/xxxx".');
                             document.getElementById('error-message').textContent = 'Please enter a valid birthday in the format "xx/xx/xxxx"';
                             return;
                         }
 
                         // Checks if email is valid
                         if (!/\S+@\S+\.\S+/.test(email)) {
-                            //alert('Please enter a valid email address.');
                             document.getElementById('error-message').textContent = 'Please enter a valid email address';
                             return;
                         }
 
                         // Check if home phone number contains only numbers and optional hyphens
                         if (!/^[0-9-]+$/.test(phone)) {
-                            //alert('Phone number should contain only numbers');
                             document.getElementById('error-message').textContent = 'Phone number should contain only numbers';
                             return;
                         }
 
                         // Check if city and state contain only characters
                         if (!/^[A-Za-z\s]+$/.test(city) || !/^[A-Za-z\s]+$/.test(state)) {
-                            //alert('City and State should contain only letters and spaces.');
                             document.getElementById('error-message').textContent = 'City and State should contain only letters';
                             return;
                         }
 
                         // Check if ZIP code contains only numbers
                         if (!/^\d+$/.test(zip)) {
-                            //alert('ZIP Code should contain only numbers.');
                             document.getElementById('error-message').textContent = 'ZIP Code should contain only numbers';
                             return;
                         }
 
-                        if (q1 === "Select" && q2 === "Select") {
-                            //alert('Please fill out all fields.');       
+                        if (q1 === "Select" && q2 === "Select") {     
                             document.getElementById('error-message').textContent = 'Please select either yes or no in the dropdown menu';
                             return;
                         }
 
                         // Check if the user selected an option for question 1
                         if (q1 === "Select") {
-                            //alert('Please select if you are a member of the San Joaquin Audubon Society or not.');
                             document.getElementById('error-message').textContent = 'Please select if you are a member of the San Joaquin Audubon Society or not';
                             return;
                         }
 
                         // Check if the user selected an option for question 2
                         if (q2 === "Select") {
-                            //alert('Please select if you live in San Joaquin County or not.');
                             document.getElementById('error-message').textContent = 'Please select if you live in San Joaquin County or not';
                             return;
                         }
@@ -312,7 +301,6 @@ export function ApplicationFormPage() {
                                     // All uploads and updates completed successfully
                                     alert('Successfully submitted. You can now view your submission in the Past Submissions.');
                                     // Page reload
-                                    //window.location.href = '/applicationformpage';
                                     window.location.reload();
                                 })
                                 .catch((error) => {

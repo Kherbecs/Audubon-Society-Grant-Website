@@ -29,24 +29,14 @@ const adminFirebaseConfig = {
 };
 
 
-
-
  // Initialize Firebase for admins
 const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
 console.log(adminApp);
 const adminAuth = adminApp.auth();
 
 
-
-
-
-
-
-
 const databaseAdmin = firebase.database(adminApp);
 const numHitsRef = databaseAdmin.ref("numHits");
-
-
 
 
 const firebaseConfig = {
@@ -70,8 +60,6 @@ const firebaseConfig = {
 
 export function AdminPortal() {
     const history = useHistory();
-
-
 
     useEffect(() => {
         let done = false;
@@ -99,10 +87,6 @@ export function AdminPortal() {
       };
 
     /* HANDLE LOGOUT AUTHENTICATION */
-
-
-
-
     function handleLogOut() {
         // Checks if it's an admin account and if it is, it redirects them to admin login and signs out
         signOut(adminAuth).then(() => {
@@ -114,19 +98,9 @@ export function AdminPortal() {
         });
     }
 
-
-
-
     /* RETRIEVING USER IDS AND DATA FROM DB */
-
-
-
-
     const [uids, setUids] = useState([]);
     const [userData, setUserData] = useState([]);
-
-
-
 
     useEffect(() => {
         const fetchUids = async () => {
@@ -143,26 +117,18 @@ export function AdminPortal() {
         }
         fetchUids();
     }, []) //empty braces so code runs once
-
-
     
-
-    
-    /* SCROLLING AND STORING SELECTED UID */
-    
+    /* SCROLLING AND STORING SELECTED UID */ 
     useEffect(() => {
         if(displayApp && buttonClicked) {
             const formName = userData[selectedUid]?.forms?.steve_stocking ? 'steve_stocking' : 'EnvironmentalEducation_CitizenScience';
             const targetId = formName === 'steve_stocking' ? 'adminSubAppFormWrapper' : 'adminsubappform2Wrapper';
             document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
-            //document.getElementById('adminSubAppFormWrapper').scrollIntoView({behavior:'smooth'});
-                //searchUsed(false);
                 setButtonClicked(false);
         }
     });
     
 
-    //const buttonRef = useRef(null);
     const [buttonClicked, setButtonClicked] = useState(false);
 
     const [selectedUid, setSelectedUid] = useState(null);
@@ -171,14 +137,12 @@ export function AdminPortal() {
         setSelectedUid(uid);
         setDisplayApp(true);
         setButtonClicked(true);
-        //setSearchUsed(false);
     }
    
     const [appData, setAppData] = useState(null);
     const [displayApp, setDisplayApp] = useState(false);
    
     /* LOCK FUNCTIONALITY */
-
     const [buttonStates, setButtonStates] = useState({}); // List of button (lock) states
     const [lockStates, setLockStates] = useState({});
 
@@ -200,19 +164,15 @@ export function AdminPortal() {
         }
     };
    
-    //const [lockLoading, setLockLoading] = useState(true);
     useEffect(() => {
         const getStates = async () => {
             try{
                 const newButtonStates = await Promise.all(
                     uids.map(async (uid) => {
                         if(uid){
-                            //console.log("getStates uid = " + uid);
-                            //const lockID = `lock_${uid}`;
                             const dbStates = await database.ref(`users/${uid}/forms`).get();
                             const curStates = dbStates.val();
                             console.log(`Lock state for ${uid}:`, curStates ? curStates._LockStatus : 'Not found');
-                            //return curStates ? curStates._LockStatus : false;
                             return {uid, lockStatus: curStates ? curStates._LockStatus : false};
                         }
                     })
@@ -236,7 +196,6 @@ export function AdminPortal() {
     
 
     /*-----------UNIQUE VISITOR COUNTER STATES-----------------*/
-
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -262,9 +221,6 @@ export function AdminPortal() {
 
     console.log(data);
     /*----------------UNIQUE VISITOR CODE END----------------------*/
-
-
-
 
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
@@ -302,7 +258,6 @@ export function AdminPortal() {
         const filteredUids = [];
         snapshot.forEach((childSnapshot) => {
             const user = childSnapshot.val();
-            //console.log(user);
             // Check if the user's name or grant type contains the input
             if(user) {
                 const {fullName, grantType, email} = user;
@@ -331,11 +286,6 @@ export function AdminPortal() {
         console.error('Error searching users:', error);
     }
 
-   /*
-    if(searchUsed){
-        setSearchUsed(false);
-    }
-    */
   };
 
   const [users, setUsers] = useState([]);
@@ -389,7 +339,6 @@ export function AdminPortal() {
 
                 // Send the email
                 emailjs.send(serviceID, templateID, params).then((response) => {
-                    //alert("Email sent successfully!");
                     window.location.reload();
                 })
                     .catch((error) => {
@@ -438,7 +387,6 @@ export function AdminPortal() {
 
         // Send the email
         emailjs.send(serviceID, templateID, params).then((response) => {
-            //alert("Email sent successfully!");
             window.location.reload();
         })
             .catch((error) => {
@@ -465,7 +413,6 @@ export function AdminPortal() {
         const confirmPassword = document.getElementById('confirm-password').value;
         
         if(password.trim() === '' && fullName.trim() === '' && confirmPassword.trim() === '' && email.trim() === '') {
-          //alert('Please fill out the registration form.');
           document.getElementById('alert-message').textContent = 'Please fill out all fields';
           return;
         }
@@ -474,25 +421,21 @@ export function AdminPortal() {
       
         // Full name can only be using spaces and letters
         if (!fullNameRegex.test(fullName)) {
-          //alert('Please enter a valid full name with letters and spaces only.');
           document.getElementById('alert-message').textContent = 'Please enter a valid full name';
           return;
         }
       
         if (fullName.trim() === '') {
-          //alert('Please enter your full name.');
           document.getElementById('alert-message').textContent = 'Please enter your full name';
           return;
         }
       
         if(email.trim() === '') {
-          //alert('Please enter your email.');
           document.getElementById('alert-message').textContent = 'Please enter your email';
           return;
         }
       
         if(password.trim() === '') {
-          //alert('Please enter your password.');
           document.getElementById('alert-message').textContent = 'Please enter your password';
           return;
         }
@@ -500,21 +443,18 @@ export function AdminPortal() {
         //Checks if email is valid
         const emailRegex = /\S+@\S+\.\S+/;
         if (!emailRegex.test(email)) {
-          //alert('Please enter a valid email address.');
           document.getElementById('alert-message').textContent = 'Please enter a valid email address';
           return;
         }
       
         // Checks if password matches
         if (password !== confirmPassword) {
-          //alert('Passwords do not match.');
           document.getElementById('alert-message').textContent = 'Passwords do not match';
           return;
         }
       
         // Checks the password requirement
         if((password.length < 6 || /\s/.test(password)) && !(password.trim() === '')) {
-          //alert('Password must be at least 6 characters long and not contain spaces.');
           document.getElementById('alert-message').textContent = 'Password must be at least 6 characters long and not contain spaces';
           return;
         }
@@ -523,7 +463,6 @@ export function AdminPortal() {
         try {
           const signInMethods = await adminApp.auth().fetchSignInMethodsForEmail(email);
           if (signInMethods.length > 0) {
-            //alert('This email address is already registered.');
             document.getElementById('alert-message').textContent = 'This email address is already registered';
             return;
           }
@@ -573,7 +512,6 @@ export function AdminPortal() {
           });
       }
 
-    //console.log("button States: " + buttonStates);
     return (
    
     <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
