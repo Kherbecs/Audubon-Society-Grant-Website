@@ -546,7 +546,7 @@ export function AdminPortal() {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" onClick={handleAdminRegistration}>Send message</button>
+                            <button type="button" class="btn btn-success" onClick={sendMail}>Send message</button>
                         </div>
                     </div>
                 </div>
