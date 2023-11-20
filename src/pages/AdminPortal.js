@@ -399,7 +399,7 @@ export function AdminPortal() {
         });
     };
 
-       // Function to send the email to users who signed up for grant updates
+       // Function for an admin to send an email to a user
        const sendMailEmail = () => {
         // Initialize Email.js
         emailjs.init("ExVfhWJSKY2SPFYqo");
