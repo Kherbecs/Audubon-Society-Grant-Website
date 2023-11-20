@@ -73,7 +73,6 @@ export function AdminSubAppForm({uid}) {
              loadStatus = 'No Status'
          }
          console.log('Load Current Status: ' + loadStatus)
-         //document.getElementById('statusOne').innerHTML = loadStatus;
          document.getElementById('statusDisplay1').innerHTML= loadStatus;
          document.getElementById('floatingSelect1').value = loadStatus;
 
@@ -106,7 +105,6 @@ export function AdminSubAppForm({uid}) {
         window.location.reload();
         };
 
-    //console.log('UID = ' + uid);
     const getInitialState = () =>{
         const value = "Grade";
         return value;
@@ -122,7 +120,6 @@ export function AdminSubAppForm({uid}) {
 
     //auth was interfering with user data display
    function handleInfoDisplay(field,id,uid){
-    //const uid = user.uid;
     const dbRef = ref(database);
     // get data from database as a JSON object, and get each field
     // path temporarily hardcoded
@@ -141,11 +138,8 @@ export function AdminSubAppForm({uid}) {
     });
    }
 
-    //auth was interfering with links
+    //auth was interfering with links so it was removed
     function handleURLDisplay(field, id, uid) {
-       // app.auth().onAuthStateChanged((user) => {
-            //if(user) {
-                //const uid = user.uid;
                 const dbRef = ref(database);
                 // get data from database as a JSON object, and get each field
                 // path temporarily hardcoded
@@ -154,13 +148,11 @@ export function AdminSubAppForm({uid}) {
                         const data = snapshot.val();
                         document.getElementById(id).href = data[field];
                     } else {
-                        //alert("Document not found");
                         console.log("NO DATA");
                     }
                 }).catch((error) => {
                     console.error(error);
                 });
-            //}
         
     }
 
@@ -173,7 +165,7 @@ export function AdminSubAppForm({uid}) {
             if(status == 'Approved' && window.confirm('Application is currently approved, you sure you want to change it?')){
                 update(dataUp,{_GrantStatus: newStatus});
             }else if(status == 'Approved' && !window.confirm('Application is currently approved, you sure you want to change it?')){
-                // do nothing rah
+                // do nothing
             }else{
                 update(dataUp,{_GrantStatus: newStatus});
             }
@@ -234,7 +226,6 @@ export function AdminSubAppForm({uid}) {
         databaseAdmin.ref('users/' + uid + '/forms/steve_stocking/comments').push(pastComments)
           .then(() => {
           console.log('Data successfully written to the database');
-          //window.location.reload();
         })
         .catch((error) => {
           console.error('Error writing data to the database: ', error);

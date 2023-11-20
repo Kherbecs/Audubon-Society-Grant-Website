@@ -39,7 +39,6 @@ export function PasswordReset() {
     
     const userEmail = document.getElementById('InputEmail1').value;
     if(userEmail===''){
-      //alert('Enter a vaild email')
       document.getElementById('alert-message').textContent = 'Please enter your email';
       return;
     } else if(!/\S+@\S+\.\S+/.test(userEmail)){
@@ -49,7 +48,6 @@ export function PasswordReset() {
     sendPasswordResetEmail(auth,userEmail)
     .then((userCredential) => {
       if (userCredential && userCredential.user && !userCredential.user.emailVerified) {
-        //alert('Email is not found.');
         document.getElementById('alert-message').textContent = 'Email is not found';
         firebase.auth().signOut();
         return;
@@ -59,7 +57,6 @@ export function PasswordReset() {
     })
     .catch((error) => {
       document.getElementById('alert-message').textContent = 'Account not found';
-      //alert('Account not found.');
       console.error(error);
       
     });

@@ -58,19 +58,16 @@ export function Login() {
     const password = document.getElementById('password').value;
     
     if(password.trim() === '' && email.trim() === '') {
-      //alert('Please fill out the form.');
       document.getElementById('alert-message').textContent = 'Please fill out the form';
       return;
     }
   
     else if(password.trim() === '') {
-      //alert('Please enter your password.');
       document.getElementById('alert-message').textContent = 'Please enter your password';
       return;
     }
   
     else if(email.trim() === '') {
-      //alert('Please enter your email.');
       document.getElementById('alert-message').textContent = 'Please enter your email';
       return;
     }
@@ -80,9 +77,8 @@ export function Login() {
     .then((userCredential) => {
       // Check if email is verified
       if (!userCredential.user.emailVerified) {
-        //alert('Please verify your email before logging in.');
         document.getElementById('alert-message').textContent = 'Verify your email before logging in';
-        //auth.signOut();
+
         return;
       }
       
@@ -92,7 +88,6 @@ export function Login() {
     })
     .catch((error) => {
       // Handle incorrect password or email
-      //alert('Incorrect email or password.');
       document.getElementById('alert-message').textContent = 'Incorrect email or password';
       console.error(error);
     });

@@ -189,76 +189,65 @@ export function SubAppForm() {
                         const essayFile = essayFileInput.files[0];
                          
                          // Error checking to see if any of the fields are empty
-                         if(!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !q4) {
-                             //alert('Please fill out all fields.');       
+                         if(!fname || !lname || !birthday || !email || !phone || !address || !city || !state || !zip || !q1 || !q2 || !q3 || !q4) {   
                              document.getElementById('error-messageSS').textContent = 'Please fill out all fields';
                              return;
                          }
  
                          // Check if first name and last name contain only characters
                          if(!/^[A-Za-z\s]+$/.test(fname) || !/^[A-Za-z\s]+$/.test(lname)) {
-                             //alert('First Name and Last Name should contain only letters.');
                              document.getElementById('error-messageSS').textContent = 'First Name and Last Name should contain only letters';
                              return;
                          }
 
                          if(!/^\d{2}\/\d{2}\/\d{4}$/.test(birthday)){
-                            //alert('Please enter a valid birthday: MM/DD/YYYY.');
                             document.getElementById('error-messageSS').textContent = 'Please enter a valid birthday: MM/DD/YYYY';
                             return;
                          }
  
                          //Check if email is valid
                          if(!/\S+@\S+\.\S+/.test(email)) {
-                             //alert('Please enter a valid email address.');
                              document.getElementById('error-messageSS').textContent = 'Please enter a valid email address';
                              return;
                          }
  
                          // Check if home phone number contains only numbers and optional hyphens
                          if(!/^[0-9-]+$/.test(phone)) {
-                             //alert('Phone number should contain only numbers');
                              document.getElementById('error-messageSS').textContent = 'Phone number should contain only numbers';
                              return;
                          }
                         
                          //Check if address contains only letters and numbers
                          if(!/^[A-Za-z0-9\s]+$/.test(address)){
-                            //alert('Address should only contain letters and numbers');
                             document.getElementById('error-messageSS').textContent = 'Address should only contain letters and numbers';
                             return;
                          }
 
                          //Check if city and state only contain letters
                          if(!/^[A-Za-z\s]+$/.test(city) || !/^[A-Za-z\s]+$/.test(state)){
-                            //alert('Check if city and/or state contain only letters.');
                             document.getElementById('error-messageSS').textContent = 'Check if city and/or state contain only letters.';
                             return;
                          }
 
                          //Check if zip code only contains numbers
                          if(!/^[0-9]+$/.test(zip)){
-                            //alert('Zip code should only contain numbers');
                             document.getElementById('error-messageSS').textContent = 'Zip code should only contain numbers.';
                             return;
                          }
 
-                         if(q1 === "Select" && q2 === "Select") {
-                            //alert('Please fill out all fields.');       
+                         if(q1 === "Select" && q2 === "Select") {    
                             document.getElementById('error-messageSS').textContent = 'Please select either Yes or No';
                             return;
                         }
                         
                         // Check if the user selected an option for question 1
                         if(q1 !== "Yes" && q1 !== "No") {
-                            //alert('Please select if you are a member of the San Joaquin Audubon Society or not.');
                             document.getElementById('error-messageSS').textContent = 'Please select Yes or No if you, or a parent or guardian, a member of the San Joaquin Audubon Society';
                             return;
                         }
 
                         // Check if the user selected an option for question 2
                         if(q2 !== "Yes" && q2 !== "No") {
-                            //alert('Please select if you live in San Joaquin County or not.');
                             document.getElementById('error-messageSS').textContent = 'Please select Yes or No for if you live in San Joaquin County';
                             return;
                         }
@@ -377,7 +366,6 @@ export function SubAppForm() {
                         Promise.all(fileUploadPromises)
                             .then(() => {
                                 // All uploads and updates completed successfully
-                                //alert('Successfully submitted. You can now view your submission in the Past Submissions.');
                                 window.location.reload();
                             })
                             .catch((error) => {
@@ -386,18 +374,13 @@ export function SubAppForm() {
                          
                          alert('Your Application has been Updated');
                          enableReadOnly();
-                         /*
-                         console.log(updatePass);
-                         updatePass = true;
-                         console.log(updatePass);*/
                          document.getElementById('error-message').textContent = '';
                          window.location.reload();
-                         //return updatePass;
+
                          
                         
                      } else {
                          console.log("NO DATA");
-                         //return updatePass;
                         
                      }
                  }).catch((error) => {
@@ -405,8 +388,7 @@ export function SubAppForm() {
                  });
              }
          });
-         //console.log(updatePass);
-         //return updatePass;
+
      }
     
  
@@ -422,7 +404,6 @@ export function SubAppForm() {
                 get(child(dbRef, 'users/' + uid + '/forms')).then((snapshot) => {
                     if (snapshot.exists()) {
                         const data = snapshot.val();
-                        //document.getElementById(id).value = data[field];
 
                         //check lock status
                         if (!data["_LockStatus"]) {
@@ -456,31 +437,6 @@ export function SubAppForm() {
         });
     }
 
-        // //Check user database for the lock state of the submission
-        // function checkLockState(){
-        //     app.auth().onAuthStateChanged((user) => {
-        //         if(user){
-        //             const uid = user.uid;
-        //             const database = firebase.database(app);
-        //             const lockState = database.ref('users/' + uid + '/forms/steve_stocking/lockState');
-        //             lockState.on('value', (snapshot) => {
-        //             const data = snapshot.val();
-        //             const lockStateStatus = data;
-    
-        //             if(lockStateStatus === "unlocked"){
-        //                 const elements = document.getElementsByClassName("user-input");
-        //                 for (let i = 0; i < elements.length; i++) {
-        //                     elements[i].removeAttribute("readonly");
-        //                 }
-        //             }
-        //             else{
-        //                 return;
-        //             }
-        //           });
-        //         }
-        //     })
-        // }
-        // checkLockState();
 
     return (
         <div className = "wrapper-subappform" id="subAppFormWrapper" onLoad="javascript:onAuthStateChanged(auth, auth.currentUser)">

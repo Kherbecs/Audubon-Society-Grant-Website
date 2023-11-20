@@ -41,7 +41,6 @@ async function handleRegistration() {
 
 
   if(password.trim() === '' || fullName.trim() === '' || confirmPassword.trim() === '' || email.trim() === '') {
-    //alert('Please fill out the registration form.');
     document.getElementById('alert-message').textContent = 'Please fill out all fields';
     return;
   }
@@ -50,7 +49,6 @@ async function handleRegistration() {
 
   // Full name can only be using spaces and letters
   if (!fullNameRegex.test(fullName)) {
-    //alert('Please enter a valid full name with letters and spaces only.');
     document.getElementById('alert-message').textContent = 'Please enter a valid full name';
     return;
   }
@@ -58,21 +56,18 @@ async function handleRegistration() {
   // Checks if email is valid
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)) {
-    //alert('Please enter a valid email address.');
     document.getElementById('alert-message').textContent = 'Please enter a valid email address';
     return;
   }
 
   // Checks if password matches
   if (password !== confirmPassword) {
-    //alert('Passwords do not match.');
     document.getElementById('alert-message').textContent = 'Passwords do not match';
     return;
   }
 
   // Checks the password requirement
   if((password.length < 6 || /\s/.test(password)) && !(password.trim() === '')) {
-    //alert('Password must be at least 6 characters long and not contain spaces.');
     document.getElementById('alert-message').textContent = 'Password must be at least 6 characters long and not contain spaces';
     return;
   }
@@ -81,7 +76,6 @@ async function handleRegistration() {
   try {
     const signInMethods = await auth.fetchSignInMethodsForEmail(email);
     if (signInMethods.length > 0) {
-      //alert('This email address is already registered.');
       document.getElementById('alert-message').textContent = 'This email address is already registered';
       return;
     }
