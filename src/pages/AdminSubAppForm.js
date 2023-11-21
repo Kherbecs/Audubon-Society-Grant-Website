@@ -148,7 +148,7 @@ export function AdminSubAppForm({uid}) {
                         const data = snapshot.val();
                         document.getElementById(id).href = data[field];
                     } else {
-                        console.log("NO DATA");
+                        console.log("NO DATA RETRIEVED");
                     }
                 }).catch((error) => {
                     console.error(error);

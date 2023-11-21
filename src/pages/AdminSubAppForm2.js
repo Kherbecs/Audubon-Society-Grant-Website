@@ -128,7 +128,7 @@ export function AdminSubAppForm2({uid}) {
                         console.log("Field not found in data");
                     }
                 } else {
-                    console.log("NO DATA");
+                    console.log("NO DATA RETRIEVED");
                 }
             }).catch((error) => {
                 console.error(error);
