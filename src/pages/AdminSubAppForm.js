@@ -100,11 +100,6 @@ export function AdminSubAppForm({uid}) {
         });
       }, [adminAuth, history]);
 
-        const handleAdminClick = () => {
-        history.push('/adminportal');
-        window.location.reload();
-        };
-
     const getInitialState = () =>{
         const value = "Grade";
         return value;

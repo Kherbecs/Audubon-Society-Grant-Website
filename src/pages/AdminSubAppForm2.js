@@ -73,11 +73,6 @@ export function AdminSubAppForm2({uid}) {
         document.getElementById('floatingSelect2').value = loadStatus;
     })
 
-    const handleAdminClick = () => {
-        history.push('/adminportal');
-        window.location.reload();
-    };
-
     useEffect(() => {
         let done = false;
         onAuthStateChanged(adminAuth, (user) => {

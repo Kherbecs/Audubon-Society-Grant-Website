@@ -1,5 +1,4 @@
-import react from 'react'
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import '../css/AdminPortal.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import firebase from 'firebase/compat/app'
@@ -7,13 +6,14 @@ import 'firebase/compat/auth'
 import 'firebase/compat/analytics';
 import 'firebase/compat/database';
 import { useHistory } from 'react-router-dom';
-import { getAnalytics } from 'firebase/analytics';
-import { getDatabase, get, child, ref} from 'firebase/database';
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { get, ref} from 'firebase/database';
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import emailjs from 'emailjs-com'; // Import the emailjs-com library
-import { Link } from 'react-router-dom';
 import { AdminSubAppForm } from './AdminSubAppForm'; // Import the component
 import { AdminSubAppForm2 } from './AdminSubAppForm2';
+
+
+
 
 
 
@@ -29,14 +29,20 @@ const adminFirebaseConfig = {
 };
 
 
+
+
  // Initialize Firebase for admins
 const adminApp = firebase.initializeApp(adminFirebaseConfig, 'admin-app');
 console.log(adminApp);
 const adminAuth = adminApp.auth();
 
 
+
+
 const databaseAdmin = firebase.database(adminApp);
 const numHitsRef = databaseAdmin.ref("numHits");
+
+
 
 
 const firebaseConfig = {
@@ -56,10 +62,9 @@ const firebaseConfig = {
   const auth = app.auth();
 
 
-
-
 export function AdminPortal() {
     const history = useHistory();
+
 
     useEffect(() => {
         let done = false;
@@ -81,10 +86,6 @@ export function AdminPortal() {
         });
       }, [adminAuth, history]);
 
-    const handleSubmissionLink = (submissionId) => {
-        history.push(`/adminsubappform/${submissionId}`);
-        window.location.reload();
-      };
 
     /* HANDLE LOGOUT AUTHENTICATION */
     function handleLogOut() {
@@ -98,9 +99,11 @@ export function AdminPortal() {
         });
     }
 
+
     /* RETRIEVING USER IDS AND DATA FROM DB */
     const [uids, setUids] = useState([]);
     const [userData, setUserData] = useState([]);
+
 
     useEffect(() => {
         const fetchUids = async () => {
@@ -117,8 +120,8 @@ export function AdminPortal() {
         }
         fetchUids();
     }, []) //empty braces so code runs once
-    
-    /* SCROLLING AND STORING SELECTED UID */ 
+   
+    /* SCROLLING AND STORING SELECTED UID */
     useEffect(() => {
         if(displayApp && buttonClicked) {
             const formName = userData[selectedUid]?.forms?.steve_stocking ? 'steve_stocking' : 'EnvironmentalEducation_CitizenScience';
@@ -127,11 +130,12 @@ export function AdminPortal() {
                 setButtonClicked(false);
         }
     });
-    
-
+   
     const [buttonClicked, setButtonClicked] = useState(false);
 
+
     const [selectedUid, setSelectedUid] = useState(null);
+
 
     const handleButton = (uid) => {
         setSelectedUid(uid);
@@ -139,31 +143,29 @@ export function AdminPortal() {
         setButtonClicked(true);
     }
    
-    const [appData, setAppData] = useState(null);
     const [displayApp, setDisplayApp] = useState(false);
    
     /* LOCK FUNCTIONALITY */
-    const [buttonStates, setButtonStates] = useState({}); // List of button (lock) states
-    const [lockStates, setLockStates] = useState({});
-
+    const [lockStates, setLockStates] = useState({}); // List of lock states
+    //updating database when lock state changes
     const handleCheckbox = async (uid) => {
         try {
-    
+   
             setLockStates((prevStates) => ({
                 ...prevStates,
                 [uid]: !prevStates[uid]
             }));
-    
+   
             database.ref(`users/${uid}/forms`).update({
                 _LockStatus: !lockStates[uid]
             });
-    
+   
             setButtonClicked(false);
         } catch (error) {
             console.error('Error handling checkbox', error);
         }
     };
-   
+    //updating locks visually when page is opened or refreshed
     useEffect(() => {
         const getStates = async () => {
             try{
@@ -177,6 +179,7 @@ export function AdminPortal() {
                         }
                     })
                 );
+
 
                 const updatedLockStates = newButtonStates.reduce((acc, {uid, lockStatus}) => {
                     if(uid){
@@ -193,11 +196,11 @@ export function AdminPortal() {
         getStates();
     }, [uids]);
 
-    
 
     /*-----------UNIQUE VISITOR COUNTER STATES-----------------*/
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -209,7 +212,7 @@ export function AdminPortal() {
                     setData(data);
                     setLoading(false);
                 }else{
-                    console.log("No such document dude");
+                    console.log("No such document");
                 }  
             }catch (error){
                 console.error('Error fetching document: ', error);
@@ -219,14 +222,16 @@ export function AdminPortal() {
         fetchData();
     }, []);
 
+
     console.log(data);
     /*----------------UNIQUE VISITOR CODE END----------------------*/
 
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   //stores search results from db in variable
   const [searchResults, setSearchResults] = useState([]);
 
+
+  //function to retrieve users info for display in the information box when the page is opened or refreshed
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
@@ -242,53 +247,48 @@ export function AdminPortal() {
       }
     };
 
+
     fetchAllUsers();
   }, []);
-
-  const [searchUsed, setSearchUsed] = useState(false);
+  //variable for user ids that match input in the search bar
   const [filteredUids, setFilteredUids] = useState([]);
+
 
   /* SEARCH FUNCTION */
   const handleSearch = async (event) => {
     const input = event.target.value.toLowerCase().trim();
     const results = [];
 
+
     try {
         const snapshot = await database.ref('users').once('value');
         const filteredUids = [];
         snapshot.forEach((childSnapshot) => {
             const user = childSnapshot.val();
-            // Check if the user's name or grant type contains the input
+            // Check if the user's name or email matches the search input
             if(user) {
-                const {fullName, grantType, email} = user;
+                const {fullName, email} = user;
                 if(fullName && email) {
                     if(fullName.toLowerCase().includes(input) || email.toLowerCase().includes(input)){
                         results.push(user);
                         filteredUids.push(childSnapshot.key);
                     }
                 }
-                if(grantType && grantType.toLowerCase().includes(input)) {
-                    results.push(user);
-                    filteredUids.push(childSnapshot.key);
-                }
-                
-           
             }
         });
-    
+   
     setSearchResults(results);
-
     setFilteredUids(filteredUids);
 
-    setSearchUsed(true);
 
     } catch (error) {
         console.error('Error searching users:', error);
     }
-
   };
 
+
   const [users, setUsers] = useState([]);
+
 
     useEffect(() => {
         // Fetch all users from Firebase
@@ -307,24 +307,29 @@ export function AdminPortal() {
             });
     }, []);
 
+
     // Function to send the email to users who signed up for grant updates
     const sendMail = () => {
         // Initialize Email.js
         emailjs.init("ExVfhWJSKY2SPFYqo");
+
 
         // Extract input values
         const sendername = document.querySelector("#sendername").value;
         const subject = document.querySelector("#subject").value;
         const message = document.querySelector("#message").value;
 
+
         const serviceID = "service_3gpojoc"; // Email Service ID
         const templateID = "template_7asx4tu"; // Email Template ID
+
 
         if (!sendername || !subject || !message) {
             // Check if any of the fields are empty
             alert("Please fill in all fields.");
             return;
         }
+
 
         // Iterate through users and send emails if signUpForGrants is true
         users.forEach((user) => {
@@ -337,6 +342,7 @@ export function AdminPortal() {
                     message,
                 };
 
+
                 // Send the email
                 emailjs.send(serviceID, templateID, params).then((response) => {
                     window.location.reload();
@@ -348,10 +354,12 @@ export function AdminPortal() {
         });
     };
 
+
        // Function for an admin to send an email to a user
        const sendMailEmail = () => {
         // Initialize Email.js
         emailjs.init("ExVfhWJSKY2SPFYqo");
+
 
         // Extract input values
         const sendername2 = document.querySelector("#sendername2").value;
@@ -359,6 +367,7 @@ export function AdminPortal() {
         const subject2 = document.querySelector("#subject2").value;
         const replyto = document.querySelector("#replyto").value;
         const message2 = document.querySelector("#message2").value;
+
 
         // Email.js parameters
         const params = {
@@ -369,8 +378,10 @@ export function AdminPortal() {
             message2,
         };
 
+
         const serviceID = "service_r5sydhn"; // Email Service ID
         const templateID = "template_dp0perq"; // Email Template ID
+
 
         if (!sendername2 || !to || !subject2 || !replyto || !message2) {
             // Check if any of the fields are empty
@@ -378,12 +389,14 @@ export function AdminPortal() {
             return;
         }
 
+
         const emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         // Check if "to" and "replyto" emails are in the proper format
         if (!emailFormat.test(to) || !emailFormat.test(replyto)) {
             alert("Please enter valid email addresses.");
             return;
         }
+
 
         // Send the email
         emailjs.send(serviceID, templateID, params).then((response) => {
@@ -393,7 +406,7 @@ export function AdminPortal() {
                 console.error("Email sending error", error);
             });
     };
-
+    //changing submission names from the database variables to user friendly/accurate grant and scholarship names
     function getForms(uid){
         var str = "";
         Object.keys(userData[uid]?.forms).forEach(key => {
@@ -405,61 +418,61 @@ export function AdminPortal() {
         })
         return str;
     }
-
+    //function to create admin account and write info to the database with error bounds on the input
     async function handleAdminRegistration() {
         const fullName = document.getElementById('full-name').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirm-password').value;
-        
+       
         if(password.trim() === '' && fullName.trim() === '' && confirmPassword.trim() === '' && email.trim() === '') {
           document.getElementById('alert-message').textContent = 'Please fill out all fields';
           return;
         }
-      
+     
         const fullNameRegex = /^[A-Za-z\s]+$/;
-      
+     
         // Full name can only be using spaces and letters
         if (!fullNameRegex.test(fullName)) {
           document.getElementById('alert-message').textContent = 'Please enter a valid full name';
           return;
         }
-      
+     
         if (fullName.trim() === '') {
           document.getElementById('alert-message').textContent = 'Please enter your full name';
           return;
         }
-      
+     
         if(email.trim() === '') {
           document.getElementById('alert-message').textContent = 'Please enter your email';
           return;
         }
-      
+     
         if(password.trim() === '') {
           document.getElementById('alert-message').textContent = 'Please enter your password';
           return;
         }
-      
+     
         //Checks if email is valid
         const emailRegex = /\S+@\S+\.\S+/;
         if (!emailRegex.test(email)) {
           document.getElementById('alert-message').textContent = 'Please enter a valid email address';
           return;
         }
-      
+     
         // Checks if password matches
         if (password !== confirmPassword) {
           document.getElementById('alert-message').textContent = 'Passwords do not match';
           return;
         }
-      
+     
         // Checks the password requirement
         if((password.length < 6 || /\s/.test(password)) && !(password.trim() === '')) {
           document.getElementById('alert-message').textContent = 'Password must be at least 6 characters long and not contain spaces';
           return;
         }
-      
-        // Checks if the email is used 
+     
+        // Checks if the email is used
         try {
           const signInMethods = await adminApp.auth().fetchSignInMethodsForEmail(email);
           if (signInMethods.length > 0) {
@@ -471,7 +484,7 @@ export function AdminPortal() {
           const errorMessage = error.message;
           console.log(errorMessage);
         }
-        
+       
         // firebase creates the acc with the email and password
         adminAuth.createUserWithEmailAndPassword(email, password)
           .then(async (userCredential) => {
@@ -483,7 +496,7 @@ export function AdminPortal() {
               await adminAuth.currentUser.sendEmailVerification();
               // Email verification sent
               console.log('Email verification sent');
-      
+     
               // Write registration data to the Realtime Database
               const databaseAdmin = firebase.database(adminApp);
               const userId = user.uid;
@@ -512,6 +525,7 @@ export function AdminPortal() {
           });
       }
 
+
     return (
    
     <div class="wrapper-admin-portal" id="adminPortalWrapper" onLoad="javascript:onAuthStateChanged(adminAuth, adminAuth.currentUser)">
@@ -519,6 +533,8 @@ export function AdminPortal() {
          <button class="logout" onClick={handleLogOut}><a class="logoutlink">Logout</a></button>
             <div class="divider" />
             <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal">Send a Grant Update</button>
+
+
 
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -546,14 +562,16 @@ export function AdminPortal() {
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" onClick={sendMail}>Send message</button>
+                            <button type="button" class="btn btn-success" onClick={sendMail}>Send update</button>
                         </div>
                     </div>
                 </div>
             </div>
 
+
             <div class="divider" />
             <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal2">Email</button>
+
 
             <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -594,9 +612,10 @@ export function AdminPortal() {
                 </div>
             </div>
 
+
             <div class="divider" />
             <button type="button" class="email" data-bs-toggle="modal" data-bs-target="#exampleModal3">Register an Admin Account</button>
-            
+           
             <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -634,6 +653,7 @@ export function AdminPortal() {
                 </div>
             </div>
 
+
             <p class="fs-1 adminportal-heading">
                 <p class="text-center">Current Applicants</p>
                 <p class="text-end">
@@ -641,9 +661,7 @@ export function AdminPortal() {
                     </p>
                 </p>
             </p>
-        
-            
-    
+       
                 <div class="col-md col-md-admin2">
                     <div class="mb-3 search-bar search-admin">
                         <div class="searchField">
@@ -653,11 +671,12 @@ export function AdminPortal() {
                     </div>
                 </div>
 
+
             <div class="search-results">
                 <div class="search-results-box">
                     {searchResults.map((user) => (
                         <div key={user.id} class="user-info">
-                            
+                           
                             <div class="user-info-item">
                     <p style={{fontWeight: 'bold'}}>Full Name: {user.fullName}</p>
                 </div>
@@ -667,30 +686,31 @@ export function AdminPortal() {
                 <div class="user-info-item">
                     <p>Signed up for Grant Updates: {user.signUpForGrants !== undefined ? user.signUpForGrants.toString() : 'N/A'}</p>
                 </div>
-                            
+                           
                         </div>
                     ))}
                 </div>
             </div>
-        
        
-        
             <div className="submissions-box">
 
+
                 {(filteredUids.length > 0 ? filteredUids : uids).map((uid) => (
-                   userData[uid]?.forms?.steve_stocking || userData[uid]?.forms?.EnvironmentalEducation_CitizenScience ? ( 
+                   userData[uid]?.forms?.steve_stocking || userData[uid]?.forms?.EnvironmentalEducation_CitizenScience ? (
                     <div key={uid}>
-                        
+                       
                             <button className="sub" onClick={() =>{
                                 handleButton(uid);
                             }}>
                                 <span className="submission-link">{userData[uid]?.fullName !== undefined ? userData[uid]?.fullName : 'No Name'}</span>
+
 
                                 {userData[uid]?.forms && (
                                     <div className="submitted-forms">
                                         Forms: {getForms(uid)}
                                     </div>
                                 )}
+
 
                             </button>
                             <label className="switch">
@@ -703,15 +723,18 @@ export function AdminPortal() {
                         </label>
 
 
+
+
                     </div>
                 ) : null
                 ))}
             </div>
-            
-        {/*console.log("Sel uid = " + selectedUid)*/}
-        {/*attempt to display submitted app form */}
+           
+        {/* console.log("Selected uid = " + selectedUid) */}
+        {/* display submitted application forms */}
         {displayApp && userData[selectedUid]?.forms?.steve_stocking && <AdminSubAppForm uid={selectedUid}/>}
         {displayApp && userData[selectedUid]?.forms?.EnvironmentalEducation_CitizenScience && <AdminSubAppForm2 uid={selectedUid}/>} {/* May need form2 versions of variables, not sure yet */}
+
 
         <div class="hit-counter">
             {loading ? (<h5>Loading Unique Visitors...</h5>) : (<h5>Unique Visitors: {data}</h5>)}

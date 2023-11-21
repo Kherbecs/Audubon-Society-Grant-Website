@@ -56,8 +56,6 @@ export function SubAppForm2() {
           }
         });
       }, [auth, history]);
-    
-    const [userID, setUserID] = useState(null); 
 
     // desired field is passed in, linked to appropriate box on submission
     function handleInfoDisplay(field, id) {
