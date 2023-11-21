@@ -74,7 +74,7 @@ export function SubAppForm2() {
                         
                        
                     } else {
-                        console.log("NO DATA");
+                        console.log("NO DATA RETRIEVED");
                     }
                 }).catch((error) => {
                     console.error(error);
@@ -103,7 +103,7 @@ export function SubAppForm2() {
                         }
 
                     } else {
-                        console.log("NO DATA");
+                        console.log("NO DATA RETRIEVED");
                     }
                 }).catch((error) => {
                     console.error(error);

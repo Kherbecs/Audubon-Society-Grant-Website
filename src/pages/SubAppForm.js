@@ -72,7 +72,7 @@ export function SubAppForm() {
                         const data = snapshot.val();
                         document.getElementById(id).value = data[field];
                     } else {
-                        console.log("NO DATA");
+                        console.log("NO DATA RETRIEVED");
                     }
                 }).catch((error) => {
                     console.error(error);
@@ -95,7 +95,7 @@ export function SubAppForm() {
                         document.getElementById(id).innerHTML = data[field];
                         holdSelect.setAttribute('disabled', 'disabled');
                     } else {
-                        console.log("NO DATA");
+                        console.log("NO DATA RETRIEVED");
                     }
                 }).catch((error) => {
                     console.error(error);
@@ -116,7 +116,7 @@ export function SubAppForm() {
                         document.getElementById(id).href = data[field];
                     } else {
                         alert("Document not found");
-                        console.log("NO DATA");
+                        console.log("NO DATA RETRIEVED");
                     }
                 }).catch((error) => {
                     console.error(error);
