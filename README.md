@@ -53,10 +53,17 @@
 The project is a second website for the San Joaquin Audubon Society to advertise youth scholarships/grants and allow users to apply for the grants. Admins can also search through applications and vet the ones they may accept. 
 
 
+
 <a name="slideshow"></a>
 ## Website Demo
 
-![prototype](https://user-images.githubusercontent.com/64297072/233535108-4448d363-85a7-43ad-919a-3ee7b8f56828.gif)
+### User Side
+![userSide3](https://github.com/kaaiiy/Bird-Watcher-Grant-Website/assets/64297072/14a2491a-dbe5-4555-82f8-a680e59230d0)
+
+### Admin Side
+![adminSide3](https://github.com/kaaiiy/Bird-Watcher-Grant-Website/assets/64297072/d98b77a5-d5a3-432e-8dcf-cbf324a41749)
+
+
 A visual showcase of the San Joaquin Audubon Society’s Bird Watcher Grant Website
 
 
